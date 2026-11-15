@@ -11,11 +11,14 @@ import { MunicipalityStrip } from "@/components/MunicipalityStrip";
 import { PostCard } from "@/components/PostCard";
 import { SectionBlock } from "@/components/SectionBlock";
 import { SectionHeading } from "@/components/SectionHeading";
-import { logo, siteDescription, siteName, tagline } from "@/config/site";
+import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
 import { getAllPosts, getFeaturedPosts } from "@/lib/content";
 import { absoluteUrl } from "@/lib/site-url";
 
-const title = tagline ? `${siteName}: ${tagline}` : siteName;
+const title = `${siteName}: ${motto}`;
+
+/** The motto, one sentence per line. */
+const mottoLines = motto.split(/(?<=\.)\s+/);
 
 export const metadata: Metadata = {
   title: { absolute: title },
@@ -39,10 +42,6 @@ export const metadata: Metadata = {
 };
 
 const HOME_SECTIONS = ["news", "features", "opinion"] as const;
-
-/** Banner paragraph. Only facts from the site config: who writes, where, which languages and sections. */
-const bannerText =
-  "Stories by the young journalists of Davao del Sur, in English and Tagalog: news, features, editorial, opinion, sports and literary.";
 
 /** WebSite structured data. The address is left out when the site address is not known. */
 function websiteJsonLd() {
@@ -83,10 +82,14 @@ export default function Home() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd() }} />
-      <BreakingStrip />
-
       <Banner
-        title={siteName}
+        fullScreen
+        above={<BreakingStrip />}
+        title={mottoLines.map((line) => (
+          <span key={line} className="block">
+            {line}
+          </span>
+        ))}
         actions={
           <>
             <Link href="#top-stories" className={buttonClasses("accent")}>
@@ -98,7 +101,7 @@ export default function Home() {
           </>
         }
       >
-        {bannerText}
+        {tagline}
       </Banner>
 
       <Container className="pb-section pt-8 md:pt-section">

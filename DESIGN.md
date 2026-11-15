@@ -86,7 +86,7 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 | Yellow focus ring on brand (footer) | 8.50 | 8.50 | 3 |
 
 ## Site config
-`src/config/site.ts` holds the site name, `tagline` (empty, hidden while empty), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
+`src/config/site.ts` holds the site name, `motto` ("In Truth, We Serve. In Words, We Lead.", the home banner heading), `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.", the banner paragraph and the footer line, hidden if emptied), `siteDescription` (tagline plus the brand line, used for metadata), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
 Routes built: `/` only (and the unindexed `/styleguide`).
 Routes linked, not built yet: `/article/[slug]`, `/section/[slug]`, `/municipality/[slug]`, `/municipality`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
@@ -112,15 +112,15 @@ All in `src/components`. Server components unless marked client.
 | `Logo` | `variant` header or footer, `onNavigate`, `className` | Seal plus site name, links home. |
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
 | `Button` | `variant` primary, accent, secondary or onBrand, button props | Buttons. `onBrand` is an outline button with light text, for brand colored bands next to an accent button. |
-| `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. On the home page it sits under the breaking strip, and the featured slider and latest headlines follow it as the second section (`#top-stories`). |
+| `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `above`, `fullScreen`, `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. `above` is a slot for the breaking strip. `fullScreen` makes `above` and the band together as tall as the viewport below the header (`100svh` minus `--utility-height` and `--header-height`), centers the text and uses `text-4xl` for the h1. On the home page it is full screen, shows the motto as the h1 (one sentence per line) and the tagline as the paragraph, with the breaking strip in `above`. The featured slider and latest headlines follow it as the second section (`#top-stories`). |
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
 | `MobileMenu` (client) | none | Menu button and full screen sheet with the sections and search, on a native modal dialog (focus trap, Escape, scroll lock). |
-| `ThemeToggle` (client) | none | Single button, light or dark. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
+| `ThemeToggle` (client) | none | Single button, light or dark. Shows a moon in light theme (press for dark) and a sun in dark theme (press for light). The icon is switched by CSS from `data-theme`, so the first paint is right. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
-| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `PauseIcon`, `PlayIcon`. |
+| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`, `SunIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `PauseIcon`, `PlayIcon`. |
 | `PlaceholderImage` | `ratio` 16/9, 4/3, 3/2 or 1/1, `className` | Flat brand colored block with a small "Placeholder" label. Hidden from screen readers. Takes the same space as a real image. |
 | `PostImage` | `post` or `image`, `sizes` (required), `ratio`, `priority`, `className` | Cover or gallery image. Real `src` goes through `next/image` with `fill`, so there is no layout shift. No `src` shows `PlaceholderImage`. `priority` is for the first image on a page (eager, high fetch priority). |
 | `Markdown` | `children` (the Markdown text), `className` | Renders a post body. Headings move down one level (`#` becomes h2). Images go through `PostImage`. Raw HTML is never rendered. At most 68 characters wide. |

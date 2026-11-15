@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
-import { MoonIcon } from "@/components/icons";
+import { MoonIcon, SunIcon } from "@/components/icons";
 import { THEME_CHANGE_EVENT, THEME_STORAGE_KEY } from "@/lib/theme";
 
 /** The theme on screen, as set on the html element by the inline head script. */
@@ -46,14 +46,20 @@ export function ThemeToggle() {
         type="button"
         aria-pressed={isDark}
         aria-label="Dark mode"
-        title="Dark mode"
+        title={isDark ? "Switch to light mode" : "Switch to dark mode"}
         onClick={() => {
           saveTheme(isDark ? "light" : "dark");
           setAnnouncement(isDark ? "Dark mode off" : "Dark mode on");
         }}
         className="inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-border aria-pressed:bg-accent aria-pressed:text-on-accent"
       >
-        <MoonIcon />
+        {/* Shown by CSS from the theme on the html element, so the first paint is already right. */}
+        <span className="inline-flex [[data-theme=dark]_&]:hidden">
+          <MoonIcon />
+        </span>
+        <span className="hidden [[data-theme=dark]_&]:inline-flex">
+          <SunIcon />
+        </span>
       </button>
       <span role="status" className="sr-only">
         {announcement}

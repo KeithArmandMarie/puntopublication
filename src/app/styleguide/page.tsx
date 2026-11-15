@@ -10,9 +10,11 @@ import { Header } from "@/components/Header";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
+  MoonIcon,
   PauseIcon,
   PlayIcon,
   SearchIcon,
+  SunIcon,
 } from "@/components/icons";
 import { LanguageBadge } from "@/components/PostLabels";
 import { PostCard } from "@/components/PostCard";
@@ -285,6 +287,8 @@ export default function StyleguidePage() {
             <ChevronRightIcon className="size-6" />
             <PauseIcon className="size-6" />
             <PlayIcon className="size-6" />
+            <MoonIcon className="size-6" />
+            <SunIcon className="size-6" />
             <p className="text-sm text-muted">
               Inline SVG, 24px grid, one 1.75 stroke. Icons never carry meaning alone.
             </p>

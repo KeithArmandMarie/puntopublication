@@ -20,12 +20,15 @@ export type SocialLink = {
 
 export const siteName = "Punto Publication";
 
-/** Leave empty to hide. The tagline is never shown while this is an empty string. */
-export const tagline = "";
+/** The motto. It is the main heading of the home page banner. */
+export const motto = "In Truth, We Serve. In Words, We Lead.";
 
-/** Shown in search results and metadata. Taken from the brand line in DESIGN.md. */
-export const siteDescription =
-  "Provincial Youth Journalist Publication, Davao del Sur.";
+/** Leave empty to hide. The tagline is never shown while this is an empty string. */
+export const tagline =
+  "Empowering the Voice of the Youth through Responsible Journalism.";
+
+/** Shown in search results and metadata: the tagline and the brand line from DESIGN.md. */
+export const siteDescription = `${tagline} Provincial Youth Journalist Publication, Davao del Sur.`;
 
 export const logo = {
   src: "/brand/logo.webp",
