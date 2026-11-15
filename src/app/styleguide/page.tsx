@@ -227,6 +227,18 @@ export default function StyleguidePage() {
               Link styled as a button
             </Link>
           </div>
+          <p className="mb-3 mt-6 max-w-prose text-sm text-muted">
+            On a brand band (the Banner on the home page) the accent button is paired
+            with the onBrand outline button.
+          </p>
+          <div className="flex flex-wrap gap-3 bg-brand p-4 [--focus:var(--accent)]">
+            <Link href="/styleguide" className={buttonClasses("accent")}>
+              Accent
+            </Link>
+            <Link href="/styleguide" className={buttonClasses("onBrand")}>
+              onBrand
+            </Link>
+          </div>
         </Section>
 
         <Section id="links" title="Links">

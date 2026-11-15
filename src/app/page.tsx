@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Banner } from "@/components/Banner";
 import { BreakingStrip } from "@/components/BreakingStrip";
+import { buttonClasses } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { FacebookFeed, getFacebookPageUrl } from "@/components/FacebookFeed";
 import { FeaturedSlider } from "@/components/FeaturedSlider";
@@ -36,6 +39,10 @@ export const metadata: Metadata = {
 };
 
 const HOME_SECTIONS = ["news", "features", "opinion"] as const;
+
+/** Banner paragraph. Only facts from the site config: who writes, where, which languages and sections. */
+const bannerText =
+  "Stories by the young journalists of Davao del Sur, in English and Tagalog: news, features, editorial, opinion, sports and literary.";
 
 /** WebSite structured data. The address is left out when the site address is not known. */
 function websiteJsonLd() {
@@ -78,10 +85,31 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd() }} />
       <BreakingStrip />
 
-      <Container className="pb-section pt-6 md:pt-8">
-        <h1 className="sr-only">{siteName}</h1>
+      <Banner
+        title={siteName}
+        actions={
+          <>
+            <Link href="#top-stories" className={buttonClasses("accent")}>
+              Read the top stories
+            </Link>
+            <Link href="/archive" className={buttonClasses("onBrand")}>
+              Browse the archive
+            </Link>
+          </>
+        }
+      >
+        {bannerText}
+      </Banner>
 
-        <div className="lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8">
+      <Container className="pb-section pt-8 md:pt-section">
+        <section
+          id="top-stories"
+          aria-labelledby="top-stories-heading"
+          className="scroll-mt-header lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8"
+        >
+          <h2 id="top-stories-heading" className="sr-only">
+            Top stories
+          </h2>
           {heroPosts.length > 1 ? (
             <FeaturedSlider label="Featured stories">
               {heroPosts.map((post, position) => (
@@ -112,7 +140,7 @@ export default function Home() {
               </ul>
             </section>
           ) : null}
-        </div>
+        </section>
 
         {latest.length > 0 ? (
           <section aria-labelledby="latest-stories-heading" className="mt-section">

@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 
-export type ButtonVariant = "primary" | "accent" | "secondary";
+export type ButtonVariant = "primary" | "accent" | "secondary" | "onBrand";
 
 const base =
   "inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 text-base font-semibold underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:no-underline";
@@ -11,6 +11,8 @@ const variants: Record<ButtonVariant, string> = {
   // Yellow is a fill, with brown text on top.
   accent: "border-accent bg-accent text-on-accent",
   secondary: "border-border-strong bg-transparent text-foreground hover:bg-surface",
+  // Outline button for brand colored bands, next to an accent button.
+  onBrand: "border-on-brand-muted bg-transparent text-on-brand",
 };
 
 /** Class string for anything that should look like a button, such as a Link. */

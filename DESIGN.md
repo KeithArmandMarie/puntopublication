@@ -111,7 +111,8 @@ All in `src/components`. Server components unless marked client.
 | `Footer` | none | Brand colored footer from config. In the layout. |
 | `Logo` | `variant` header or footer, `onNavigate`, `className` | Seal plus site name, links home. |
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
-| `Button` | `variant` primary, accent or secondary, button props | Buttons. |
+| `Button` | `variant` primary, accent, secondary or onBrand, button props | Buttons. `onBrand` is an outline button with light text, for brand colored bands next to an accent button. |
+| `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. On the home page it sits under the breaking strip, and the featured slider and latest headlines follow it as the second section (`#top-stories`). |
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
