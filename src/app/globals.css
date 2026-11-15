@@ -121,14 +121,8 @@
   --leading-snug: 1.3;
   --leading-normal: 1.6;
 
-  /* Article body text: 18px with a 1.65 line height. */
-  --text-prose: 1.125rem;
-  --text-prose--line-height: 1.65;
-
   --container-content: var(--content-width);
   --container-prose: 68ch;
-  /* Right hand column on the home page (Facebook feed). */
-  --container-aside: 18.75rem;
 }
 
 @theme inline {
