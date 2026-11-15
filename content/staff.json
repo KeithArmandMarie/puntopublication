@@ -1,0 +1,40 @@
+[
+  {
+    "id": "ana",
+    "firstName": "Ana",
+    "position": "Editor in Chief",
+    "municipality": "digos-city",
+    "bio": "Sample profile text. Replace this with a real bio."
+  },
+  {
+    "id": "ben",
+    "firstName": "Ben",
+    "position": "News Editor",
+    "municipality": "bansalan"
+  },
+  {
+    "id": "carlo",
+    "firstName": "Carlo",
+    "position": "Features Writer",
+    "municipality": "matanao",
+    "bio": "Sample profile text. Replace this with a real bio."
+  },
+  {
+    "id": "dana",
+    "firstName": "Dana",
+    "position": "Opinion Columnist",
+    "municipality": "hagonoy"
+  },
+  {
+    "id": "elena",
+    "firstName": "Elena",
+    "position": "Literary Editor",
+    "municipality": "santa-cruz"
+  },
+  {
+    "id": "felix",
+    "firstName": "Felix",
+    "position": "Sports Writer and Photographer",
+    "municipality": "padada"
+  }
+]

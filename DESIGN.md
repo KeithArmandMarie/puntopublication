@@ -111,8 +111,20 @@ All in `src/components`. Server components unless marked client.
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
 | `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`. |
+| `PlaceholderImage` | `ratio` 16/9, 4/3, 3/2 or 1/1, `className` | Flat brand colored block with a small "Placeholder" label. Hidden from screen readers. Takes the same space as a real image. |
+| `PostImage` | `post` or `image`, `sizes` (required), `ratio`, `priority`, `className` | Cover or gallery image. Real `src` goes through `next/image` with `fill`, so there is no layout shift. No `src` shows `PlaceholderImage`. `priority` is for the first image on a page (eager, high fetch priority). |
+| `Markdown` | `children` (the Markdown text), `className` | Renders a post body. Headings move down one level (`#` becomes h2). Images go through `PostImage`. Raw HTML is never rendered. At most 68 characters wide. |
 
-New reusable components and tokens get added here and to `/styleguide`.
+New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios and `PostImage` with and without a `src`.
+
+## Content model
+Files in `content/`, loaded by `src/lib/content` (server only). Full how-to steps are in `CONTENT.md`.
+- Posts: `content/posts/<slug>.md`, frontmatter plus Markdown body. Fields: `title`, `slug` (same as the file name), `excerpt`, `publishedAt`, `updatedAt`, `section`, `municipality` (both are slugs from `src/config/site.ts`), `tags`, `authors` (staff ids), `language` (`en` or `tl`), `coverImage`, `coverAlt` (required with `coverImage`), `coverCredit`, `featured`, `breaking`, `draft`, `correction`.
+- Staff: `content/staff.json`. Fields: `id`, `firstName` (no space, comma or period), `position`, `municipality`, `bio`, `photo`. No last name field.
+- Galleries: `content/galleries/<slug>.json`. Fields: `title`, `slug`, `date`, `municipality`, `description`, `images` (`src` optional, `alt`, `caption`, `credit` optional). An empty `src` renders a placeholder.
+- Rules and types: `src/lib/content/schema.ts` (zod, every object is strict). Slug helpers (`tagSlug`, `sectionSlugs`, `getSectionBySlug`, and so on): `src/lib/content/slugs.ts`. Byline: `getByline(post)`, first names only.
+- Loaders: `getAllPosts`, `getPostBySlug`, `getPostsBySection`, `getPostsByMunicipality`, `getPostsByTag`, `getAllTags`, `getFeaturedPosts`, `getBreakingPost`, `getLatestPosts`, `getRelatedPosts`, `getAdjacentPosts`, `getPostsGroupedByMonth`, `getAllStaff`, `getAuthors`, `getByline`, `getAllGalleries`, `getGalleryBySlug`. Posts are newest first and carry `readingTime` (minutes, 200 words per minute) and `wordCount`. Content is read once per build. Drafts show in dev and are removed from production builds.
+- Dates are written in quotes, as `"2026-08-03"` or `"2026-08-03T09:00:00+08:00"`.
 
 ## Scripts
-`npm run lint`, `npm run typecheck`, `npm run build`, `npm run contrast`.
+`npm run lint`, `npm run typecheck`, `npm run build`, `npm run contrast`, `npm run content:check`. The build runs `content:check` first and stops if any content file breaks a rule.

@@ -1,0 +1,15 @@
+{
+  "title": "Sample gallery 02: More placeholder photos",
+  "slug": "sample-gallery-02",
+  "date": "2026-09-15",
+  "municipality": "hagonoy",
+  "description": "A second gallery of placeholder images. It is sample content and can be deleted.",
+  "images": [
+    { "src": "", "alt": "Placeholder image 1 of 6", "caption": "Sample caption 1. It does not describe a real photo." },
+    { "alt": "Placeholder image 2 of 6", "caption": "Sample caption 2. It does not describe a real photo.", "credit": "Felix" },
+    { "src": "", "alt": "Placeholder image 3 of 6", "caption": "Sample caption 3. It does not describe a real photo." },
+    { "alt": "Placeholder image 4 of 6", "caption": "Sample caption 4. It does not describe a real photo." },
+    { "src": "", "alt": "Placeholder image 5 of 6", "caption": "Sample caption 5. It does not describe a real photo." },
+    { "alt": "Placeholder image 6 of 6", "caption": "Sample caption 6. It does not describe a real photo.", "credit": "Ana" }
+  ]
+}

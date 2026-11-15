@@ -3,6 +3,7 @@
 Provincial Youth Journalist Publication, Davao del Sur. News site for the general public in English and Tagalog. Phones first. Next.js App Router, TypeScript strict, Tailwind, deployed on Vercel. Content is Markdown files, no database, no logins.
 
 @DESIGN.md
+@CONTENT.md
 
 ## Before you build anything
 1. Read DESIGN.md and src/app/globals.css.

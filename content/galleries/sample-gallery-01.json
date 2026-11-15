@@ -1,0 +1,15 @@
+{
+  "title": "Sample gallery 01: Placeholder photos",
+  "slug": "sample-gallery-01",
+  "date": "2026-10-20",
+  "municipality": "digos-city",
+  "description": "A gallery of placeholder images. It is sample content and can be deleted.",
+  "images": [
+    { "alt": "Placeholder image 1 of 6", "caption": "Sample caption 1. It does not describe a real photo." },
+    { "src": "", "alt": "Placeholder image 2 of 6", "caption": "Sample caption 2. It does not describe a real photo." },
+    { "alt": "Placeholder image 3 of 6", "caption": "Sample caption 3. It does not describe a real photo.", "credit": "Ana" },
+    { "src": "", "alt": "Placeholder image 4 of 6", "caption": "Sample caption 4. It does not describe a real photo." },
+    { "alt": "Placeholder image 5 of 6", "caption": "Sample caption 5. It does not describe a real photo." },
+    { "src": "", "alt": "Placeholder image 6 of 6", "caption": "Sample caption 6. It does not describe a real photo.", "credit": "Ben" }
+  ]
+}

@@ -7,6 +7,9 @@ import { Field } from "@/components/Field";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SearchIcon } from "@/components/icons";
+import { PlaceholderImage } from "@/components/PlaceholderImage";
+import type { ImageRatio } from "@/components/PlaceholderImage";
+import { PostImage } from "@/components/PostImage";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -52,6 +55,8 @@ const spacing = [
   { step: "12", px: "48px", className: "w-12" },
   { step: "16", px: "64px", className: "w-16" },
 ] as const;
+
+const imageRatios: readonly ImageRatio[] = ["16/9", "4/3", "3/2", "1/1"];
 
 function Section({
   id,
@@ -130,6 +135,7 @@ export default function StyleguidePage() {
             ["links", "Links"],
             ["forms", "Form focus states"],
             ["icons", "Icons"],
+            ["images", "Images"],
             ["header", "Header"],
             ["footer", "Footer"],
           ].map(([id, label]) => (
@@ -254,6 +260,46 @@ export default function StyleguidePage() {
               Inline SVG, 24px grid, one 1.75 stroke. Icons never carry meaning alone.
             </p>
           </div>
+        </Section>
+
+        <Section id="images" title="Images">
+          <h3 className="mb-3">PlaceholderImage</h3>
+          <p className="mb-4 max-w-prose text-muted">
+            A flat block in brand colors that keeps the space of a missing picture. Four
+            ratios. Hidden from screen readers.
+          </p>
+          <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {imageRatios.map((ratio) => (
+              <li key={ratio}>
+                <PlaceholderImage ratio={ratio} />
+                <p className="mt-1 text-sm text-muted">{ratio}</p>
+              </li>
+            ))}
+          </ul>
+
+          <h3 className="mb-3 mt-10">PostImage</h3>
+          <p className="mb-4 max-w-prose text-muted">
+            Uses next/image when there is a src and PlaceholderImage when there is not. Both
+            states take the same space. The sizes prop is required.
+          </p>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:max-w-2xl">
+            <li>
+              <PostImage
+                image={{ src: "/brand/logo.webp", alt: "Punto Publication seal" }}
+                ratio="1/1"
+                sizes="(min-width: 1024px) 336px, (min-width: 640px) 50vw, 100vw"
+              />
+              <p className="mt-1 text-sm text-muted">With a src (next/image)</p>
+            </li>
+            <li>
+              <PostImage
+                image={{ alt: "Not shown" }}
+                ratio="1/1"
+                sizes="(min-width: 1024px) 336px, (min-width: 640px) 50vw, 100vw"
+              />
+              <p className="mt-1 text-sm text-muted">No src (placeholder)</p>
+            </li>
+          </ul>
         </Section>
 
         <Section id="header" title="Header">
