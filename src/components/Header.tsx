@@ -3,7 +3,6 @@ import { Container } from "@/components/Container";
 import { SearchIcon } from "@/components/icons";
 import { Logo } from "@/components/Logo";
 import { MobileMenu } from "@/components/MobileMenu";
-import { MunicipalitiesMenu } from "@/components/MunicipalitiesMenu";
 import { NavLink } from "@/components/NavLink";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TodayDate } from "@/components/TodayDate";
@@ -38,26 +37,16 @@ export function Header() {
           <Logo />
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center">
-              {mainNav.map((entry) =>
-                entry.type === "link" ? (
-                  <li key={entry.href}>
-                    <NavLink
-                      href={entry.href}
-                      className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-foreground underline-offset-4 hover:underline aria-[current=page]:underline"
-                    >
-                      {entry.label}
-                    </NavLink>
-                  </li>
-                ) : (
-                  <li key={entry.label}>
-                    <MunicipalitiesMenu
-                      label={entry.label}
-                      items={entry.items}
-                      allLink={entry.allLink}
-                    />
-                  </li>
-                ),
-              )}
+              {mainNav.map((entry) => (
+                <li key={entry.href}>
+                  <NavLink
+                    href={entry.href}
+                    className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-foreground underline-offset-4 hover:underline aria-[current=page]:underline"
+                  >
+                    {entry.label}
+                  </NavLink>
+                </li>
+              ))}
             </ul>
           </nav>
           <MobileMenu />

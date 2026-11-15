@@ -62,7 +62,7 @@ Spacing is Tailwind's scale on a 4px base: 1 (4px), 2, 3, 4 (16px), 6, 8, 12, 16
 Named tokens: `gutter` (16px, 24px from 640px), `section` (48px, use `py-section`), `utility` (44px utility bar), `header` (64px main bar).
 Content width is 1200px, set by `--content-width`. Use `Container` or `.container-page`.
 Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
-Header breakpoint: full navigation from 1024px, menu button below.
+Header breakpoint: full navigation from 1024px, menu button below. The header lists the six sections only. Municipalities are not in the header.
 
 ## Contrast (WCAG AA)
 Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css` and exits with an error if any pair fails.
@@ -85,12 +85,12 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 | Yellow focus ring on brand (footer) | 8.50 | 8.50 | 3 |
 
 ## Site config
-`src/config/site.ts` holds the site name, `tagline` (empty, hidden while empty), sections, municipalities, main nav, policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
+`src/config/site.ts` holds the site name, `tagline` (empty, hidden while empty), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
 Routes linked, not built yet: `/section/[slug]`, `/municipality/[slug]`, `/municipality`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
 
 ## Theme
-Choices: light, dark, system, stored in `localStorage` key `punto-theme` (system means no value). `themeScript` in `src/lib/theme.ts` runs inline in the head before first paint and sets `data-theme` on the html element. It also follows the system setting and other tabs.
+One toggle button switches between light and dark. The first visit follows the device setting. After the first press the choice is saved in `localStorage` key `punto-theme`. `themeScript` in `src/lib/theme.ts` runs inline in the head before first paint and sets `data-theme` on the html element. It also follows the device setting (until a choice is saved) and other tabs.
 
 ## Components
 All in `src/components`. Server components unless marked client.
@@ -98,7 +98,7 @@ All in `src/components`. Server components unless marked client.
 | Component | Props | Use |
 | --- | --- | --- |
 | `Container` | div props | Page width and gutters. Wrap page content. |
-| `Header` | none | Utility bar (date, theme, search) and sticky main bar. In the layout. |
+| `Header` | none | Utility bar (date, theme toggle, search) and sticky main bar with the sections. In the layout. |
 | `Footer` | none | Brand colored footer from config. In the layout. |
 | `Logo` | `variant` header or footer, `onNavigate`, `className` | Seal plus site name, links home. |
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
@@ -106,12 +106,11 @@ All in `src/components`. Server components unless marked client.
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
-| `MunicipalitiesMenu` (client) | `label`, `items`, `allLink` | Desktop dropdown. Escape closes, arrows, Home and End move, focus returns to the button. |
-| `MobileMenu` (client) | none | Menu button and full screen sheet on a native modal dialog (focus trap, Escape, scroll lock). |
-| `ThemeToggle` (client) | none | Light, dark, system. Buttons use `aria-pressed`, a status region announces changes. |
+| `MobileMenu` (client) | none | Menu button and full screen sheet with the sections and search, on a native modal dialog (focus trap, Escape, scroll lock). |
+| `ThemeToggle` (client) | none | Single button, light or dark. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
-| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `ChevronDownIcon`, `SunIcon`, `MoonIcon`, `SystemIcon`. |
+| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`. |
 
 New reusable components and tokens get added here and to `/styleguide`.
 

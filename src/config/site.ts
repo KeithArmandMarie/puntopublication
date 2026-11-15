@@ -13,15 +13,6 @@ export type Section = {
 
 export type Municipality = Section;
 
-export type MainNavEntry =
-  | ({ type: "link" } & NavLinkItem)
-  | {
-      type: "menu";
-      label: string;
-      items: NavLinkItem[];
-      allLink: NavLinkItem;
-    };
-
 export type SocialLink = {
   label: string;
   href: string;
@@ -81,17 +72,10 @@ export const municipalitiesIndex: NavLinkItem = {
 
 export const searchHref = "/search";
 
-export const mainNav: MainNavEntry[] = [
-  ...sections.map(
-    (s): MainNavEntry => ({ type: "link", label: s.name, href: s.href }),
-  ),
-  {
-    type: "menu",
-    label: "Municipalities",
-    items: municipalities.map((m) => ({ label: m.name, href: m.href })),
-    allLink: municipalitiesIndex,
-  },
-];
+export const mainNav: NavLinkItem[] = sections.map((s) => ({
+  label: s.name,
+  href: s.href,
+}));
 
 const policyNames = [
   "Editorial Policy",
