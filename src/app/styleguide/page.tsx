@@ -2,14 +2,25 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button, buttonClasses } from "@/components/Button";
+import { Chip } from "@/components/Chip";
 import { Container } from "@/components/Container";
 import { Field } from "@/components/Field";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { SearchIcon } from "@/components/icons";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PauseIcon,
+  PlayIcon,
+  SearchIcon,
+} from "@/components/icons";
+import { LanguageBadge } from "@/components/PostLabels";
+import { PostCard } from "@/components/PostCard";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import type { ImageRatio } from "@/components/PlaceholderImage";
 import { PostImage } from "@/components/PostImage";
+import { SectionHeading } from "@/components/SectionHeading";
+import { getLatestPosts } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -117,6 +128,7 @@ function ThemePanel({ theme }: { theme: "light" | "dark" }) {
 }
 
 export default function StyleguidePage() {
+  const samples = getLatestPosts(3);
   return (
     <Container className="py-section">
       <h1>Styleguide</h1>
@@ -136,6 +148,7 @@ export default function StyleguidePage() {
             ["forms", "Form focus states"],
             ["icons", "Icons"],
             ["images", "Images"],
+            ["stories", "Story components"],
             ["header", "Header"],
             ["footer", "Footer"],
           ].map(([id, label]) => (
@@ -256,6 +269,10 @@ export default function StyleguidePage() {
         <Section id="icons" title="Icons">
           <div className="flex items-center gap-4">
             <SearchIcon className="size-6" />
+            <ChevronLeftIcon className="size-6" />
+            <ChevronRightIcon className="size-6" />
+            <PauseIcon className="size-6" />
+            <PlayIcon className="size-6" />
             <p className="text-sm text-muted">
               Inline SVG, 24px grid, one 1.75 stroke. Icons never carry meaning alone.
             </p>
@@ -300,6 +317,43 @@ export default function StyleguidePage() {
               <p className="mt-1 text-sm text-muted">No src (placeholder)</p>
             </li>
           </ul>
+        </Section>
+
+        <Section id="stories" title="Story components">
+          {samples.length === 0 ? (
+            <p className="text-muted">Add a post to see the story components.</p>
+          ) : (
+            <>
+              <h3 className="mb-3">PostCard</h3>
+              <p className="mb-6 max-w-prose text-muted">
+                The whole card is one link. Three variants: large, standard and compact
+                (with or without a thumbnail).
+              </p>
+              <div className="grid gap-8 lg:grid-cols-2">
+                <div>
+                  <p className="mb-2 text-sm font-semibold">large</p>
+                  <PostCard post={samples[0]} variant="large" sizes="(min-width: 1024px) 560px, 100vw" />
+                </div>
+                <div>
+                  <p className="mb-2 text-sm font-semibold">standard</p>
+                  <PostCard post={samples[1] ?? samples[0]} variant="standard" sizes="(min-width: 1024px) 560px, 100vw" />
+                  <p className="mb-2 mt-8 text-sm font-semibold">compact with thumbnail</p>
+                  <PostCard post={samples[2] ?? samples[0]} variant="compact" />
+                  <p className="mb-2 mt-8 text-sm font-semibold">compact, headline only</p>
+                  <PostCard post={samples[2] ?? samples[0]} variant="compact" thumbnail={false} />
+                </div>
+              </div>
+            </>
+          )}
+
+          <h3 className="mb-3 mt-10">SectionHeading</h3>
+          <SectionHeading title="News" href="/section/news" linkLabel="See all News stories" />
+
+          <h3 className="mb-3 mt-10">Chip and LanguageBadge</h3>
+          <div className="flex flex-wrap items-center gap-3">
+            <Chip href="/styleguide">Digos City</Chip>
+            <LanguageBadge language="tl" />
+          </div>
         </Section>
 
         <Section id="header" title="Header">

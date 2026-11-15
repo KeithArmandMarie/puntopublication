@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SkipLink } from "@/components/SkipLink";
 import { logo, siteDescription, siteName } from "@/config/site";
+import { getMetadataBase } from "@/lib/site-url";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -14,6 +15,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: getMetadataBase(),
   title: { default: siteName, template: `%s | ${siteName}` },
   description: siteDescription,
   icons: { icon: logo.src },

@@ -61,6 +61,7 @@ Body: 17px, line height 1.6. Article text is at most 68 characters wide (`max-w-
 Spacing is Tailwind's scale on a 4px base: 1 (4px), 2, 3, 4 (16px), 6, 8, 12, 16 (64px). Tap targets are `min-h-11` (44px) or larger.
 Named tokens: `gutter` (16px, 24px from 640px), `section` (48px, use `py-section`), `utility` (44px utility bar), `header` (64px main bar).
 Content width is 1200px, set by `--content-width`. Use `Container` or `.container-page`.
+The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the hero and the headlines, and again for the section blocks and the Facebook feed.
 Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
 Header breakpoint: full navigation from 1024px, menu button below. The header lists the six sections only. Municipalities are not in the header.
 
@@ -87,7 +88,15 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 ## Site config
 `src/config/site.ts` holds the site name, `tagline` (empty, hidden while empty), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
-Routes linked, not built yet: `/section/[slug]`, `/municipality/[slug]`, `/municipality`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
+Routes built: `/` only (and the unindexed `/styleguide`).
+Routes linked, not built yet: `/article/[slug]`, `/section/[slug]`, `/municipality/[slug]`, `/municipality`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
+
+## Environment variables
+Listed in `.env.example`. Both are optional.
+- `NEXT_PUBLIC_SITE_URL`: the public address, for example `https://puntopublication.example`. Used for metadata and the `WebSite` structured data. Falls back to the Vercel production address, then to `http://localhost:3000` in development only. When none is known in a production build, the structured data leaves out its `url`.
+- `NEXT_PUBLIC_FB_PAGE_URL`: the Facebook page address (https, a facebook.com host). Empty or invalid hides the home page feed column completely.
+
+Helpers: `src/lib/site-url.ts` (`getSiteUrl`, `getMetadataBase`, `absoluteUrl`) and `src/lib/format.ts` (`formatDate` in Asia/Manila time, `formatReadingTime`).
 
 ## Theme
 One toggle button switches between light and dark. The first visit follows the device setting. After the first press the choice is saved in `localStorage` key `punto-theme`. `themeScript` in `src/lib/theme.ts` runs inline in the head before first paint and sets `data-theme` on the html element. It also follows the device setting (until a choice is saved) and other tabs.
@@ -110,12 +119,24 @@ All in `src/components`. Server components unless marked client.
 | `ThemeToggle` (client) | none | Single button, light or dark. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
-| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`. |
+| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `PauseIcon`, `PlayIcon`. |
 | `PlaceholderImage` | `ratio` 16/9, 4/3, 3/2 or 1/1, `className` | Flat brand colored block with a small "Placeholder" label. Hidden from screen readers. Takes the same space as a real image. |
 | `PostImage` | `post` or `image`, `sizes` (required), `ratio`, `priority`, `className` | Cover or gallery image. Real `src` goes through `next/image` with `fill`, so there is no layout shift. No `src` shows `PlaceholderImage`. `priority` is for the first image on a page (eager, high fetch priority). |
 | `Markdown` | `children` (the Markdown text), `className` | Renders a post body. Headings move down one level (`#` becomes h2). Images go through `PostImage`. Raw HTML is never rendered. At most 68 characters wide. |
+| `PostCard` | `post`, `variant` large, standard or compact, `headingLevel` h2, h3 or h4 (default h3), `priority`, `hero`, `thumbnail`, `clamp`, `sizes`, `className` | A story as one link target (the headline link is stretched over the card; labels are plain text). **large**: 16/9 image, labels, headline, excerpt, byline, date. **standard**: 3/2 image, labels, headline, byline, date. **compact**: 96px square thumbnail beside the headline, or headline only with `thumbnail={false}`; date only, no byline. Each shows the section label, the municipality label and a Tagalog badge only for Tagalog posts. `hero` makes the large headline bigger from 768px. `clamp` cuts headline and excerpt to 3 lines. `priority` only for the first image on a page. One focus ring is drawn around the whole card. |
+| `PostLabels` | `post`, `className` | Section label, municipality label and `LanguageBadge`. Plain text, because the whole card is the link. |
+| `LanguageBadge` | `language` | Yellow fill, brown text, "Tagalog". Renders nothing for English. |
+| `PostDate` | `iso`, `className` | A `time` element with the date in Asia/Manila, for example "November 13, 2026". |
+| `SectionHeading` | `title`, `href`, `linkLabel`, `as` h2 or h3, `id` | Heading with a 1px brown rule under it and an optional "See all" link (44px tap target). |
+| `Chip` | Link props | Flat text link with a 1px border and a 44px tap target. Tags and municipalities. |
+| `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. CSS fade. Previous, next, dots, swipe, Left and Right arrow keys, pause and play. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
+| `BreakingStrip` | none | Yellow bar with brown text, "Breaking" and the headline of the newest breaking post. Renders nothing without one. Sets `--focus` to brown inside, so the ring shows in dark theme. |
+| `SectionBlock` | `slug` | Home page block: `SectionHeading`, one large card and three compact cards. Renders nothing for a section with no posts. |
+| `MunicipalityStrip` | none | Chips for every municipality plus "All municipalities". |
+| `GalleryHighlight` | none | Most recent gallery: four square images, title, date, link to `/gallery/[slug]`. Renders nothing without galleries. |
+| `FacebookFeed` | none | Official Page Plugin as a lazy iframe (300 by 600), no Facebook script, plus a text link to the page. Reads `NEXT_PUBLIC_FB_PAGE_URL`. Renders nothing when it is empty or not a facebook.com address. `getFacebookPageUrl()` tells a page whether the column exists. |
 
-New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios and `PostImage` with and without a `src`.
+New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`.
 
 ## Content model
 Files in `content/`, loaded by `src/lib/content` (server only). Full how-to steps are in `CONTENT.md`.
