@@ -1,0 +1,160 @@
+"use client";
+
+import { useEffect, useId, useRef, useState } from "react";
+import {
+  ChevronDownIcon,
+  CloseIcon,
+  MenuIcon,
+  SearchIcon,
+} from "@/components/icons";
+import { Logo } from "@/components/Logo";
+import { NavLink } from "@/components/NavLink";
+import { mainNav, searchHref } from "@/config/site";
+
+const rowClass =
+  "flex min-h-14 w-full items-center justify-between gap-3 text-lg font-bold text-foreground hover:underline aria-[current=page]:underline";
+const subRowClass =
+  "flex min-h-11 items-center pl-4 text-base text-foreground hover:underline aria-[current=page]:font-bold aria-[current=page]:underline";
+
+/**
+ * Phone and tablet menu. A native modal dialog gives the focus trap, Escape
+ * to close and an inert page behind it. Focus returns to the Menu button.
+ */
+export function MobileMenu() {
+  const [open, setOpen] = useState(false);
+  const [groupOpen, setGroupOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const groupId = useId();
+
+  useEffect(() => {
+    if (!open) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    dialog.showModal();
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflow;
+    root.style.overflow = "hidden";
+
+    const wide = window.matchMedia("(min-width: 64rem)");
+    const onChange = () => {
+      if (wide.matches) dialog.close();
+    };
+    wide.addEventListener("change", onChange);
+
+    return () => {
+      root.style.overflow = previousOverflow;
+      wide.removeEventListener("change", onChange);
+      if (dialog.open) dialog.close();
+    };
+  }, [open]);
+
+  function close() {
+    dialogRef.current?.close();
+  }
+
+  return (
+    <>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+        className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold text-foreground hover:bg-surface lg:hidden"
+      >
+        <MenuIcon />
+        Menu
+      </button>
+
+      <dialog
+        ref={dialogRef}
+        aria-label="Main menu"
+        onClose={() => {
+          setOpen(false);
+          setGroupOpen(false);
+          // Some browsers do not focus a button on click, so return focus here.
+          buttonRef.current?.focus();
+        }}
+        className="m-0 h-dvh max-h-none w-dvw max-w-none overflow-hidden border-0 bg-background p-0 text-foreground open:flex open:flex-col"
+      >
+        <div className="border-b border-border">
+          <div className="container-page flex h-header items-center justify-between">
+            <Logo onNavigate={close} />
+            <button
+              type="button"
+              autoFocus
+              onClick={close}
+              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold hover:bg-surface"
+            >
+              <CloseIcon />
+              Close
+            </button>
+          </div>
+        </div>
+
+        <nav
+          aria-label="Main menu"
+          className="container-page flex-1 overflow-y-auto pb-12 pt-2"
+        >
+          <ul>
+            {mainNav.map((entry) =>
+              entry.type === "link" ? (
+                <li key={entry.href} className="border-b border-border">
+                  <NavLink href={entry.href} onClick={close} className={rowClass}>
+                    {entry.label}
+                  </NavLink>
+                </li>
+              ) : (
+                <li key={entry.label} className="border-b border-border">
+                  <button
+                    type="button"
+                    aria-expanded={groupOpen}
+                    aria-controls={groupId}
+                    onClick={() => setGroupOpen((value) => !value)}
+                    className={`${rowClass} text-left`}
+                  >
+                    {entry.label}
+                    <ChevronDownIcon
+                      className={`size-5 ${groupOpen ? "rotate-180" : ""}`.trim()}
+                    />
+                  </button>
+                  <ul id={groupId} hidden={!groupOpen} className="pb-3">
+                    {entry.items.map((item) => (
+                      <li key={item.href}>
+                        <NavLink
+                          href={item.href}
+                          onClick={close}
+                          className={subRowClass}
+                        >
+                          {item.label}
+                        </NavLink>
+                      </li>
+                    ))}
+                    <li>
+                      <NavLink
+                        href={entry.allLink.href}
+                        exact
+                        onClick={close}
+                        className={`${subRowClass} font-semibold`}
+                      >
+                        {entry.allLink.label}
+                      </NavLink>
+                    </li>
+                  </ul>
+                </li>
+              ),
+            )}
+            <li className="border-b border-border">
+              <NavLink href={searchHref} onClick={close} className={rowClass}>
+                Search
+                <SearchIcon />
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </dialog>
+    </>
+  );
+}

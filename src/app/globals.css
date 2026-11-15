@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+/*
+  Punto Publication design tokens.
+
+  Colors are CSS variables with a light and a dark theme. The theme is chosen
+  by the data-theme attribute on the html element (set by the inline script in
+  layout.tsx). Any element can also carry data-theme to preview a theme
+  locally, which the styleguide uses.
+
+  scripts/contrast.mjs reads the two theme blocks below and checks every
+  text and background pair against WCAG AA. Keep the variable names in sync.
+*/
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --background: #fafafa;
+  --surface: #f2ece6;
+  --foreground: #2b1305;
+  --muted: #6a5546;
+  --border: #dcd0c5;
+  --border-strong: #8c7566;
+
+  --brand: #5f2805;
+  --on-brand: #fafafa;
+  --on-brand-muted: #e6d5c6;
+  --brand-border: #8a5a38;
+
+  --accent: #ffd939;
+  --on-accent: #5f2805;
+
+  --link: #5f2805;
+  --link-hover: #3b1803;
+  --focus: #5f2805;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #1b0e06;
+  --surface: #2a170b;
+  --foreground: #fafafa;
+  --muted: #cbb6a4;
+  --border: #4a2f1d;
+  --border-strong: #8f7561;
+
+  --brand: #5f2805;
+  --on-brand: #fafafa;
+  --on-brand-muted: #e6d5c6;
+  --brand-border: #8a5a38;
+
+  --accent: #ffd939;
+  --on-accent: #5f2805;
+
+  --link: #f0cfae;
+  --link-hover: #fafafa;
+  --focus: #ffd939;
+}
+
+/* Layout tokens */
+:root {
+  --content-width: 75rem; /* 1200px content area */
+  --gutter: 1rem; /* 16px on phones */
+  --utility-height: 2.75rem; /* 44px top utility bar */
+  --header-height: 4rem; /* 64px sticky main bar */
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --gutter: 1.5rem; /* 24px on larger screens */
+  }
+}
+
+@theme {
+  /* Remove Tailwind defaults so only the Punto tokens exist. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --blur-*: initial;
+  --text-*: initial;
+  --font-*: initial;
+
+  /* Spacing: Tailwind's scale on a 4px base (p-1 = 4px, p-4 = 16px, p-11 = 44px). */
+  --spacing: 0.25rem;
+  --spacing-gutter: var(--gutter);
+  --spacing-section: 3rem;
+  --spacing-utility: var(--utility-height);
+  --spacing-header: var(--header-height);
+
+  /* Shape: 4px at most. No shadows, no blur. */
+  --radius-none: 0;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+
+  /* Type scale */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.4;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 1.25;
+  --text-2xl: 1.875rem;
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 2.25rem;
+  --text-3xl--line-height: 1.15;
+  --text-4xl: 3rem;
+  --text-4xl--line-height: 1.1;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.6;
+
+  --container-content: var(--content-width);
+  --container-prose: 68ch;
+}
+
+@theme inline {
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-brand: var(--brand);
+  --color-on-brand: var(--on-brand);
+  --color-on-brand-muted: var(--on-brand-muted);
+  --color-brand-border: var(--brand-border);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+  --color-focus: var(--focus);
+
+  --font-sans: var(--font-plus-jakarta-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: var(--background);
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 800;
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--line-height);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+    font-weight: 700;
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: var(--text-lg);
+    line-height: var(--text-lg--line-height);
+    font-weight: 700;
+  }
+
+  @media (min-width: 48rem) {
+    h1 {
+      font-size: var(--text-4xl);
+      line-height: var(--text-4xl--line-height);
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  button,
+  [role="button"],
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* Page width: 1200px of content plus the gutters on each side. */
+  .container-page {
+    width: 100%;
+    max-width: calc(var(--content-width) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* Inline text link. Underline is always on, so color is never the only cue. */
+  .link {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  .link:hover {
+    color: var(--link-hover);
+    text-decoration-thickness: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
