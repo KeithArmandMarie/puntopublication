@@ -103,6 +103,9 @@
   --text-sm--line-height: 1.5;
   --text-base: 1.0625rem;
   --text-base--line-height: 1.6;
+  /* Article body text: 18px, line height 1.65. Only for story bodies. */
+  --text-article: 1.125rem;
+  --text-article--line-height: 1.65;
   --text-lg: 1.25rem;
   --text-lg--line-height: 1.4;
   --text-xl: 1.5rem;
@@ -123,6 +126,8 @@
 
   --container-content: var(--content-width);
   --container-prose: 68ch;
+  /* Article reading column. 68ch is measured in zeros, which are wide in this font and give about 85 letters per line. 42rem gives about 67 at 18px. */
+  --container-article: 42rem;
 }
 
 @theme inline {

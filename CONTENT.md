@@ -153,5 +153,6 @@ Delete all of this when real content is ready.
 
 1. Delete every file in `content/posts` whose name starts with `sample-story-`.
 2. Delete every file in `content/galleries` whose name starts with `sample-gallery-`.
-3. Open `content/staff.json`. It holds six sample staff. Replace the whole file with your real staff, or with `[]` if you have none yet.
-4. Run `npm run content:check`.
+3. Delete `public/images/sample-cover-01.webp`. Sample story 02 uses it.
+4. Open `content/staff.json`. It holds six sample staff. Replace the whole file with your real staff, or with `[]` if you have none yet.
+5. Run `npm run content:check`.

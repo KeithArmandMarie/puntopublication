@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ArticleNav } from "@/components/ArticleNav";
+import { AuthorBlock } from "@/components/AuthorBlock";
 import { Button, buttonClasses } from "@/components/Button";
 import { Chip } from "@/components/Chip";
 import { Container } from "@/components/Container";
+import { CorrectionNote } from "@/components/CorrectionNote";
 import { Field } from "@/components/Field";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -22,7 +25,8 @@ import { PlaceholderImage } from "@/components/PlaceholderImage";
 import type { ImageRatio } from "@/components/PlaceholderImage";
 import { PostImage } from "@/components/PostImage";
 import { SectionHeading } from "@/components/SectionHeading";
-import { getLatestPosts } from "@/lib/content";
+import { ShareRow } from "@/components/ShareRow";
+import { getAllStaff, getLatestPosts } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -53,6 +57,7 @@ const typeScale = [
   { name: "text-2xl", className: "text-2xl font-bold tracking-tight", note: "Section heading, 30px" },
   { name: "text-xl", className: "text-xl font-bold tracking-tight", note: "Sub heading, 24px" },
   { name: "text-lg", className: "text-lg font-bold", note: "Card title, 20px" },
+  { name: "text-article", className: "text-article", note: "Story body, 18px, line height 1.65" },
   { name: "text-base", className: "text-base", note: "Body, 17px, line height 1.6" },
   { name: "text-sm", className: "text-sm", note: "Meta and navigation, 15px" },
   { name: "text-xs", className: "text-xs", note: "Smallest text, 13px" },
@@ -370,6 +375,30 @@ export default function StyleguidePage() {
             <Chip href="/styleguide">Digos City</Chip>
             <LanguageBadge language="tl" />
           </div>
+        </Section>
+
+        <Section id="article" title="Article components">
+          <h3 className="mb-3">CorrectionNote</h3>
+          <CorrectionNote className="max-w-article">
+            Sample correction text. It shows the note under the story header.
+          </CorrectionNote>
+
+          <h3 className="mb-3 mt-10">InitialsBadge and AuthorBlock</h3>
+          <div className="max-w-article">
+            <AuthorBlock authors={getAllStaff().slice(0, 2)} />
+          </div>
+
+          <h3 className="mb-3 mt-10">ShareRow</h3>
+          <div className="max-w-article">
+            <ShareRow title="Sample story" path="/styleguide" />
+          </div>
+
+          {samples.length > 1 ? (
+            <>
+              <h3 className="mb-3 mt-10">ArticleNav</h3>
+              <ArticleNav older={samples[1]} newer={samples[0]} />
+            </>
+          ) : null}
         </Section>
 
         <Section id="header" title="Header">

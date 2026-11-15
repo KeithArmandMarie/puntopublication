@@ -5,7 +5,7 @@ excerpt: "A short placeholder summary for a sample editorial. It does not descri
 publishedAt: "2026-08-28"
 section: "editorial"
 municipality: "bansalan"
-tags: ["Community", "Events"]
+tags: []
 authors: ["ana"]
 language: "en"
 ---

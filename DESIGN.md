@@ -44,7 +44,7 @@ Use as `bg-surface`, `text-muted`, `border-border`, `bg-accent text-on-accent` a
 ## Typography
 Font: Plus Jakarta Sans through `next/font/google`, variable font, `display: swap`. Only weights 400 to 800 are used. Variable `--font-plus-jakarta-sans`, Tailwind `font-sans`.
 Headings: weight 800 (h1) or 700, tracking `-0.02em`, tight line height. Plain `h1` to `h4` are styled in `globals.css`.
-Body: 17px, line height 1.6. Article text is at most 68 characters wide (`max-w-prose`).
+Body: 17px, line height 1.6. Story text on the article page is 18px with line height 1.65 (`text-article`) in a column of `max-w-article` (42rem, about 65 to 67 letters per line). `max-w-prose` is 68ch, and `ch` is the width of a zero, which is wide in Plus Jakarta Sans, so `max-w-prose` gives about 85 letters per line. Use `max-w-article` where the line must really be at most 68 characters.
 
 | Class | Size | Line height | Use |
 | --- | --- | --- | --- |
@@ -53,6 +53,7 @@ Body: 17px, line height 1.6. Article text is at most 68 characters wide (`max-w-
 | `text-2xl` | 30px | 1.2 | Section heading (h2) |
 | `text-xl` | 24px | 1.25 | Sub heading (h3) |
 | `text-lg` | 20px | 1.4 | Card title (h4), mobile menu |
+| `text-article` | 18px | 1.65 | Story body on the article page only |
 | `text-base` | 17px | 1.6 | Body |
 | `text-sm` | 15px | 1.5 | Navigation, meta |
 | `text-xs` | 13px | 1.5 | Smallest text |
@@ -88,15 +89,15 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 ## Site config
 `src/config/site.ts` holds the site name, `motto` ("In Truth, We Serve. In Words, We Lead.", the home banner heading), `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.", the banner paragraph and the footer line, hidden if emptied), `siteDescription` (tagline plus the brand line, used for metadata), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
-Routes built: `/` only (and the unindexed `/styleguide`).
-Routes linked, not built yet: `/article/[slug]`, `/section/[slug]`, `/municipality/[slug]`, `/municipality`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
+Routes built: `/` and `/article/[slug]` (and the unindexed `/styleguide`).
+Routes linked, not built yet: `/section/[slug]`, `/tag/[slug]`, `/municipality/[slug]`, `/municipality`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
 
 ## Environment variables
 Listed in `.env.example`. Both are optional.
-- `NEXT_PUBLIC_SITE_URL`: the public address, for example `https://puntopublication.example`. Used for metadata and the `WebSite` structured data. Falls back to the Vercel production address, then to `http://localhost:3000` in development only. When none is known in a production build, the structured data leaves out its `url`.
+- `NEXT_PUBLIC_SITE_URL`: the public address, for example `https://puntopublication.example`. Used for metadata, the `WebSite`, `NewsArticle` and `BreadcrumbList` structured data and the Facebook and X share links on stories. Falls back to the Vercel production address, then to `http://localhost:3000` in development only. When none is known in a production build, the structured data leaves out its `url`.
 - `NEXT_PUBLIC_FB_PAGE_URL`: the Facebook page address (https, a facebook.com host). Empty or invalid hides the home page feed column completely.
 
-Helpers: `src/lib/site-url.ts` (`getSiteUrl`, `getMetadataBase`, `absoluteUrl`) and `src/lib/format.ts` (`formatDate` in Asia/Manila time, `formatReadingTime`).
+Helpers: `src/lib/site-url.ts` (`getSiteUrl`, `getMetadataBase`, `absoluteUrl`) `src/lib/format.ts` (`formatDate` in Asia/Manila time, `formatReadingTime`) and `src/lib/article-seo.ts` (`articlePath`, `articleMetadata`, `articleJsonLd`, `breadcrumbJsonLd`, `jsonLdScript`).
 
 ## Theme
 One toggle button switches between light and dark. The first visit follows the device setting. After the first press the choice is saved in `localStorage` key `punto-theme`. `themeScript` in `src/lib/theme.ts` runs inline in the head before first paint and sets `data-theme` on the html element. It also follows the device setting (until a choice is saved) and other tabs.
@@ -136,8 +137,25 @@ All in `src/components`. Server components unless marked client.
 | `MunicipalityStrip` | none | Chips for every municipality plus "All municipalities". |
 | `GalleryHighlight` | none | Most recent gallery: four square images, title, date, link to `/gallery/[slug]`. Renders nothing without galleries. |
 | `FacebookFeed` | none | Official Page Plugin as a lazy iframe (300 by 600), no Facebook script, plus a text link to the page. Reads `NEXT_PUBLIC_FB_PAGE_URL`. Renders nothing when it is empty or not a facebook.com address. `getFacebookPageUrl()` tells a page whether the column exists. |
+| `ArticleNav` | `older`, `newer` (from `getAdjacentPosts`), `className` | Older and newer story links under an article. The label is plain text and the headline is the link. Renders nothing when neither exists. |
+| `AuthorBlock` | `authors` (staff members), `className` | "Written by" list: `InitialsBadge`, first name, position. No photos, last names or links. |
+| `InitialsBadge` | `name` (a first name), `className` | 44px brand colored square with the first letter of the first name. The default staff picture. Hidden from screen readers. |
+| `CorrectionNote` | `children` (the text), `language`, `className` | Flat note with a 1px `brand-border`, a surface fill, the label "Correction" and the text. No icon, no alarm colors. `role="note"`. |
+| `ShareRow` | `title`, `path`, `className` | "Share this story" group: Facebook and X as plain links (new tab, no third party script), `CopyLinkButton` and `NativeShareButton`. Facebook and X need the public site address and are left out without it. |
+| `CopyLinkButton` (client) | `path`, `url` | Copies the story address. A polite live region (`role="status"`) next to the button says "Copied", or a short failure message, for 4 seconds. |
+| `NativeShareButton` (client) | `title`, `path`, `url` | Opens the device share sheet. Renders nothing where `navigator.share` is missing. Decided after hydration with `useSyncExternalStore`, so there is no mismatch. |
 
-New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`.
+New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`, the article components (`CorrectionNote`, `InitialsBadge` with `AuthorBlock`, `ShareRow`, `ArticleNav`) and the `text-article` size.
+
+## Article page
+`/article/[slug]` in `src/app/article/[slug]/page.tsx`. Every published post is built by `generateStaticParams`. `dynamicParams` is `false`, so any other address is a 404. Drafts are not in the production build and show in dev.
+Order: header (section link, municipality link, Tagalog badge only for Tagalog, h1, excerpt, byline with first names, "Published", "Updated" only with `updatedAt`, reading time), `CorrectionNote` when the post has `correction`, cover figure (`PostImage`, 16/9, `priority`, placeholder when there is no cover), body, share row, tags, `AuthorBlock`, related stories (3, `getRelatedPosts`), `ArticleNav`.
+Widths: header, cover, related stories and the older and newer links are `max-w-4xl` (896px). The body, share row, tags and authors are `max-w-article` (42rem). Blocks are separated by thin `border-border` rules. No sticky share bar.
+Cover caption: posts have no caption field, so the caption is `coverAlt`, then "Photo: " and `coverCredit` when present. No cover means no caption.
+Language: the h1, excerpt, correction and body carry `lang` from the post language.
+Body: `Markdown` inside a `text-article wrap-anywhere` wrapper, so long words and addresses wrap. Links in the body are underlined.
+Older and newer: "Older story" is the post before in date order and "Newer story" the one after. The newest post has no newer link and the oldest has no older link.
+Metadata (`src/lib/article-seo.ts`): title, description (the excerpt), canonical, Open Graph `article` (published and modified time, section, tags, cover or the logo), Twitter card (`summary_large_image` with a cover, `summary` with the logo), one `<meta name="author">` per author, `NewsArticle` and `BreadcrumbList` JSON-LD. Authors are first names only in all of them. A date written without a time becomes midnight Philippine time (`+08:00`). Addresses in the JSON-LD are left out when the site address is not known.
 
 ## Content model
 Files in `content/`, loaded by `src/lib/content` (server only). Full how-to steps are in `CONTENT.md`.
