@@ -39,7 +39,7 @@ Advice from the skills that is not used, and what is done instead:
 | Gradient masks at scroll edges | 4 | The 1px rule. |
 | Shadows for depth, bigger shadows on bigger surfaces | 4 | Hierarchy from size, weight, spacing, `surface` fill and 1px borders. |
 | System font first, positive tracking on small text | 3 | Plus Jakarta Sans only. Tracking `-0.02em` on headings and `0` elsewhere. |
-| Spring libraries (Motion) for drag and flick | `CLAUDE.md`: ask before adding a dependency | CSS transitions. Ask first if a gesture really needs a spring. |
+| Spring libraries (Motion) for drag and flick | `CLAUDE.md`: ask before adding a dependency | Asked and approved (2026-11-16): `motion` and `lenis` are dependencies. Springs only settle a drag back to rest, stiff and well damped, no bounce. Everything else stays CSS. |
 | Bounce, confetti, delight effects, scroll reveals, stagger, parallax | 6 and plain reading | Not used. Content is readable at once. |
 | Haptics and sound | not needed on a reading site | Not used. |
 
@@ -103,10 +103,16 @@ This is a reading site. Most things do not move. Decide in this order: does it n
 | Hover and focus | Color or underline change only, 150ms, and only inside `@media (hover: hover) and (pointer: fine)` |
 | Press on `Button`, `Chip`, icon buttons | `scale(0.97)` on `:active`, 120ms, starts on press and not on release |
 | Mobile menu sheet, popovers, dialogs | 200ms, from opacity 0 and a small move or `scale(0.95)` |
-| Slider | Incoming slide fades in over 300ms, outgoing fades out over 200ms. A touch swipe moves the slide 1:1 |
+| Scrolling | Lenis smooth scroll on the whole site. Off under reduced motion |
+| Slider | Incoming slide fades in over 300ms, outgoing fades out over 200ms (Motion). A touch swipe moves the slide 1:1 and a spring settles it |
 | Page transitions, scroll reveals, parallax, stagger, looping decoration | Never |
 
 Tokens (in `globals.css`): `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` and `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` in `@theme` (classes `ease-out` and `ease-in-out`; Tailwind's `ease-in` and `ease-linear` are removed), and on `:root` `--duration-press` 120ms, `--duration-fast` 150ms, `--duration-base` 200ms, `--duration-exit` 130ms (about two thirds of base, for exits) and `--duration-slow` 300ms. Use durations as `duration-(--duration-fast)`. Nothing is longer than `--duration-slow`.
+
+Libraries (approved 2026-11-16, the only two animation dependencies):
+- `lenis` runs smooth scrolling for the whole site through `SmoothScroll` in the layout (`lerp` 0.1, `autoRaf`). It is destroyed under `prefers-reduced-motion: reduce` and follows that setting live. Its CSS is imported at the top of `globals.css`. Keyboard scrolling, find in page and focus scrolling stay native. In page links (`href="#id"`) are caught and glide to the target 80px below the top (the sticky bar plus 1rem, same as `scroll-padding-top`), then the target gets focus. Anything that must scroll by itself carries `data-lenis-prevent` (the mobile menu dialog does). Add it to any new scrollable box, dialog or sheet.
+- `motion` is used through `LazyMotion` with `domAnimation` and `strict`, importing `m` from `motion/react-m`, so the loaded code stays small. Never import `motion` from `motion/react` for components: use `m`. Wrap in `MotionConfig reducedMotion="user"`. Use the same curve as `--ease-out` (`[0.23, 1, 0.32, 1]`) and the same lengths as the duration tokens. Springs only for settling a drag: `stiffness` 420, `damping` 42. Today only `FeaturedSlider` uses it. The CSS parts (press, hover, `.sheet`) stay CSS.
+- The "Never" rows above still hold: no page transitions, scroll reveals, parallax or stagger, with or without these libraries.
 
 What is built on them:
 - `hover:` is redefined in `globals.css` with `@custom-variant` so it only applies inside `@media (hover: hover) and (pointer: fine)`. Every `hover:` and `group-hover:` class follows it, so a tap on a phone never leaves a stuck hover state. Plain CSS hover rules (such as `.link:hover`) sit inside the same media query.
@@ -221,7 +227,8 @@ All in `src/components`. Server components unless marked client.
 | `PostDate` | `iso`, `className` | A `time` element with the date in Asia/Manila, for example "November 13, 2026". |
 | `SectionHeading` | `title`, `href`, `linkLabel`, `as` h2 or h3, `id` | Heading with a 1px brown rule under it and an optional "See all" link (44px tap target). |
 | `Chip` | Link props | Flat text link with a 1px border and a 44px tap target. Tags and municipalities. Has `press` feedback. |
-| `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. CSS fade (in 300ms, out 200ms, `ease-out`). Previous, next, Left and Right arrow keys, pause and play. Dots from 640px; below that a plain "2 of 5" count, because five 44px dots and the other controls do not fit a phone. Touch and pen swipe with Pointer Events: the direction is chosen after 10px, the slide follows the finger 1:1, and a drag past 20% of the width or a quick flick changes the slide, otherwise it settles back. A swipe never opens the link under it. The mouse does not drag. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus, while dragging and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
+| `SmoothScroll` (client) | none | Lenis smooth scrolling for the whole site, in the layout. Renders nothing. See "Libraries" under "Interaction and motion". |
+| `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. Motion fade (in 300ms, out 200ms, `ease-out`); hidden slides are `inert` with opacity 0. A swipe that is not far enough settles back with a Motion spring. Previous, next, Left and Right arrow keys, pause and play. Dots from 640px; below that a plain "2 of 5" count, because five 44px dots and the other controls do not fit a phone. Touch and pen swipe with Pointer Events: the direction is chosen after 10px, the slide follows the finger 1:1, and a drag past 20% of the width or a quick flick changes the slide, otherwise it settles back. A swipe never opens the link under it. The mouse does not drag. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus, while dragging and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
 | `BreakingStrip` | none | Yellow bar with brown text, "Breaking" and the headline of the newest breaking post. Renders nothing without one. Sets `--focus` to brown inside, so the ring shows in dark theme. |
 | `SectionBlock` | `slug` | Home page block: `SectionHeading`, one large card and three compact cards. Renders nothing for a section with no posts. |
 | `MunicipalityStrip` | none | Chips for every municipality plus "All municipalities". |

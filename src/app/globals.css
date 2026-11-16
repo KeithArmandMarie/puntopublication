@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Lenis' own rules: native scroll behavior off while it runs, and the stopped and prevent states. */
+@import "lenis/dist/lenis.css";
 
 /*
   Punto Publication design tokens.

@@ -25,6 +25,8 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 7. Pushed to GitHub, deployed to Vercel, Facebook page address set and redeployed.
 8. `DESIGN.md` gained the design skills, motion, principles and "Before a page is done" sections. The home page was then brought in line with them (2026-11-16): motion tokens, the `hover:` variant limited to real pointers, the `press` utility, `touch-action`, the mobile menu sheet fade, slider tokens with a 1:1 touch swipe and a phone counter, the gallery block as one link, no image `priority` below the full screen banner, the banner paragraph at `max-w-article`, and browser parts (scrollbar, caret, accent) themed.
 
+9. Added `lenis` (`SmoothScroll` in the layout) and `motion` (`FeaturedSlider` fades and a spring settle after a swipe). `data-lenis-prevent` is on the mobile menu dialog. In page links are handled by `SmoothScroll`.
+
 ## What is built
 Routes: `/`, `/article/[slug]` and the unindexed `/styleguide`.
 Home page, top to bottom: breaking strip inside the full screen `Banner`, then the featured slider with the latest headlines (`#top-stories`), latest stories grid, News, Features and Opinion blocks, municipality chips, gallery highlight, Facebook feed column.
@@ -38,7 +40,7 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 - Home page only for that phase; other pages are separate tasks. Build only the page or task asked for.
 - The banner heading is the motto, not the site name. Do not put marketing claims, stats or invented history in the copy.
 - The theme toggle icon follows the theme (moon in light, sun in dark).
-- Ask before adding any dependency. None have been added.
+- Ask before adding any dependency. Two were approved on 2026-11-16: `lenis` (smooth scrolling for the whole site) and `motion` (slider fade and swipe settle). The user chose to keep them within the existing rules: no scroll reveals, stagger or page transitions.
 - The user wants lint, type check, content check, contrast and build to pass, and the page checked at 360, 768 and 1280 in light and dark, before saying done.
 
 ## Things to know before you change code
@@ -59,6 +61,7 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 - The default share image is `public/brand/logo.webp` at about 500 KB. A roughly 1200px copy would be better for link previews.
 - Posts have no cover caption field; the article page uses `coverAlt` plus the credit.
 - Motion pass: done for the home page, header, mobile menu, `Button` and `Chip` (so the article share row has press feedback too). The article page as a whole has not been re-checked against the new checklist.
+- Not verified with the window in front: Lenis gliding to `#top-stories` from the banner button (the browser pane was hidden, so animation frames did not run). The slider swipe, the spring settle and the fades were checked.
 - Not measured: the menu sheet and slider fade timings frame by frame and on a real phone (rule 12 of the motion section). The end states were checked.
 - Build the unbuilt routes above, one task at a time.
 - Not yet checked: the banner with no breaking post. (Dark theme and 768px were checked on 2026-11-16.)

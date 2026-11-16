@@ -63,6 +63,7 @@ export function MobileMenu() {
       <dialog
         ref={dialogRef}
         aria-label="Main menu"
+        data-lenis-prevent
         onClose={() => {
           setOpen(false);
           // Some browsers do not focus a button on click, so return focus here.

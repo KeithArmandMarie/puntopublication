@@ -2,6 +2,9 @@
 
 import { Children, useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { KeyboardEvent, MouseEvent, PointerEvent, ReactNode } from "react";
+import { animate, domAnimation, LazyMotion, MotionConfig, useMotionValue } from "motion/react";
+import type { AnimationPlaybackControls } from "motion/react";
+import * as m from "motion/react-m";
 import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from "@/components/icons";
 
 type FeaturedSliderProps = {
@@ -18,8 +21,12 @@ const DIRECTION_LOCK_PX = 10;
 const SWIPE_FRACTION = 0.2;
 /** Or a quick flick, in pixels per millisecond at release. */
 const FLICK_SPEED = 0.4;
-/** Matches --duration-slow, the longest fade. */
-const SETTLE_MS = 300;
+/** Same curve and lengths as --ease-out, --duration-slow (in) and --duration-base (out) in globals.css. */
+const EASE_OUT = [0.23, 1, 0.32, 1] as const;
+const FADE_IN_S = 0.3;
+const FADE_OUT_S = 0.2;
+/** A slide that was not carried far enough settles back with a stiff, well damped spring. No bounce. */
+const SETTLE_SPRING = { type: "spring", stiffness: 420, damping: 42 } as const;
 
 const reducedMotionQuery = "(prefers-reduced-motion: reduce)";
 
@@ -62,6 +69,10 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [dragging, setDragging] = useState(false);
+  // The slide that carries the finger offset. It stays the old slide while it fades out.
+  const [dragSlide, setDragSlide] = useState(0);
+  const offsetX = useMotionValue(0);
+  const settle = useRef<AnimationPlaybackControls | null>(null);
 
   // The server cannot know the setting, so it assumes reduced motion (no autoplay).
   const reducedMotion = useSyncExternalStore(
@@ -94,10 +105,6 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
     focusAfterMove.current = false;
     viewportRef.current?.querySelector<HTMLElement>(`[data-slide="${index}"] a`)?.focus();
   }, [index]);
-
-  function slideElement(position: number) {
-    return viewportRef.current?.querySelector<HTMLElement>(`[data-slide="${position}"]`) ?? null;
-  }
 
   function onKeyDown(event: KeyboardEvent<HTMLElement>) {
     if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
@@ -138,6 +145,9 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
         return;
       }
       state.axis = "x";
+      // Grab the slide wherever a settling spring left it, so the drag never jumps.
+      settle.current?.stop();
+      setDragSlide(index);
       try {
         event.currentTarget.setPointerCapture(event.pointerId);
       } catch {
@@ -153,11 +163,7 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
     state.dx = dx;
 
     // The slider wraps around, so there is no edge to resist at. The slide follows the finger 1:1.
-    const slide = slideElement(index);
-    if (slide) {
-      slide.style.transition = "none";
-      slide.style.transform = `translateX(${dx}px)`;
-    }
+    offsetX.set(dx);
   }
 
   function endDrag(event: PointerEvent<HTMLDivElement>) {
@@ -174,23 +180,11 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
     const passed =
       event.type !== "pointercancel" && (Math.abs(state.dx) >= width * SWIPE_FRACTION || flicked);
 
-    const slide = slideElement(index);
-    if (slide) {
-      if (passed) {
-        // Fades out from where the finger left it, then the offset is cleared while it is hidden.
-        slide.style.transition = "";
-        window.setTimeout(() => {
-          if (!drag.current) slide.style.transform = "";
-        }, SETTLE_MS);
-      } else {
-        // Not far enough: it settles back into place.
-        slide.style.transition = "transform var(--duration-base) var(--ease-out)";
-        slide.style.transform = "";
-        window.setTimeout(() => {
-          if (!drag.current) slide.style.transition = "";
-        }, SETTLE_MS);
-      }
-    }
+    // Passed: the old slide slides back to rest while it fades out. Not passed: it settles back in place.
+    // Under reduced motion it snaps back at once.
+    settle.current = reducedMotion
+      ? animate(offsetX, 0, { duration: 0 })
+      : animate(offsetX, 0, SETTLE_SPRING);
 
     if (passed) go(index + (state.dx < 0 ? 1 : -1));
   }
@@ -204,6 +198,8 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
   }
 
   return (
+    <LazyMotion features={domAnimation} strict>
+    <MotionConfig reducedMotion="user">
     <section
       aria-roledescription="carousel"
       aria-label={label}
@@ -229,23 +225,26 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
         className="-mx-2 grid touch-pan-y overflow-x-clip px-2"
       >
         {slides.map((slide, position) => (
-          <div
+          <m.div
             key={position}
             role="group"
             aria-roledescription="slide"
             aria-label={`${position + 1} of ${count}`}
             data-slide={position}
+            // Hidden slides are inert: not focusable, not clickable, not read out.
             inert={position !== index}
-            // The incoming slide becomes visible at once (so it can take focus) and fades in.
-            // The outgoing slide stays visible while it fades out, a little faster, then is hidden.
-            className={`col-start-1 row-start-1 ease-out ${
-              position === index
-                ? "visible opacity-100 transition-opacity duration-(--duration-slow)"
-                : "invisible opacity-0 transition-[opacity,visibility] duration-(--duration-base)"
-            }`}
+            initial={false}
+            animate={{ opacity: position === index ? 1 : 0 }}
+            // The incoming slide fades in over 300ms, the outgoing one out over 200ms. Interruptible.
+            transition={{
+              duration: reducedMotion ? 0 : position === index ? FADE_IN_S : FADE_OUT_S,
+              ease: EASE_OUT,
+            }}
+            style={{ x: position === dragSlide ? offsetX : 0 }}
+            className="col-start-1 row-start-1"
           >
             {slide}
-          </div>
+          </m.div>
         ))}
       </div>
 
@@ -316,5 +315,7 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
         </div>
       </div>
     </section>
+    </MotionConfig>
+    </LazyMotion>
   );
 }
