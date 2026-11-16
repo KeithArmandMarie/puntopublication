@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ArticleNav } from "@/components/ArticleNav";
 import { AuthorBlock } from "@/components/AuthorBlock";
 import { Button, buttonClasses } from "@/components/Button";
+import { CallToAction } from "@/components/CallToAction";
 import { Chip } from "@/components/Chip";
 import { Container } from "@/components/Container";
 import { CorrectionNote } from "@/components/CorrectionNote";
@@ -430,6 +431,31 @@ export default function StyleguidePage() {
               <ArticleNav older={samples[1]} newer={samples[0]} />
             </>
           ) : null}
+        </Section>
+
+        <Section id="call-to-action" title="Call to action">
+          <p className="mb-4 max-w-article text-muted">
+            CallToAction, as used by StoryTipCta above the footer on every page.
+          </p>
+          <div className="border border-border-strong">
+            <CallToAction
+              id="styleguide-cta-heading"
+              as="h3"
+              title="Sample call to action"
+              actions={
+                <>
+                  <Link href="/styleguide" className={buttonClasses("accent")}>
+                    Main action
+                  </Link>
+                  <Link href="/styleguide" className={buttonClasses("secondary")}>
+                    Second action
+                  </Link>
+                </>
+              }
+            >
+              One short paragraph that says what the action is for.
+            </CallToAction>
+          </div>
         </Section>
 
         <Section id="header" title="Header">

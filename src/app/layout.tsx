@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SkipLink } from "@/components/SkipLink";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { StoryTipCta } from "@/components/StoryTipCta";
 import { logo, siteDescription, siteName } from "@/config/site";
 import { getMetadataBase } from "@/lib/site-url";
 import { themeScript } from "@/lib/theme";
@@ -37,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </main>
+        <StoryTipCta />
         <Footer />
       </body>
     </html>
