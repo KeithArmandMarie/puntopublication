@@ -29,7 +29,7 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 
 ## What is built
 Routes: `/`, `/article/[slug]` and the unindexed `/styleguide`.
-Home page, top to bottom: breaking strip inside the full screen `Banner`, then the featured slider with the latest headlines (`#top-stories`), latest stories grid, News, Features and Opinion blocks, municipality chips, gallery highlight, Facebook feed column.
+Home page, top to bottom: breaking strip inside the full screen `Banner`, then the featured slider with the latest headlines (`#top-stories`), latest stories grid, then Editorial, Opinion, Sports and Literary lists (`SectionList`, two per row, never repeating a story shown above), gallery highlight, topic chips, municipality chips, and the Facebook feed column beside them. News and Features have no block of their own on the home page: their stories already fill the slider, headlines and latest stories. With only the sample content, every story is shown higher up, so the four section lists stay hidden until there are more posts.
 Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We Lead.") is the banner h1, `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.") is the banner paragraph and the footer line.
 `DESIGN.md` lists every component with its props. Reuse them before making new ones.
 

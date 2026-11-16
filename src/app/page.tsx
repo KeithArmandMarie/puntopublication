@@ -9,8 +9,9 @@ import { FeaturedSlider } from "@/components/FeaturedSlider";
 import { GalleryHighlight } from "@/components/GalleryHighlight";
 import { MunicipalityStrip } from "@/components/MunicipalityStrip";
 import { PostCard } from "@/components/PostCard";
-import { SectionBlock } from "@/components/SectionBlock";
 import { SectionHeading } from "@/components/SectionHeading";
+import { SectionList } from "@/components/SectionList";
+import { TopicStrip } from "@/components/TopicStrip";
 import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
 import { getAllPosts, getFeaturedPosts } from "@/lib/content";
 import { absoluteUrl } from "@/lib/site-url";
@@ -41,7 +42,14 @@ export const metadata: Metadata = {
   },
 };
 
-const HOME_SECTIONS = ["news", "features", "opinion"] as const;
+/**
+ * Sections shown below the latest stories, two per row. News and Features are left
+ * out on purpose: their stories already fill the slider, the headlines and the
+ * latest stories. These four stay out of that flow, and a story shown higher up
+ * is never repeated in them.
+ */
+const VOICE_SECTIONS = ["editorial", "opinion"] as const;
+const CULTURE_SECTIONS = ["sports", "literary"] as const;
 
 /** WebSite structured data. The address is left out when the site address is not known. */
 function websiteJsonLd() {
@@ -76,6 +84,8 @@ export default function Home() {
   const headlines = all.filter((post) => !heroSlugs.has(post.slug)).slice(0, 4);
   const shownSlugs = new Set([...heroSlugs, ...headlines.map((post) => post.slug)]);
   const latest = all.filter((post) => !shownSlugs.has(post.slug)).slice(0, 6);
+  // Everything on the page so far, so the section lists below never repeat a story.
+  const alreadyShown = new Set([...shownSlugs, ...latest.map((post) => post.slug)]);
 
   const hasFeed = getFacebookPageUrl() !== undefined;
 
@@ -170,11 +180,14 @@ export default function Home() {
           }`.trim()}
         >
           <div className="space-y-section">
-            {HOME_SECTIONS.map((slug) => (
-              <SectionBlock key={slug} slug={slug} />
-            ))}
-            <MunicipalityStrip />
+            <div className="grid gap-x-8 gap-y-section md:grid-cols-2 md:gap-y-12">
+              {[...VOICE_SECTIONS, ...CULTURE_SECTIONS].map((slug) => (
+                <SectionList key={slug} slug={slug} exclude={alreadyShown} />
+              ))}
+            </div>
             <GalleryHighlight />
+            <TopicStrip />
+            <MunicipalityStrip />
           </div>
 
           {hasFeed ? (
