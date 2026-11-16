@@ -24,7 +24,7 @@ Meet WCAG AA contrast in both themes.
 Authors are minors. Show first names only everywhere: bylines, staff page, image credits, metadata, structured data, RSS.
 
 ## Code rules
-Small typed components. Server components by default, client components only when needed. All pages statically generated. Use Next Image with sizes and alt text. Keep dependencies minimal and ask before adding any. Approved animation dependencies: `lenis` (smooth scrolling, whole site) and `motion` (through `LazyMotion` and `m`). Their rules are under "Interaction and motion" in DESIGN.md. Reduced motion turns both off. Page transitions, scroll reveals, parallax and stagger stay out.
+Small typed components. Server components by default, client components only when needed. All pages statically generated. Use Next Image with sizes and alt text. Keep dependencies minimal and ask before adding any. Approved animation dependencies: `lenis` (smooth scrolling, whole site) and `motion` (through `LazyMotion` and `m`). Their rules are under "Interaction and motion" in DESIGN.md. Reduced motion turns both off. One scroll reveal is allowed (the `Reveal` component: fade and a 12px rise, once, below the first screen). Page transitions, parallax, stagger and looping decoration stay out.
 
 ## Working rules
 Build only the page or task I ask for. Do not touch unrelated files.

@@ -26,6 +26,7 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 8. `DESIGN.md` gained the design skills, motion, principles and "Before a page is done" sections. The home page was then brought in line with them (2026-11-16): motion tokens, the `hover:` variant limited to real pointers, the `press` utility, `touch-action`, the mobile menu sheet fade, slider tokens with a 1:1 touch swipe and a phone counter, the gallery block as one link, no image `priority` below the full screen banner, the banner paragraph at `max-w-article`, and browser parts (scrollbar, caret, accent) themed.
 
 9. Added `lenis` (`SmoothScroll` in the layout) and `motion` (`FeaturedSlider` fades and a spring settle after a swipe). `data-lenis-prevent` is on the mobile menu dialog. In page links are handled by `SmoothScroll`.
+10. Added `Reveal`: a fade and 12px rise once on scroll for the home page blocks below the banner (headlines, latest cards, section blocks, municipalities, gallery, Facebook feed).
 
 ## What is built
 Routes: `/`, `/article/[slug]` and the unindexed `/styleguide`.
@@ -40,7 +41,7 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 - Home page only for that phase; other pages are separate tasks. Build only the page or task asked for.
 - The banner heading is the motto, not the site name. Do not put marketing claims, stats or invented history in the copy.
 - The theme toggle icon follows the theme (moon in light, sun in dark).
-- Ask before adding any dependency. Two were approved on 2026-11-16: `lenis` (smooth scrolling for the whole site) and `motion` (slider fade and swipe settle). The user chose to keep them within the existing rules: no scroll reveals, stagger or page transitions.
+- Ask before adding any dependency. Two were approved on 2026-11-16: `lenis` (smooth scrolling for the whole site) and `motion` (slider fade and swipe settle). The user first chose to keep them within the existing rules, then asked for subtle scroll reveals, so the `Reveal` component was added the same day. Still not allowed: page transitions, parallax, stagger.
 - The user wants lint, type check, content check, contrast and build to pass, and the page checked at 360, 768 and 1280 in light and dark, before saying done.
 
 ## Things to know before you change code
