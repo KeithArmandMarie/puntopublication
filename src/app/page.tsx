@@ -10,6 +10,7 @@ import { GalleryHighlight } from "@/components/GalleryHighlight";
 import { MunicipalityGrid } from "@/components/MunicipalityGrid";
 import { PostCard } from "@/components/PostCard";
 import { SearchBlock } from "@/components/SearchBlock";
+import { SectionHeading } from "@/components/SectionHeading";
 import { StaffGrid } from "@/components/StaffGrid";
 import { TopicStrip } from "@/components/TopicStrip";
 import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
@@ -70,6 +71,10 @@ export default function Home() {
   // Up to five featured stories. With none, the newest story stands in as the hero.
   const featured = getFeaturedPosts(5);
   const heroPosts = featured.length > 0 ? featured : [all[0]];
+  const heroSlugs = new Set(heroPosts.map((post) => post.slug));
+
+  // The four newest stories that are not in the slider.
+  const headlines = all.filter((post) => !heroSlugs.has(post.slug)).slice(0, 4);
 
   const hasFeed = getFacebookPageUrl() !== undefined;
 
@@ -129,8 +134,26 @@ export default function Home() {
             )}
           </section>
 
-          {/* Ways in, beside the lead story: search, then topics. */}
+          {/* Beside the lead story: the latest headlines, then ways in (search and topics). */}
           <div className="mt-section space-y-10 lg:mt-0">
+            {headlines.length > 0 ? (
+              <section aria-labelledby="latest-headlines-heading">
+                <SectionHeading title="Latest headlines" id="latest-headlines-heading" />
+                <ul className="divide-y divide-border">
+                  {headlines.map((post) => (
+                    <li key={post.slug} className="py-4">
+                      <PostCard post={post} variant="compact" thumbnail={false} />
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/archive"
+                  className="link inline-flex min-h-11 items-center border-t border-border text-sm font-semibold"
+                >
+                  See all published stories
+                </Link>
+              </section>
+            ) : null}
             <SearchBlock />
             <TopicStrip limit={10} />
           </div>
