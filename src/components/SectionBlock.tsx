@@ -1,5 +1,4 @@
 import { PostCard } from "@/components/PostCard";
-import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getPostsBySection } from "@/lib/content";
 import { getSectionBySlug } from "@/lib/content/slugs";
@@ -19,7 +18,6 @@ export function SectionBlock({ slug }: SectionBlockProps) {
   const headingId = `section-block-${slug}`;
 
   return (
-    <Reveal>
     <section aria-labelledby={headingId}>
       <SectionHeading
         title={section.name}
@@ -44,6 +42,5 @@ export function SectionBlock({ slug }: SectionBlockProps) {
         ) : null}
       </div>
     </section>
-    </Reveal>
   );
 }

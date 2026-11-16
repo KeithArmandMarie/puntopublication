@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { PostDate } from "@/components/PostDate";
 import { PostImage } from "@/components/PostImage";
-import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getAllGalleries } from "@/lib/content";
 
@@ -15,7 +14,6 @@ export function GalleryHighlight() {
   if (!gallery) return null;
 
   return (
-    <Reveal>
     <section aria-labelledby="gallery-highlight-heading">
       <SectionHeading title="Latest gallery" id="gallery-highlight-heading" />
       <div className="group relative mt-4 outline-offset-4 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-focus">
@@ -42,6 +40,5 @@ export function GalleryHighlight() {
         </p>
       </div>
     </section>
-    </Reveal>
   );
 }

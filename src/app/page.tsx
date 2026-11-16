@@ -9,7 +9,6 @@ import { FeaturedSlider } from "@/components/FeaturedSlider";
 import { GalleryHighlight } from "@/components/GalleryHighlight";
 import { MunicipalityStrip } from "@/components/MunicipalityStrip";
 import { PostCard } from "@/components/PostCard";
-import { Reveal } from "@/components/Reveal";
 import { SectionBlock } from "@/components/SectionBlock";
 import { SectionHeading } from "@/components/SectionHeading";
 import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
@@ -136,8 +135,7 @@ export default function Home() {
           )}
 
           {headlines.length > 0 ? (
-            <Reveal className="mt-10 lg:mt-0">
-            <section aria-labelledby="latest-headlines-heading">
+            <section aria-labelledby="latest-headlines-heading" className="mt-10 lg:mt-0">
               <SectionHeading title="Latest headlines" id="latest-headlines-heading" />
               <ul className="divide-y divide-border">
                 {headlines.map((post) => (
@@ -147,7 +145,6 @@ export default function Home() {
                 ))}
               </ul>
             </section>
-            </Reveal>
           ) : null}
         </section>
 
@@ -161,9 +158,7 @@ export default function Home() {
             />
             <div className="mt-6 grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
               {latest.map((post) => (
-                <Reveal key={post.slug}>
-                  <PostCard post={post} variant="standard" />
-                </Reveal>
+                <PostCard key={post.slug} post={post} variant="standard" />
               ))}
             </div>
           </section>

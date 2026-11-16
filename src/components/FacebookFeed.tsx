@@ -1,4 +1,3 @@
-import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 
 /** Width of the Facebook plugin in pixels. It fits the right hand column from 1024px and a 360px phone. */
@@ -42,7 +41,6 @@ export function FacebookFeed() {
     }).toString();
 
   return (
-    <Reveal>
     <aside aria-labelledby="facebook-feed-heading">
       <SectionHeading title="On Facebook" id="facebook-feed-heading" />
       <iframe
@@ -62,6 +60,5 @@ export function FacebookFeed() {
         Open our Facebook page
       </a>
     </aside>
-    </Reveal>
   );
 }
