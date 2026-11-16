@@ -12,6 +12,7 @@ const rowClass =
 /**
  * Phone and tablet menu. A native modal dialog gives the focus trap, Escape
  * to close and an inert page behind it. Focus returns to the Menu button.
+ * The `sheet` class in globals.css fades it in and out with a small move.
  */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -53,7 +54,7 @@ export function MobileMenu() {
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold text-foreground hover:bg-surface lg:hidden"
+        className="press inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold text-foreground hover:bg-surface lg:hidden"
       >
         <MenuIcon />
         Menu
@@ -67,7 +68,7 @@ export function MobileMenu() {
           // Some browsers do not focus a button on click, so return focus here.
           buttonRef.current?.focus();
         }}
-        className="m-0 h-dvh max-h-none w-dvw max-w-none overflow-hidden border-0 bg-background p-0 text-foreground open:flex open:flex-col"
+        className="sheet m-0 h-dvh max-h-none w-dvw max-w-none overflow-hidden border-0 bg-background p-0 text-foreground open:flex open:flex-col"
       >
         <div className="border-b border-border">
           <div className="container-page flex h-header items-center justify-between">
@@ -76,7 +77,7 @@ export function MobileMenu() {
               type="button"
               autoFocus
               onClick={close}
-              className="inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold hover:bg-surface"
+              className="press inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold hover:bg-surface"
             >
               <CloseIcon />
               Close

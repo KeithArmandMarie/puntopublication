@@ -74,6 +74,16 @@ const spacing = [
   { step: "16", px: "64px", className: "w-16" },
 ] as const;
 
+const motionTokens = [
+  { token: "--ease-out (ease-out)", value: "0.23, 1, 0.32, 1", use: "Everything that enters, leaves or changes" },
+  { token: "--ease-in-out (ease-in-out)", value: "0.77, 0, 0.175, 1", use: "Something moving across the screen" },
+  { token: "--duration-press", value: "120ms", use: "Press scale on buttons, chips and icon buttons" },
+  { token: "--duration-fast", value: "150ms", use: "Hover and focus color changes" },
+  { token: "--duration-base", value: "200ms", use: "Mobile menu sheet in, slide fade out" },
+  { token: "--duration-exit", value: "130ms", use: "Mobile menu sheet out" },
+  { token: "--duration-slow", value: "300ms", use: "Slide fade in. Nothing is longer" },
+] as const;
+
 const imageRatios: readonly ImageRatio[] = ["16/9", "4/3", "3/2", "1/1"];
 
 function Section({
@@ -151,6 +161,7 @@ export default function StyleguidePage() {
             ["type", "Type scale"],
             ["spacing", "Spacing and layout"],
             ["buttons", "Buttons"],
+            ["motion", "Motion"],
             ["links", "Links"],
             ["forms", "Form focus states"],
             ["icons", "Icons"],
@@ -246,6 +257,26 @@ export default function StyleguidePage() {
               onBrand
             </Link>
           </div>
+        </Section>
+
+        <Section id="motion" title="Motion">
+          <p className="mb-6 max-w-prose text-muted">
+            Most things do not move. Press a button above: it scales to 0.97 while held
+            (the press utility). Hover changes color only, and only with a mouse or
+            trackpad. With reduced motion on, every transition is instant.
+          </p>
+          <ul className="divide-y divide-border border-y border-border">
+            {motionTokens.map((item) => (
+              <li
+                key={item.token}
+                className="grid gap-1 py-3 md:grid-cols-[14rem_8rem_1fr] md:gap-6"
+              >
+                <p className="text-sm font-semibold">{item.token}</p>
+                <p className="text-sm text-muted">{item.value}</p>
+                <p className="text-sm">{item.use}</p>
+              </li>
+            ))}
+          </ul>
         </Section>
 
         <Section id="links" title="Links">

@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from "react";
 export type ButtonVariant = "primary" | "accent" | "secondary" | "onBrand";
 
 const base =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 text-base font-semibold underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:no-underline";
+  "press inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 text-base font-semibold underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:no-underline";
 
 const variants: Record<ButtonVariant, string> = {
   // Brand fill with light text.

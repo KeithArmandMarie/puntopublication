@@ -4,6 +4,7 @@ Provincial Youth Journalist Publication, Davao del Sur. News site for the genera
 
 @DESIGN.md
 @CONTENT.md
+@PROJECT-STATUS.md
 
 ## Before you build anything
 1. Read DESIGN.md and src/app/globals.css.

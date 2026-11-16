@@ -67,6 +67,32 @@
   --header-height: 4rem; /* 64px sticky main bar */
 }
 
+/*
+  Motion tokens. See "Interaction and motion" in DESIGN.md. The two curves,
+  --ease-out and --ease-in-out, are in @theme below (classes ease-out and
+  ease-in-out). Nothing is longer than --duration-slow. Exits use
+  --duration-exit, about two thirds of --duration-base.
+*/
+:root {
+  --duration-press: 120ms;
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-exit: 130ms;
+  --duration-slow: 300ms;
+}
+
+/*
+  Hover only where a real mouse or trackpad exists, so a tap on a phone never
+  leaves a stuck hover state. Replaces Tailwind's built-in hover variant.
+*/
+@custom-variant hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
 @media (min-width: 40rem) {
   :root {
     --gutter: 1.5rem; /* 24px on larger screens */
@@ -117,6 +143,11 @@
   --text-4xl: 3rem;
   --text-4xl--line-height: 1.1;
 
+  /* Only the two motion curves exist. Tailwind's ease-in is removed: never ease-in on UI. */
+  --ease-*: initial;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
   --tracking-tight: -0.02em;
   --tracking-normal: 0;
 
@@ -158,6 +189,22 @@
     font-family: var(--font-sans);
     background: var(--background);
     scroll-padding-top: calc(var(--header-height) + 1rem);
+    /* Browser parts in the palette, in both themes. */
+    scrollbar-color: var(--border-strong) var(--background);
+    accent-color: var(--brand);
+    caret-color: var(--foreground);
+  }
+
+  /* No double tap zoom delay on controls. Pinch zoom stays on. */
+  a,
+  button,
+  summary,
+  label,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
   }
 
   body {
@@ -246,11 +293,59 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
+    transition: color var(--duration-fast) var(--ease-out);
   }
 
-  .link:hover {
-    color: var(--link-hover);
-    text-decoration-thickness: 2px;
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--link-hover);
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  /*
+    Full screen sheet on a native dialog (the mobile menu). Fades in with a
+    small move down from the header in --duration-base, and leaves the same
+    way, faster. CSS transitions, so a quick open and close reverses from
+    where it is. Browsers without @starting-style simply show it at once.
+  */
+  .sheet {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity var(--duration-exit) var(--ease-out),
+      transform var(--duration-exit) var(--ease-out),
+      overlay var(--duration-exit) allow-discrete,
+      display var(--duration-exit) allow-discrete;
+  }
+
+  .sheet[open] {
+    opacity: 1;
+    transform: none;
+    transition-duration: var(--duration-base);
+  }
+
+  @starting-style {
+    .sheet[open] {
+      opacity: 0;
+      transform: translateY(-0.5rem);
+    }
+  }
+}
+
+/*
+  Press feedback for buttons, chips and icon buttons: scale(0.97) while
+  pressed, starting on press. Hover color changes take --duration-fast.
+  Not for cards or headline links, where the text would shift.
+*/
+@utility press {
+  transition-property: transform, color, background-color, border-color;
+  transition-duration: var(--duration-press), var(--duration-fast), var(--duration-fast),
+    var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+
+  &:active:not(:disabled, [aria-disabled="true"]) {
+    transform: scale(0.97);
   }
 }
 

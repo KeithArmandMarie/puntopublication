@@ -2,6 +2,8 @@
 
 Written from what is built in Phase 1. If this file and the code ever disagree, the code wins and this file gets updated. The visual source of truth is the `/styleguide` route (not indexed).
 
+The sections "Design skills", "Interaction and motion", "Design principles" and "Before a page is done" are the standard for new work, written from the ui-ux-pro-max, impeccable, emil-design-eng and apple-design skills. The home page, the header, the mobile menu and the shared controls (`Button`, `Chip`) follow them. When new work follows them, this file and the code must agree.
+
 ## Brand
 Name: Punto Publication, Provincial Youth Journalist, Davao del Sur.
 Audience: general public, English and Tagalog, phones first.
@@ -17,6 +19,29 @@ Logo: `public/brand/logo.webp` (transparent seal). Shown with the site name as t
 6. No fake stats, testimonials, filler copy, or invented claims, awards, numbers or history.
 7. WCAG AA in both themes (checked by `npm run contrast`).
 8. Authors are minors: first names only in bylines, staff page, image credits, metadata, structured data and RSS. Staff photos are optional, default is an initials badge in brand colors.
+
+## Design skills
+Order of authority: `CLAUDE.md`, then "Rules that never change", then this file, then the skills. A skill adds craft. It never overrides a rule. When a skill and a rule disagree, the rule wins and the case goes in the second table.
+
+| Skill | It decides | How it is used here |
+| --- | --- | --- |
+| `impeccable` | Surface mode, hierarchy, layout and the craft floor | Before editing UI, load the skill and read its `reference/craft-floor.md`. After editing, run `impeccable detect --json <changed files>` and fix what it finds, unless a finding contradicts a rule above (then leave it and say so). Modes: Read for stories and listings (the default on this site), Operate for the header, mobile menu, search, theme toggle and forms, Persuade only for the home `Banner`, Experience for gallery pages. There is no `PRODUCT.md` yet. `/impeccable init` can write one. |
+| `ui-ux-pro-max` | What to check, in priority order: accessibility, touch, performance, style, layout, type and color, motion, forms, navigation | Its rules are the checklist in "Before a page is done". Its `--design-system` generator is not used because the palette and font are fixed. |
+| `emil-design-eng` | Whether and how a detail moves: frequency, purpose, easing, speed, press feedback, origin | See "Interaction and motion". |
+| `apple-design` | Response, interruptibility, spatial consistency, type tracking, reduced motion and the eight principles | See "Interaction and motion", "Typography" and "Design principles". |
+
+Advice from the skills that is not used, and what is done instead:
+
+| Skill advice | Rule it breaks | Instead |
+| --- | --- | --- |
+| Translucent materials, `backdrop-filter`, blurred sticky bars, scroll edge blur | 4 | Solid fills. A 1px `border-border` rule where the header meets the content. |
+| Blur (`filter: blur`) to hide a rough crossfade | 4 | A plain opacity crossfade, shorter or with a better curve. |
+| Gradient masks at scroll edges | 4 | The 1px rule. |
+| Shadows for depth, bigger shadows on bigger surfaces | 4 | Hierarchy from size, weight, spacing, `surface` fill and 1px borders. |
+| System font first, positive tracking on small text | 3 | Plus Jakarta Sans only. Tracking `-0.02em` on headings and `0` elsewhere. |
+| Spring libraries (Motion) for drag and flick | `CLAUDE.md`: ask before adding a dependency | CSS transitions. Ask first if a gesture really needs a spring. |
+| Bounce, confetti, delight effects, scroll reveals, stagger, parallax | 6 and plain reading | Not used. Content is readable at once. |
+| Haptics and sound | not needed on a reading site | Not used. |
 
 ## Tokens
 Defined in `src/app/globals.css`. Light is the default. Dark applies when `data-theme="dark"` is on the html element. Any element can carry `data-theme` to scope a theme (the styleguide does this). Tailwind's default colors, radii, shadows and blur are removed, so only these exist.
@@ -45,6 +70,7 @@ Use as `bg-surface`, `text-muted`, `border-border`, `bg-accent text-on-accent` a
 Font: Plus Jakarta Sans through `next/font/google`, variable font, `display: swap`. Only weights 400 to 800 are used. Variable `--font-plus-jakarta-sans`, Tailwind `font-sans`.
 Headings: weight 800 (h1) or 700, tracking `-0.02em`, tight line height. Plain `h1` to `h4` are styled in `globals.css`.
 Body: 17px, line height 1.6. Story text on the article page is 18px with line height 1.65 (`text-article`) in a column of `max-w-article` (42rem, about 65 to 67 letters per line). `max-w-prose` is 68ch, and `ch` is the width of a zero, which is wide in Plus Jakarta Sans, so `max-w-prose` gives about 85 letters per line. Use `max-w-article` where the line must really be at most 68 characters.
+Tracking and leading follow size: `-0.02em` and tight leading on large text, `0` and looser leading on body text. Never one fixed `letter-spacing` for every size, and no positive tracking on small text (rule 3). Hierarchy is weight, size and leading together, not size alone. Sizes and spacing are in `rem`, so they follow the reader's text size setting. New text containers use `min-h-` and never a fixed height, so larger text can wrap without being cut.
 
 | Class | Size | Line height | Use |
 | --- | --- | --- | --- |
@@ -65,6 +91,70 @@ Content width is 1200px, set by `--content-width`. Use `Container` or `.containe
 The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the hero and the headlines, and again for the section blocks and the Facebook feed.
 Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
 Header breakpoint: full navigation from 1024px, menu button below. The header lists the six sections only. Municipalities are not in the header.
+
+## Interaction and motion
+Status: built in `globals.css` and used on the home page, the header and the mobile menu. New components use the same tokens, utility and classes.
+
+This is a reading site. Most things do not move. Decide in this order: does it need to move (how often is it seen), what is the purpose, which curve, how long.
+
+| Thing | Motion |
+| --- | --- |
+| Keyboard actions, links, navigation, search typing | None |
+| Hover and focus | Color or underline change only, 150ms, and only inside `@media (hover: hover) and (pointer: fine)` |
+| Press on `Button`, `Chip`, icon buttons | `scale(0.97)` on `:active`, 120ms, starts on press and not on release |
+| Mobile menu sheet, popovers, dialogs | 200ms, from opacity 0 and a small move or `scale(0.95)` |
+| Slider | Incoming slide fades in over 300ms, outgoing fades out over 200ms. A touch swipe moves the slide 1:1 |
+| Page transitions, scroll reveals, parallax, stagger, looping decoration | Never |
+
+Tokens (in `globals.css`): `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` and `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` in `@theme` (classes `ease-out` and `ease-in-out`; Tailwind's `ease-in` and `ease-linear` are removed), and on `:root` `--duration-press` 120ms, `--duration-fast` 150ms, `--duration-base` 200ms, `--duration-exit` 130ms (about two thirds of base, for exits) and `--duration-slow` 300ms. Use durations as `duration-(--duration-fast)`. Nothing is longer than `--duration-slow`.
+
+What is built on them:
+- `hover:` is redefined in `globals.css` with `@custom-variant` so it only applies inside `@media (hover: hover) and (pointer: fine)`. Every `hover:` and `group-hover:` class follows it, so a tap on a phone never leaves a stuck hover state. Plain CSS hover rules (such as `.link:hover`) sit inside the same media query.
+- `press` utility: `scale(0.97)` on `:active` (not when disabled) over `--duration-press`, and color, background and border changes over `--duration-fast`. On `Button`, `buttonClasses`, `Chip`, the theme toggle, the search icon, the menu and close buttons and the slider controls. Never on cards or headline links.
+- `.sheet` class: a native dialog that fades in with an 8px move down over `--duration-base` and leaves the same way over `--duration-exit`. Uses `@starting-style` and `allow-discrete` transitions of `display` and `overlay`, so it can reverse midway. Used by `MobileMenu`.
+- `.link` changes color over `--duration-fast`.
+- `touch-action: manipulation` is set in the base layer on links, buttons, `summary`, labels, inputs and `[role="button"]`.
+- The base layer also themes the browser's own parts: `scrollbar-color`, `accent-color` and `caret-color` from the palette.
+
+Rules:
+1. Respond on press, not on release. Feedback appears within 100ms. Large cards and headline links do not scale, because the text would shift.
+2. Animate `transform`, `opacity` and color only. Never `transition: all`: name the properties. Never animate width, height, margin or top, so there is no layout shift.
+3. Use `ease-out` for things entering and leaving. Never `ease-in` on UI. `linear` only for constant motion.
+4. Nothing grows from `scale(0)`. Start at `scale(0.95)` or more with `opacity: 0`.
+5. Exits are shorter than entrances, about two thirds.
+6. Use CSS transitions, not keyframes, for anything that can be toggled quickly, so it can be interrupted and reverse from where it is. Never lock input during a transition. Slider buttons and Escape work at any moment.
+7. Enter and leave along the same path. A sheet that slides in from the right leaves to the right. A popover scales from its trigger (`transform-origin` at the trigger). A modal stays centered.
+8. Autoplay exists only in the featured slider. It needs a pause button, stops on hover and focus, and is off under reduced motion (all built).
+9. Reduced motion: the global rule in `globals.css` makes every transition and animation instant. That is the fallback for all new motion. Do not fight it with `!important`.
+10. Taps: `touch-action: manipulation` on controls. Targets are at least 44px with at least 8px between them. Grow the hit area with padding, not the visible shape. Nothing depends on hover alone.
+11. A gesture is never the only way. If a swipe or drag is added: Pointer Events with capture, 1:1 tracking from where it was grabbed, about 10px before the direction is chosen, resistance at the edges instead of a hard stop, and a visible button for the same action. The featured slider does this for touch and pen; it wraps around, so it has no edges to resist at.
+12. Check motion at 3 times slower, frame by frame, and on a real phone, with reduced motion on and off.
+
+## Design principles
+From the apple-design skill, applied to a news site.
+- Purpose: each page has one job and one main action. In a `Banner` the accent button comes first. Do not add a feature because it is possible.
+- Familiarity: use news conventions (section navigation, byline and date, breadcrumbs on stories, older and newer links). The same thing looks and behaves the same everywhere, and sits in the same place. Break a convention only with a reason that has been tested.
+- Simplicity, not minimalism: show the common path first. The header lists the six sections and does not hide them in a menu on desktop.
+- Wayfinding: every page answers where am I (`aria-current`, h1, breadcrumb), where can I go (header, related stories, older and newer) and how do I get out (logo to home, skip link, Escape closes the menu). Never trap the reader.
+- Grouping and mapping: put a control next to what it affects. The share row is under the story, the correction note is above the cover.
+- Specific labels: "Older story", "Share this story". A link makes sense read alone. Never "click here" or a bare "Read more".
+- Feedback: status, completion, warning, error. "Copied" after copying a link (built). Validate a field on blur, put the error under the field, say the cause and the fix, announce it with `aria-live`.
+- Agency: the reader can pause motion, change the theme (remembered) and always leave. No pop-ups that cover the story.
+- Responsibility: rule 8 (first names only) is this principle. Do not add third party scripts without asking. The Facebook feed is a plain iframe for that reason.
+- Craft: every value is a token. Icons share one stroke and align to the text. Check both themes and a 375px phone before saying done.
+- Delight comes from getting the rest right: a calm, trustworthy feel. No effects added for show.
+
+## Before a page is done
+Checklist from ui-ux-pro-max, in its priority order. Run `npm run lint`, `npm run typecheck`, `npm run build`, `npm run contrast` and `npm run content:check` as well, and the `impeccable detect` step from "Design skills".
+1. Accessibility: contrast passes in both themes. A visible focus ring on every control, never removed. One h1 and headings in order. The skip link is first. Meaningful images have alt text and decorative ones have empty alt. Icon-only buttons have `aria-label`. Meaning is never by color alone (links are underlined, the Tagalog badge says "Tagalog"). Tagalog text carries `lang="tl"`. Tab order matches the visual order.
+2. Touch: targets 44px or more, 8px or more apart, press feedback within 100ms, nothing hover only.
+3. Performance: `next/image` with `sizes`, space reserved so nothing jumps (layout shift under 0.1), `priority` only on the first image, `display: swap` for the font, no new third party script.
+4. Style: only tokens, flat, one icon set and stroke, one main action per screen, the same pattern looks the same.
+5. Layout: phone first, checked at 375px and in landscape. No horizontal scroll. Zoom is never disabled. Use `svh`, not `100vh`. Story lines at most 68 characters. Text at 200% still works.
+6. Type and color: body 16px or more, sizes from the scale, tracking by size, semantic tokens and never raw hex. Dark theme values are set on their own, not inverted.
+7. Motion: follows "Interaction and motion", checked with reduced motion on.
+8. Forms: a visible label (`Field`), never placeholder only. Error under the field with cause and fix. The right input type and `autocomplete`. Inputs 44px or more tall.
+9. Navigation: the current page has `aria-current`. The same navigation on every page. Every page has its own URL. Search is easy to reach.
 
 ## Contrast (WCAG AA)
 Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css` and exits with an error if any pair fails.
@@ -112,12 +202,12 @@ All in `src/components`. Server components unless marked client.
 | `Footer` | none | Brand colored footer from config. In the layout. |
 | `Logo` | `variant` header or footer, `onNavigate`, `className` | Seal plus site name, links home. |
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
-| `Button` | `variant` primary, accent, secondary or onBrand, button props | Buttons. `onBrand` is an outline button with light text, for brand colored bands next to an accent button. |
-| `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `above`, `fullScreen`, `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. `above` is a slot for the breaking strip. `fullScreen` makes `above` and the band together as tall as the viewport below the header (`100svh` minus `--utility-height` and `--header-height`), centers the text and uses `text-4xl` for the h1. On the home page it is full screen, shows the motto as the h1 (one sentence per line) and the tagline as the paragraph, with the breaking strip in `above`. The featured slider and latest headlines follow it as the second section (`#top-stories`). |
+| `Button` | `variant` primary, accent, secondary or onBrand, button props | Buttons. `onBrand` is an outline button with light text, for brand colored bands next to an accent button. Has `press` feedback. |
+| `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `above`, `fullScreen`, `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (`max-w-article`, at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. `above` is a slot for the breaking strip. `fullScreen` makes `above` and the band together as tall as the viewport below the header (`100svh` minus `--utility-height` and `--header-height`), centers the text and uses `text-4xl` for the h1. On the home page it is full screen, shows the motto as the h1 (one sentence per line) and the tagline as the paragraph, with the breaking strip in `above`. The featured slider and latest headlines follow it as the second section (`#top-stories`). |
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
-| `MobileMenu` (client) | none | Menu button and full screen sheet with the sections and search, on a native modal dialog (focus trap, Escape, scroll lock). |
+| `MobileMenu` (client) | none | Menu button and full screen sheet with the sections and search, on a native modal dialog (focus trap, Escape, scroll lock). The sheet fades in and out with the `.sheet` class. |
 | `ThemeToggle` (client) | none | Single button, light or dark. Shows a moon in light theme (press for dark) and a sun in dark theme (press for light). The icon is switched by CSS from `data-theme`, so the first paint is right. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
@@ -130,12 +220,12 @@ All in `src/components`. Server components unless marked client.
 | `LanguageBadge` | `language` | Yellow fill, brown text, "Tagalog". Renders nothing for English. |
 | `PostDate` | `iso`, `className` | A `time` element with the date in Asia/Manila, for example "November 13, 2026". |
 | `SectionHeading` | `title`, `href`, `linkLabel`, `as` h2 or h3, `id` | Heading with a 1px brown rule under it and an optional "See all" link (44px tap target). |
-| `Chip` | Link props | Flat text link with a 1px border and a 44px tap target. Tags and municipalities. |
-| `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. CSS fade. Previous, next, dots, swipe, Left and Right arrow keys, pause and play. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
+| `Chip` | Link props | Flat text link with a 1px border and a 44px tap target. Tags and municipalities. Has `press` feedback. |
+| `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. CSS fade (in 300ms, out 200ms, `ease-out`). Previous, next, Left and Right arrow keys, pause and play. Dots from 640px; below that a plain "2 of 5" count, because five 44px dots and the other controls do not fit a phone. Touch and pen swipe with Pointer Events: the direction is chosen after 10px, the slide follows the finger 1:1, and a drag past 20% of the width or a quick flick changes the slide, otherwise it settles back. A swipe never opens the link under it. The mouse does not drag. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus, while dragging and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
 | `BreakingStrip` | none | Yellow bar with brown text, "Breaking" and the headline of the newest breaking post. Renders nothing without one. Sets `--focus` to brown inside, so the ring shows in dark theme. |
 | `SectionBlock` | `slug` | Home page block: `SectionHeading`, one large card and three compact cards. Renders nothing for a section with no posts. |
 | `MunicipalityStrip` | none | Chips for every municipality plus "All municipalities". |
-| `GalleryHighlight` | none | Most recent gallery: four square images, title, date, link to `/gallery/[slug]`. Renders nothing without galleries. |
+| `GalleryHighlight` | none | Most recent gallery: four square images, title and date as one link to `/gallery/[slug]` (the title link is stretched over the block, like `PostCard`, with one focus ring). Renders nothing without galleries. |
 | `FacebookFeed` | none | Official Page Plugin as a lazy iframe (300 by 600), no Facebook script, plus a text link to the page. Reads `NEXT_PUBLIC_FB_PAGE_URL`. Renders nothing when it is empty or not a facebook.com address. `getFacebookPageUrl()` tells a page whether the column exists. |
 | `ArticleNav` | `older`, `newer` (from `getAdjacentPosts`), `className` | Older and newer story links under an article. The label is plain text and the headline is the link. Renders nothing when neither exists. |
 | `AuthorBlock` | `authors` (staff members), `className` | "Written by" list: `InitialsBadge`, first name, position. No photos, last names or links. |
@@ -145,7 +235,7 @@ All in `src/components`. Server components unless marked client.
 | `CopyLinkButton` (client) | `path`, `url` | Copies the story address. A polite live region (`role="status"`) next to the button says "Copied", or a short failure message, for 4 seconds. |
 | `NativeShareButton` (client) | `title`, `path`, `url` | Opens the device share sheet. Renders nothing where `navigator.share` is missing. Decided after hydration with `useSyncExternalStore`, so there is no mismatch. |
 
-New reusable components and tokens get added here and to `/styleguide`. The styleguide shows `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`, the article components (`CorrectionNote`, `InitialsBadge` with `AuthorBlock`, `ShareRow`, `ArticleNav`) and the `text-article` size.
+New reusable components and tokens get added here and to `/styleguide`. The styleguide shows the motion tokens, `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`, the article components (`CorrectionNote`, `InitialsBadge` with `AuthorBlock`, `ShareRow`, `ArticleNav`) and the `text-article` size.
 
 ## Article page
 `/article/[slug]` in `src/app/article/[slug]/page.tsx`. Every published post is built by `generateStaticParams`. `dynamicParams` is `false`, so any other address is a 404. Drafts are not in the production build and show in dev.

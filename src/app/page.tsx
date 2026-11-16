@@ -113,9 +113,13 @@ export default function Home() {
           <h2 id="top-stories-heading" className="sr-only">
             Top stories
           </h2>
+          {/*
+            No image gets priority here: the full screen banner fills the first screen,
+            so the first image on screen is the header logo, which already has it.
+          */}
           {heroPosts.length > 1 ? (
             <FeaturedSlider label="Featured stories">
-              {heroPosts.map((post, position) => (
+              {heroPosts.map((post) => (
                 <PostCard
                   key={post.slug}
                   post={post}
@@ -123,12 +127,11 @@ export default function Home() {
                   headingLevel="h2"
                   hero
                   clamp
-                  priority={position === 0}
                 />
               ))}
             </FeaturedSlider>
           ) : (
-            <PostCard post={heroPosts[0]} variant="large" headingLevel="h2" hero priority />
+            <PostCard post={heroPosts[0]} variant="large" headingLevel="h2" hero />
           )}
 
           {headlines.length > 0 ? (

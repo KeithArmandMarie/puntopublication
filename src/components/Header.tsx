@@ -24,7 +24,7 @@ export function Header() {
             <Link
               href={searchHref}
               aria-label="Search"
-              className="inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-border"
+              className="press inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-border"
             >
               <SearchIcon />
             </Link>

@@ -48,7 +48,7 @@ export function Banner({
       >
         <Container className={fullScreen ? "w-full py-section" : "py-8 md:py-section"}>
           <h1 className={fullScreen ? "max-w-prose text-4xl" : "max-w-prose"}>{title}</h1>
-          <p className="mt-4 max-w-prose text-lg text-on-brand-muted">{children}</p>
+          <p className="mt-4 max-w-article text-lg text-pretty text-on-brand-muted">{children}</p>
           {actions ? <div className="mt-8 flex flex-wrap gap-3">{actions}</div> : null}
         </Container>
       </div>
