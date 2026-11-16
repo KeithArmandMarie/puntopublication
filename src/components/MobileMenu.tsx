@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { CloseIcon, MenuIcon, SearchIcon } from "@/components/icons";
 import { Logo } from "@/components/Logo";
 import { NavLink } from "@/components/NavLink";
@@ -13,8 +13,9 @@ const rowClass =
  * Phone and tablet menu. A native modal dialog gives the focus trap, Escape
  * to close and an inert page behind it. Focus returns to the Menu button.
  * The `sheet` class in globals.css fades it in and out with a small move.
+ * `children` (the call to action buttons, rendered on the server) sit under the links.
  */
-export function MobileMenu() {
+export function MobileMenu({ children }: { children?: ReactNode }) {
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -105,6 +106,7 @@ export function MobileMenu() {
               </NavLink>
             </li>
           </ul>
+          {children}
         </nav>
       </dialog>
     </>

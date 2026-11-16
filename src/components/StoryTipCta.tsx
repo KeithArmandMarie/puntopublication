@@ -7,7 +7,7 @@ import { contactEmail } from "@/config/site";
  * Where "Send it on Facebook" goes. A page with a plain name (facebook.com/NAME) opens
  * a message to the page through m.me. Any other address, such as profile.php?id=, goes to the page itself.
  */
-function facebookMessageUrl(pageUrl: string): string {
+export function facebookMessageUrl(pageUrl: string): string {
   const url = new URL(pageUrl);
   const segments = url.pathname.split("/").filter(Boolean);
   const name = segments[0];

@@ -58,9 +58,10 @@ const municipalityNames = [
   "Sulop",
 ] as const;
 
+/** Sections are filters on the archive page, not pages of their own: `/archive?section=news`. */
 export const sections: Section[] = sectionNames.map((name) => {
   const slug = slugify(name);
-  return { name, slug, href: `/section/${slug}` };
+  return { name, slug, href: `/archive?section=${slug}` };
 });
 
 export const municipalities: Municipality[] = municipalityNames.map((name) => {
@@ -75,10 +76,13 @@ export const municipalitiesIndex: NavLinkItem = {
 
 export const searchHref = "/search";
 
-export const mainNav: NavLinkItem[] = sections.map((s) => ({
-  label: s.name,
-  href: s.href,
-}));
+/** The header links, in order. The sections are not here: they are filters on the archive page. */
+export const mainNav: NavLinkItem[] = [
+  { label: "About", href: "/about" },
+  { label: "Municipalities", href: "/municipality" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Archive", href: "/archive" },
+];
 
 const policyNames = [
   "Editorial Policy",

@@ -28,6 +28,7 @@ Small typed components. Server components by default, client components only whe
 
 ## Working rules
 Build only the page or task I ask for. Do not touch unrelated files.
+Before building a page, ask me any questions you need about layout, content, behavior or anything the docs do not decide. Ask first, then build. Do not guess what I would want.
 Run lint, type check and build before saying you are done, then fix errors.
 If you create a new reusable component or token, add it to DESIGN.md.
 If a request conflicts with these rules, tell me before building.

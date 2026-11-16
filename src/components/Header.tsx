@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
+import { HeaderActions } from "@/components/HeaderActions";
 import { SearchIcon } from "@/components/icons";
 import { Logo } from "@/components/Logo";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -10,8 +11,8 @@ import { mainNav, searchHref } from "@/config/site";
 
 /**
  * Site header. The utility bar (date, theme, search) scrolls away.
- * The main bar (logo and navigation) stays at the top: the header is sticky
- * and shifted up by the height of the utility bar.
+ * The main bar (logo, links and the two call to action buttons) stays at the top:
+ * the header is sticky and shifted up by the height of the utility bar.
  */
 export function Header() {
   return (
@@ -49,7 +50,10 @@ export function Header() {
               ))}
             </ul>
           </nav>
-          <MobileMenu />
+          <HeaderActions className="hidden items-center gap-2 lg:flex" />
+          <MobileMenu>
+            <HeaderActions className="flex flex-col gap-3 pt-6" />
+          </MobileMenu>
         </Container>
       </div>
     </header>

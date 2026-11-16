@@ -28,13 +28,14 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 9. Added `lenis` (`SmoothScroll` in the layout) and `motion` (`FeaturedSlider` fades and a spring settle after a swipe). `data-lenis-prevent` is on the mobile menu dialog. In page links are handled by `SmoothScroll`.
 
 ## What is built
-Routes: `/`, `/article/[slug]` and the unindexed `/styleguide`.
+Routes: `/`, `/article/[slug]`, `/archive` and the unindexed `/styleguide`.
+Archive (`/archive`, built 2026-11-16): h1 and one line, section chips and a municipality select, then compact story rows grouped by month, newest first, 20 at first and a "Show more stories" button. The filter is in the address (`?section=news&municipality=hagonoy`) and runs in the browser, so the page stays static. The sections have no pages of their own.
 Home page, top to bottom: breaking strip inside the full screen `Banner`, then the featured slider (`#top-stories`) with Latest headlines (four stories, then a "See all published stories" link to `/archive`), "Find a story" (`SearchBlock`) and Topics (`TopicStrip`) beside it, Stories by municipality (`MunicipalityGrid`) and the gallery highlight with the Facebook feed column beside them, then Meet the young journalists (`StaffGrid`, `StaffCard` cards with picture, first name and position, full width). Latest stories and the News, Features and Opinion blocks were removed on 2026-11-16 because they repeated the same stories; Latest headlines was kept (removed, then brought back with the archive link). `StoryTipCta` (built on the reusable `CallToAction`) sits in the layout above the footer on every page. It invites readers to send a news tip or story by message to the Facebook page ("Send it on Facebook"), plus an email button when `contactEmail` is set. It is hidden when neither is set.
 Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We Lead.") is the banner h1, `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.") is the banner paragraph and the footer line.
 `DESIGN.md` lists every component with its props. Reuse them before making new ones.
 
 ## Linked but not built yet
-`/section/[slug]` (with `/section/[slug]/page/[n]`), `/tag/[slug]`, `/municipality`, `/municipality/[slug]`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`. Links to them already exist on the site and currently 404. Build them with the routes exactly as written here.
+`/about` (the publication, the team, how to reach us), `/tag/[slug]`, `/municipality`, `/municipality/[slug]`, `/gallery`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`. Links to them already exist on the site and currently 404. Build them with the routes exactly as written here.
 
 ## Decisions the user made
 - Home page only for that phase; other pages are separate tasks. Build only the page or task asked for.
@@ -42,6 +43,8 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 - The theme toggle icon follows the theme (moon in light, sun in dark).
 - Ask before adding any dependency. Two were approved on 2026-11-16: `lenis` (smooth scrolling for the whole site) and `motion` (slider fade and swipe settle). The user chose to keep them within the existing rules: no scroll reveals, stagger or page transitions.
 - The user wants lint, type check, content check, contrast and build to pass, and the page checked at 360, 768 and 1280 in light and dark, before saying done.
+
+- Header (decided 2026-11-16): links are About, Municipalities, Gallery and Archive, plus two buttons, "Send a tip" and "Follow on Facebook". The six sections are not pages and not header links: they are a filter on `/archive`. There are no `/section/[slug]` routes. "Services" was dropped, because the publication has nothing real to list there.
 
 ## Things to know before you change code
 - Tokens only. No hardcoded colors, sizes or spacing. No gradients, shadows, blur, glow, emoji or all caps text. Yellow is a fill with brown text, never text on a light background.

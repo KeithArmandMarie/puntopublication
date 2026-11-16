@@ -90,7 +90,7 @@ Named tokens: `gutter` (16px, 24px from 640px), `section` (48px, use `py-section
 Content width is 1200px, set by `--content-width`. Use `Container` or `.container-page`.
 The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the featured slider beside "Latest headlines", "Find a story" and the topics, and again for the municipality and gallery blocks beside the Facebook feed. "Meet the young journalists" follows, full width.
 Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
-Header breakpoint: full navigation from 1024px, menu button below. The header lists the six sections only. Municipalities are not in the header.
+Header breakpoint: full navigation and the two call to action buttons from 1024px, menu button below. The header links are About, Municipalities, Gallery and Archive (`mainNav` in `src/config/site.ts`). The six sections are not header links: they are the filter on `/archive` (`/archive?section=news`), and the footer lists them.
 
 ## Interaction and motion
 Status: built in `globals.css` and used on the home page, the header and the mobile menu. New components use the same tokens, utility and classes.
@@ -140,7 +140,7 @@ Rules:
 From the apple-design skill, applied to a news site.
 - Purpose: each page has one job and one main action. In a `Banner` the accent button comes first. Do not add a feature because it is possible.
 - Familiarity: use news conventions (section navigation, byline and date, breadcrumbs on stories, older and newer links). The same thing looks and behaves the same everywhere, and sits in the same place. Break a convention only with a reason that has been tested.
-- Simplicity, not minimalism: show the common path first. The header lists the six sections and does not hide them in a menu on desktop.
+- Simplicity, not minimalism: show the common path first. The header shows its four links and two buttons in the bar on desktop and does not hide them in a menu. The sections are one filter on the archive, not six pages.
 - Wayfinding: every page answers where am I (`aria-current`, h1, breadcrumb), where can I go (header, related stories, older and newer) and how do I get out (logo to home, skip link, Escape closes the menu). Never trap the reader.
 - Grouping and mapping: put a control next to what it affects. The share row is under the story, the correction note is above the cover.
 - Specific labels: "Older story", "Share this story". A link makes sense read alone. Never "click here" or a bare "Read more".
@@ -183,10 +183,11 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 | Yellow focus ring on brand (footer) | 8.50 | 8.50 | 3 |
 
 ## Site config
-`src/config/site.ts` holds the site name, `motto` ("In Truth, We Serve. In Words, We Lead.", the home banner heading), `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.", the banner paragraph and the footer line, hidden if emptied), `siteDescription` (tagline plus the brand line, used for metadata), sections, municipalities, main nav (the sections), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. Slugs come from `slugify` in `src/lib/slug.ts`.
+`src/config/site.ts` holds the site name, `motto` ("In Truth, We Serve. In Words, We Lead.", the home banner heading), `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.", the banner paragraph and the footer line, hidden if emptied), `siteDescription` (tagline plus the brand line, used for metadata), sections, municipalities, main nav (About, Municipalities, Gallery, Archive), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. `sections[].href` is `/archive?section=<slug>`. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
-Routes built: `/` and `/article/[slug]` (and the unindexed `/styleguide`).
-Routes linked, not built yet: `/section/[slug]`, `/tag/[slug]`, `/municipality/[slug]`, `/municipality`, `/archive`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
+Routes built: `/`, `/article/[slug]` and `/archive` (and the unindexed `/styleguide`).
+There are no `/section/[slug]` pages: the sections are the filter on `/archive` (`?section=<slug>`).
+Routes linked, not built yet: `/about`, `/tag/[slug]`, `/municipality/[slug]`, `/municipality`, `/gallery`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
 
 ## Environment variables
 Listed in `.env.example`. Both are optional.
@@ -204,7 +205,9 @@ All in `src/components`. Server components unless marked client.
 | Component | Props | Use |
 | --- | --- | --- |
 | `Container` | div props | Page width and gutters. Wrap page content. |
-| `Header` | none | Utility bar (date, theme toggle, search) and sticky main bar with the sections. In the layout. |
+| `Header` | none | Utility bar (date, theme toggle, search) and sticky main bar with the logo, the links (About, Municipalities, Gallery, Archive) and the two call to action buttons (`HeaderActions`). In the layout. |
+| `ArchiveBrowser` (client) | `items` (`ArchiveItem[]`: slug, section, municipality, month, and a `PostCard` rendered on the server), `sections`, `municipalities`, `pageSize` (default 20) | The list on `/archive`: compact `PostCard` rows grouped by month (`SectionHeading` per month), newest first. Section chips (`aria-pressed`, the selected one is filled with the foreground color and has background colored text) and a labelled municipality select filter it. The filter lives in the address (`?section=news&municipality=hagonoy`) and is read in the browser, so the page stays static and a filtered view can be shared. Without JavaScript, and before it loads, every story is listed. After that the newest `pageSize` show and "Show more stories" adds more. A `role="status"` line says how many stories show, and an empty result offers "Show all stories". |
+| `HeaderActions` | `className` | The header's two call to action buttons: "Send a tip" (accent, a message to the Facebook page, or `mailto:` when only `contactEmail` is set) and "Follow on Facebook" (secondary). Both open in a new tab. A button with no address is left out, and nothing renders when neither exists. In the main bar from 1024px, and under the links in the mobile menu as full width buttons. |
 | `Footer` | none | Brand colored footer from config. In the layout. |
 | `Logo` | `variant` header or footer, `onNavigate`, `className` | Seal plus site name, links home. |
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
@@ -213,7 +216,7 @@ All in `src/components`. Server components unless marked client.
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
-| `MobileMenu` (client) | none | Menu button and full screen sheet with the sections and search, on a native modal dialog (focus trap, Escape, scroll lock). The sheet fades in and out with the `.sheet` class. |
+| `MobileMenu` (client) | `children` (the call to action buttons) | Menu button and full screen sheet with the header links, search and the buttons, on a native modal dialog (focus trap, Escape, scroll lock). The sheet fades in and out with the `.sheet` class. |
 | `ThemeToggle` (client) | none | Single button, light or dark. Shows a moon in light theme (press for dark) and a sun in dark theme (press for light). The icon is switched by CSS from `data-theme`, so the first paint is right. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |

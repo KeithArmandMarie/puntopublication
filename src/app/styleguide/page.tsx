@@ -401,7 +401,7 @@ export default function StyleguidePage() {
           )}
 
           <h3 className="mb-3 mt-10">SectionHeading</h3>
-          <SectionHeading title="News" href="/section/news" linkLabel="See all News stories" />
+          <SectionHeading title="News" href="/archive?section=news" linkLabel="See all News stories" />
 
           <h3 className="mb-3 mt-10">Chip and LanguageBadge</h3>
           <div className="flex flex-wrap items-center gap-3">
