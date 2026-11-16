@@ -10,7 +10,6 @@ import { GalleryHighlight } from "@/components/GalleryHighlight";
 import { MunicipalityGrid } from "@/components/MunicipalityGrid";
 import { PostCard } from "@/components/PostCard";
 import { SearchBlock } from "@/components/SearchBlock";
-import { SectionHeading } from "@/components/SectionHeading";
 import { StaffGrid } from "@/components/StaffGrid";
 import { TopicStrip } from "@/components/TopicStrip";
 import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
@@ -71,10 +70,6 @@ export default function Home() {
   // Up to five featured stories. With none, the newest story stands in as the hero.
   const featured = getFeaturedPosts(5);
   const heroPosts = featured.length > 0 ? featured : [all[0]];
-  const heroSlugs = new Set(heroPosts.map((post) => post.slug));
-
-  // Latest stories is the one list of recent posts on the page. It skips the slider's stories.
-  const latest = all.filter((post) => !heroSlugs.has(post.slug)).slice(0, 6);
 
   const hasFeed = getFacebookPageUrl() !== undefined;
 
@@ -141,22 +136,6 @@ export default function Home() {
           </div>
         </div>
 
-        {latest.length > 0 ? (
-          <section aria-labelledby="latest-stories-heading" className="mt-section">
-            <SectionHeading
-              title="Latest stories"
-              href="/archive"
-              linkLabel="See all stories in the archive"
-              id="latest-stories-heading"
-            />
-            <div className="mt-6 grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-              {latest.map((post) => (
-                <PostCard key={post.slug} post={post} variant="standard" />
-              ))}
-            </div>
-          </section>
-        ) : null}
-
         <div
           className={`mt-section ${
             hasFeed ? "lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8" : ""
@@ -165,7 +144,6 @@ export default function Home() {
           <div className="space-y-section">
             <MunicipalityGrid />
             <GalleryHighlight />
-            <StaffGrid />
           </div>
 
           {hasFeed ? (
@@ -173,6 +151,10 @@ export default function Home() {
               <FacebookFeed />
             </div>
           ) : null}
+        </div>
+
+        <div className="mt-section">
+          <StaffGrid />
         </div>
       </Container>
     </>

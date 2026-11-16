@@ -88,7 +88,7 @@ Tracking and leading follow size: `-0.02em` and tight leading on large text, `0`
 Spacing is Tailwind's scale on a 4px base: 1 (4px), 2, 3, 4 (16px), 6, 8, 12, 16 (64px). Tap targets are `min-h-11` (44px) or larger.
 Named tokens: `gutter` (16px, 24px from 640px), `section` (48px, use `py-section`), `utility` (44px utility bar), `header` (64px main bar).
 Content width is 1200px, set by `--content-width`. Use `Container` or `.container-page`.
-The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the featured slider beside "Find a story" and the topics, and again for the municipality, gallery and staff blocks beside the Facebook feed.
+The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the featured slider beside "Find a story" and the topics, and again for the municipality and gallery blocks beside the Facebook feed. "Meet the young journalists" follows, full width.
 Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
 Header breakpoint: full navigation from 1024px, menu button below. The header lists the six sections only. Municipalities are not in the header.
 
@@ -233,7 +233,8 @@ All in `src/components`. Server components unless marked client.
 | `TopicStrip` | `limit` (default 12) | "Topics": chips for the most used tags, each linking to `/tag/[slug]`. Renders nothing without tags. On the home page beside the slider, with `limit` 10. |
 | `MunicipalityGrid` | none | "Stories by municipality": one tile per municipality (name and its real story count, "No stories yet" for none). Each tile is one link with a 1px border. 2 columns on phones, 3 from 640px, 5 from 768px. "See all" goes to `/municipality`. |
 | `SearchBlock` | `id` (prefix, default `find-story`) | "Find a story": a visible label, a `type="search"` input named `q` and a Search button, as a GET form to `/search` with `role="search"`. |
-| `StaffGrid` | `title` (default "Meet the young journalists") | Every staff member as `InitialsBadge`, first name and position. No photos, last names or links. Renders nothing without staff. |
+| `StaffCard` | `member` (staff member), `sizes` (required), `headingLevel` h3 or h4, `className` | "Meet the team" card: 1px border, 4px radius, a square picture, then first name (`text-lg`, bold) and position (`text-sm`, muted) under a thin rule. The picture is the staff `photo` through `next/image` (alt "Photo of" and the first name), or with no photo the first letter of the first name large on the brand fill. First name only, and the card is not a link (the authors are minors). |
+| `StaffGrid` | `title` (default "Meet the young journalists") | Every staff member as a `StaffCard`: 2 columns on phones, 3 from 640px, 4 from 1024px. Full width on the home page, below the Facebook feed row. Renders nothing without staff. |
 | `CallToAction` | `title`, `children` (one paragraph), `actions` (one or two links), `id` (heading id), `as` h2 or h3, `className` | The reusable call to action band for any page: full width, `surface` fill, 1px rules above and below, heading, a `max-w-article` paragraph and buttons (`buttonClasses("accent")` first, `buttonClasses("secondary")` second). Text and buttons side by side from 768px. At most once per page, below the content. |
 | `StoryTipCta` | none | "Have a story from your town?": a `CallToAction` in the layout above the footer, so it is on every page. "Email the editors" when `contactEmail` is set and "Message us on Facebook" when `NEXT_PUBLIC_FB_PAGE_URL` is set; the first one present is the accent button. Renders nothing when neither is set. |
 | `GalleryHighlight` | none | Most recent gallery: four square images, title and date as one link to `/gallery/[slug]` (the title link is stretched over the block, like `PostCard`, with one focus ring). Renders nothing without galleries. |
@@ -246,7 +247,7 @@ All in `src/components`. Server components unless marked client.
 | `CopyLinkButton` (client) | `path`, `url` | Copies the story address. A polite live region (`role="status"`) next to the button says "Copied", or a short failure message, for 4 seconds. |
 | `NativeShareButton` (client) | `title`, `path`, `url` | Opens the device share sheet. Renders nothing where `navigator.share` is missing. Decided after hydration with `useSyncExternalStore`, so there is no mismatch. |
 
-New reusable components and tokens get added here and to `/styleguide`. The styleguide shows the motion tokens, `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`, the article components (`CorrectionNote`, `InitialsBadge` with `AuthorBlock`, `ShareRow`, `ArticleNav`), `CallToAction` and the `text-article` size.
+New reusable components and tokens get added here and to `/styleguide`. The styleguide shows the motion tokens, `PlaceholderImage` in all four ratios, `PostImage` with and without a `src`, the three `PostCard` variants, `SectionHeading`, `Chip` and `LanguageBadge`, the article components (`CorrectionNote`, `InitialsBadge` with `AuthorBlock`, `ShareRow`, `ArticleNav`), `StaffCard`, `CallToAction` and the `text-article` size.
 
 ## Article page
 `/article/[slug]` in `src/app/article/[slug]/page.tsx`. Every published post is built by `generateStaticParams`. `dynamicParams` is `false`, so any other address is a 404. Drafts are not in the production build and show in dev.

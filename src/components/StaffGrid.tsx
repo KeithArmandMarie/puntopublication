@@ -1,5 +1,5 @@
-import { InitialsBadge } from "@/components/InitialsBadge";
 import { SectionHeading } from "@/components/SectionHeading";
+import { StaffCard } from "@/components/StaffCard";
 import { getAllStaff } from "@/lib/content";
 
 type StaffGridProps = {
@@ -8,8 +8,8 @@ type StaffGridProps = {
 };
 
 /**
- * The staff as a grid: initials badge, first name and position. First names
- * only, no photos and no links (the authors are minors). Renders nothing without staff.
+ * "Meet the team": every staff member as a `StaffCard` (picture, first name, position),
+ * 2 columns on phones, 3 from 640px, 4 from 1024px. Renders nothing without staff.
  */
 export function StaffGrid({ title = "Meet the young journalists" }: StaffGridProps) {
   const staff = getAllStaff();
@@ -18,14 +18,13 @@ export function StaffGrid({ title = "Meet the young journalists" }: StaffGridPro
   return (
     <section aria-labelledby="staff-grid-heading">
       <SectionHeading title={title} id="staff-grid-heading" />
-      <ul className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2 md:grid-cols-3">
+      <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
         {staff.map((member) => (
-          <li key={member.id} className="flex items-center gap-3">
-            <InitialsBadge name={member.firstName} />
-            <div className="min-w-0">
-              <p className="font-bold">{member.firstName}</p>
-              <p className="text-sm text-muted">{member.position}</p>
-            </div>
+          <li key={member.id}>
+            <StaffCard
+              member={member}
+              sizes="(min-width: 1024px) 280px, (min-width: 640px) 33vw, 50vw"
+            />
           </li>
         ))}
       </ul>

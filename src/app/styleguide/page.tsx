@@ -27,6 +27,7 @@ import type { ImageRatio } from "@/components/PlaceholderImage";
 import { PostImage } from "@/components/PostImage";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ShareRow } from "@/components/ShareRow";
+import { StaffCard } from "@/components/StaffCard";
 import { getAllStaff, getLatestPosts } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -431,6 +432,18 @@ export default function StyleguidePage() {
               <ArticleNav older={samples[1]} newer={samples[0]} />
             </>
           ) : null}
+        </Section>
+
+        <Section id="staff" title="Staff cards">
+          <ul className="grid max-w-2xl grid-cols-2 gap-4 sm:grid-cols-3">
+            {getAllStaff()
+              .slice(0, 3)
+              .map((member) => (
+                <li key={member.id}>
+                  <StaffCard member={member} sizes="(min-width: 640px) 200px, 50vw" />
+                </li>
+              ))}
+          </ul>
         </Section>
 
         <Section id="call-to-action" title="Call to action">
