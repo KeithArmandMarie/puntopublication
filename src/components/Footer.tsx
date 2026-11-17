@@ -6,7 +6,6 @@ import { Logo } from "@/components/Logo";
 import {
   contactEmail,
   getSocialLinks,
-  municipalitiesIndex,
   policyLinks,
   sections,
   siteName,
@@ -59,11 +58,6 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href={municipalitiesIndex.href} className={linkClass}>
-                  Municipalities
-                </Link>
-              </li>
             </ul>
           </FooterColumn>
 

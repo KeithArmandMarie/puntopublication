@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SectionHeading } from "@/components/SectionHeading";
-import { municipalities, municipalitiesIndex } from "@/config/site";
+import { municipalities } from "@/config/site";
 import { getPostsByMunicipality } from "@/lib/content";
 
 function storyCount(count: number): string {
@@ -15,12 +15,7 @@ function storyCount(count: number): string {
 export function MunicipalityGrid() {
   return (
     <section aria-labelledby="municipality-grid-heading">
-      <SectionHeading
-        title="Stories by municipality"
-        href={municipalitiesIndex.href}
-        linkLabel={municipalitiesIndex.label}
-        id="municipality-grid-heading"
-      />
+      <SectionHeading title="Stories by municipality" id="municipality-grid-heading" />
       <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-5">
         {municipalities.map((municipality) => (
           <li key={municipality.slug}>

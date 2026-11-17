@@ -37,7 +37,7 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 `DESIGN.md` lists every component with its props. Reuse them before making new ones.
 
 ## Linked but not built yet
-`/tag/[slug]`, `/municipality`, `/municipality/[slug]`, `/gallery`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`. Links to them already exist on the site and currently 404. Build them with the routes exactly as written here.
+`/tag/[slug]`, `/gallery`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`. Links to them already exist on the site and currently 404. Build them with the routes exactly as written here. Municipality pages (`/municipality`, `/municipality/[slug]`) were dropped on 2026-11-17: no nav, footer or "See all" link, and municipality labels and home tiles link to `/archive?municipality=<slug>`. A proposal for the index page was made but not approved.
 
 ## Decisions the user made
 - Home page only for that phase; other pages are separate tasks. Build only the page or task asked for.
@@ -46,7 +46,7 @@ Copy lives in `src/config/site.ts`: `motto` ("In Truth, We Serve. In Words, We L
 - Ask before adding any dependency. Two were approved on 2026-11-16: `lenis` (smooth scrolling for the whole site) and `motion` (slider fade and swipe settle). The user chose to keep them within the existing rules: no scroll reveals, stagger or page transitions.
 - The user wants lint, type check, content check, contrast and build to pass, and the page checked at 360, 768 and 1280 in light and dark, before saying done.
 
-- Header (decided 2026-11-16): links are About, Municipalities, Gallery and Archive, plus two buttons, "Send a tip" and "Follow on Facebook". The six sections are not pages and not header links: they are a filter on `/archive`. There are no `/section/[slug]` routes. "Services" was dropped, because the publication has nothing real to list there.
+- Header (decided 2026-11-16, Municipalities removed 2026-11-17 until the page is designed): links are About, Gallery and Archive, plus two buttons, "Send a tip" and "Follow on Facebook". The six sections are not pages and not header links: they are a filter on `/archive`. There are no `/section/[slug]` routes. "Services" was dropped, because the publication has nothing real to list there.
 
 - Author names (decided 2026-11-17): the journalists are adults and the site shows full names. Staff have `firstName` and `lastName`, both required, and `fullName(member)` builds the name for bylines, cards, credits, metadata and structured data. The six sample staff have the placeholder last name "Sample" until the client sends the real team list. The first-names-only checks on credits were removed.
 

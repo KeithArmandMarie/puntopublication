@@ -66,20 +66,14 @@ export const sections: Section[] = sectionNames.map((name) => {
 
 export const municipalities: Municipality[] = municipalityNames.map((name) => {
   const slug = slugify(name);
-  return { name, slug, href: `/municipality/${slug}` };
+  return { name, slug, href: `/archive?municipality=${slug}` };
 });
-
-export const municipalitiesIndex: NavLinkItem = {
-  label: "All municipalities",
-  href: "/municipality",
-};
 
 export const searchHref = "/search";
 
 /** The header links, in order. The sections are not here: they are filters on the archive page. */
 export const mainNav: NavLinkItem[] = [
   { label: "About", href: "/about" },
-  { label: "Municipalities", href: "/municipality" },
   { label: "Gallery", href: "/gallery" },
   { label: "Archive", href: "/archive" },
 ];
