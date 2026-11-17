@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { logo, siteName } from "@/config/site";
-import { getAuthors } from "@/lib/content";
+import { fullName, getAuthors } from "@/lib/content";
 import type { Post } from "@/lib/content";
 import { getSectionBySlug } from "@/lib/content/slugs";
 import { absoluteUrl } from "@/lib/site-url";
 
 /**
  * Metadata and structured data for the article page.
- * Child safety: authors are only ever first names, in every tag and in the JSON.
+ * Authors are shown by full name, in every tag and in the JSON.
  */
 
 export function articlePath(slug: string): string {
@@ -27,14 +27,14 @@ export function jsonLdScript(data: unknown): string {
 export function articleMetadata(post: Post): Metadata {
   const path = articlePath(post.slug);
   const section = getSectionBySlug(post.section);
-  const firstNames = getAuthors(post).map((author) => ({ name: author.firstName }));
+  const authorNames = getAuthors(post).map((author) => ({ name: fullName(author) }));
   const hasCover = post.coverImage !== undefined;
   const coverAlt = post.coverAlt ?? post.title;
 
   return {
     title: post.title,
     description: post.excerpt,
-    authors: firstNames,
+    authors: authorNames,
     alternates: { canonical: path },
     openGraph: {
       type: "article",
@@ -75,7 +75,7 @@ export function articleJsonLd(post: Post): string {
     inLanguage: post.language,
     datePublished: withManilaTime(post.publishedAt),
     dateModified: withManilaTime(post.updatedAt ?? post.publishedAt),
-    author: getAuthors(post).map((author) => ({ "@type": "Person", name: author.firstName })),
+    author: getAuthors(post).map((author) => ({ "@type": "Person", name: fullName(author) })),
     publisher: {
       "@type": "Organization",
       name: siteName,

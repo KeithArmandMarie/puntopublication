@@ -13,6 +13,7 @@ import { SearchBlock } from "@/components/SearchBlock";
 import { SectionHeading } from "@/components/SectionHeading";
 import { StaffGrid } from "@/components/StaffGrid";
 import { TopicStrip } from "@/components/TopicStrip";
+import { pageImages } from "@/config/page-images";
 import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
 import { getAllPosts, getFeaturedPosts } from "@/lib/content";
 import { absoluteUrl } from "@/lib/site-url";
@@ -83,6 +84,7 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: websiteJsonLd() }} />
       <Banner
         fullScreen
+        image={pageImages.home.banner}
         above={<BreakingStrip />}
         title={mottoLines.map((line) => (
           <span key={line} className="block">
@@ -113,8 +115,8 @@ export default function Home() {
               Top stories
             </h2>
             {/*
-              No image gets priority here: the full screen banner fills the first screen,
-              so the first image on screen is the header logo, which already has it.
+              No story image gets priority here: the banner photo above is the first big
+              image on the page and already loads at once.
             */}
             {heroPosts.length > 1 ? (
               <FeaturedSlider label="Featured stories">

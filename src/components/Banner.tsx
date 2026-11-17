@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { Container } from "@/components/Container";
 
@@ -19,6 +20,14 @@ type BannerProps = {
    * is centered vertically and the title uses the largest size.
    */
   fullScreen?: boolean;
+  /**
+   * A photo for the whole banner background (a slot from `pageImages`, with alt text). A flat
+   * scrim (`--scrim` at `--scrim-opacity`) sits between the photo and the text, so the text has the same contrast on
+   * every part of the photo, whatever the photo is (checked by `npm run contrast`, worst case
+   * a white photo). No gradient, no blur. The photo is the first big image on the page, so it
+   * loads at once. An empty `src` leaves the plain brand colored band.
+   */
+  image?: { src: string; alt: string };
   className?: string;
 };
 
@@ -36,22 +45,53 @@ export function Banner({
   actions,
   above,
   fullScreen = false,
+  image,
   className = "",
 }: BannerProps) {
+  const photo = image?.src.trim() ? image : undefined;
+  if (photo && photo.alt.trim() === "") {
+    throw new Error(`Banner photo "${photo.src}" needs alt text. Set "alt" in src/config/page-images.ts.`);
+  }
+
+  const band = `bg-brand text-on-brand [--focus:var(--accent)] ${
+    fullScreen ? "flex flex-1 flex-col justify-center" : ""
+  } ${className}`.trim();
+  const padding = fullScreen ? "w-full py-section" : "py-8 md:py-section";
+
+  const text = (
+    <>
+      <h1 className={fullScreen ? "max-w-prose text-4xl" : "max-w-prose"}>{title}</h1>
+      <p
+        className={`mt-4 max-w-article text-lg text-pretty ${photo ? "text-on-brand" : "text-on-brand-muted"}`}
+      >
+        {children}
+      </p>
+      {actions ? <div className="mt-8 flex flex-wrap gap-3">{actions}</div> : null}
+    </>
+  );
+
   return (
     <div className={fullScreen ? fullScreenFrame : undefined}>
       {above}
-      <div
-        className={`bg-brand text-on-brand [--focus:var(--accent)] ${
-          fullScreen ? "flex flex-1 flex-col justify-center" : ""
-        } ${className}`.trim()}
-      >
-        <Container className={fullScreen ? "w-full py-section" : "py-8 md:py-section"}>
-          <h1 className={fullScreen ? "max-w-prose text-4xl" : "max-w-prose"}>{title}</h1>
-          <p className="mt-4 max-w-article text-lg text-pretty text-on-brand-muted">{children}</p>
-          {actions ? <div className="mt-8 flex flex-wrap gap-3">{actions}</div> : null}
-        </Container>
-      </div>
+      {photo ? (
+        <div className={`relative isolate overflow-hidden ${band}`}>
+          <Image
+            src={photo.src}
+            alt={photo.alt}
+            fill
+            priority
+            sizes="100vw"
+            className="-z-20 object-cover"
+          />
+          {/* The scrim: --scrim at --scrim-opacity, one flat layer. Utilities, not a custom class, so it never depends on a stale CSS rebuild. */}
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-(--scrim) opacity-(--scrim-opacity)" />
+          <Container className={padding}>{text}</Container>
+        </div>
+      ) : (
+        <div className={band}>
+          <Container className={padding}>{text}</Container>
+        </div>
+      )}
     </div>
   );
 }

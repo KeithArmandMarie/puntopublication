@@ -124,9 +124,13 @@ export function ArchiveBrowser({
         : `${filtered.length} ${noun}`;
 
   return (
-    <div>
-      <div className="space-y-4">
-        <div role="group" aria-label="Filter by section" className="flex flex-wrap gap-2">
+    <div className="lg:grid lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-10">
+      <div className="space-y-4 lg:sticky lg:top-[calc(var(--header-height)+1rem)] lg:self-start">
+        <div
+          role="group"
+          aria-label="Filter by section"
+          className="flex flex-wrap gap-2 lg:flex-col lg:items-stretch"
+        >
           <button
             type="button"
             aria-pressed={section === "all"}
@@ -148,7 +152,7 @@ export function ArchiveBrowser({
           ))}
         </div>
 
-        <div className="flex max-w-xs flex-col gap-1">
+        <div className="flex max-w-xs flex-col gap-1 lg:max-w-none">
           <label htmlFor="archive-municipality" className="text-sm font-semibold">
             Municipality
           </label>
@@ -168,40 +172,42 @@ export function ArchiveBrowser({
         </div>
       </div>
 
-      <p role="status" className="mt-6 text-sm text-muted">
-        {status}
-      </p>
+      <div>
+        <p role="status" className="mt-6 text-sm text-muted lg:mt-0">
+          {status}
+        </p>
 
-      {filtered.length === 0 ? (
-        <Button variant="secondary" onClick={clearFilters} className="mt-4">
-          Show all stories
-        </Button>
-      ) : (
-        <div className="mt-6 space-y-10">
-          {groups.map((group) => (
-            <section key={group.key} aria-labelledby={`archive-${group.key}`}>
-              <SectionHeading title={group.label} id={`archive-${group.key}`} />
-              <ul className="divide-y divide-border">
-                {group.items.map((item) => (
-                  <li key={item.slug} className="py-4">
-                    {item.card}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
-        </div>
-      )}
+        {filtered.length === 0 ? (
+          <Button variant="secondary" onClick={clearFilters} className="mt-4">
+            Show all stories
+          </Button>
+        ) : (
+          <div className="mt-6 space-y-10">
+            {groups.map((group) => (
+              <section key={group.key} aria-labelledby={`archive-${group.key}`}>
+                <SectionHeading title={group.label} id={`archive-${group.key}`} />
+                <ul className="divide-y divide-border">
+                  {group.items.map((item) => (
+                    <li key={item.slug} className="py-4">
+                      {item.card}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        )}
 
-      {hasMore ? (
-        <Button
-          variant="secondary"
-          onClick={() => setLimit((current) => current + pageSize)}
-          className="mt-8"
-        >
-          Show more stories
-        </Button>
-      ) : null}
+        {hasMore ? (
+          <Button
+            variant="secondary"
+            onClick={() => setLimit((current) => current + pageSize)}
+            className="mt-8"
+          >
+            Show more stories
+          </Button>
+        ) : null}
+      </div>
     </div>
   );
 }

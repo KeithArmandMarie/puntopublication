@@ -66,7 +66,7 @@ When all is well it prints the counts of posts, drafts, staff, galleries, sectio
    coverCredit: "Ben"
    ```
 
-   `coverAlt` is required whenever `coverImage` is set. `coverCredit` is optional and must be a first name only. A post with no `coverImage` shows a placeholder block.
+   `coverAlt` is required whenever `coverImage` is set. `coverCredit` is optional: the photographer's name. A post with no `coverImage` shows a placeholder block.
 7. Write the story under the second `---` line, in Markdown:
    - `# Heading` makes a heading. The post title is already the page title, so `#` shows as a second level heading.
    - `**bold**`, `*italic*`, `[link text](https://example.com)`, `- list item`, `1. numbered item` and `> quote` all work.
@@ -83,15 +83,16 @@ When all is well it prints the counts of posts, drafts, staff, galleries, sectio
    {
      "id": "dana",
      "firstName": "Dana",
+     "lastName": "Santos",
      "position": "Opinion Columnist"
    }
    ```
 
 3. `id` is lowercase letters, numbers and dashes. It must be different from every other id. Posts use this id in `authors`.
-4. `firstName` is the first name only. See "First names only".
+4. `firstName` and `lastName` are the person's name. Both are required. The site shows them together, for example "Dana Santos".
 5. `position` is the role, for example `"Sports Writer"`.
 6. Optional fields: `"municipality": "hagonoy"` (a municipality slug), `"bio": "A short bio."` and `"photo": "/staff/dana.webp"` (a file in the `public` folder). With no photo, an initials badge is used.
-7. Do not add a last name field. The check rejects any field that is not in this guide.
+7. The check rejects any field that is not in this guide.
 8. Run `npm run content:check`.
 
 ## 3. Add a gallery
@@ -119,7 +120,7 @@ When all is well it prints the counts of posts, drafts, staff, galleries, sectio
 
 3. `slug` must be exactly the file name without `.json`.
 4. Add one block in `images` for each picture. Separate the blocks with commas.
-5. Put each picture file in the `public` folder and write its path in `src`. Leave `src` empty (`"src": ""`) or leave the line out to show a placeholder block. `alt` and `caption` are always required. `credit` is optional and must be a first name only.
+5. Put each picture file in the `public` folder and write its path in `src`. Leave `src` empty (`"src": ""`) or leave the line out to show a placeholder block. `alt` and `caption` are always required. `credit` is optional: the photographer's name.
 6. Run `npm run content:check`.
 
 ## 4. Change a section or a municipality
@@ -133,15 +134,14 @@ Sections and municipalities are set in one file only: `src/config/site.ts`.
 5. If you rename or remove a name, every post and gallery that used the old slug now fails the check. Run `npm run content:check`, then open each file it names and change the `section` or `municipality` line.
 6. Sections are also the links in the site header, so adding or removing a section changes the header.
 
-## 5. First names only
+## 5. Names
 
-The authors are minors. The site shows first names only: in bylines, on the staff page, in image credits, in metadata, in structured data and in the feed.
+Our journalists are adults, so the site shows full names: in bylines, on the staff page, in image credits, in metadata, in structured data and in the feed.
 
-1. In `content/staff.json`, `firstName` must be one first name. The check rejects a value with a space, a comma or a period. That stops `"Ana Reyes"`, `"Reyes, Ana"` and `"Ana R."`.
-2. There is no last name field. The check rejects any field it does not know, so `lastName` or `surname` cannot be added by mistake.
-3. Bylines are built from `firstName` only. A post lists author ids, never names.
-4. The check cannot read meaning. You must also keep last names out of these free text fields: `bio`, `coverCredit`, gallery `credit` and `caption`, `excerpt` and the story text. Use the first name only in credits.
-5. If you are not sure, leave the name out.
+1. In `content/staff.json`, each person has `firstName` and `lastName`. Both are required, and the check names the entry if one is missing.
+2. Bylines are built from the two fields: "Ana Reyes". A post lists author ids, never names, so a name is written once and changed in one place.
+3. Credits (`coverCredit` and gallery `credit`) are free text. Write the photographer's name the same way, for example "Ana Reyes".
+4. The initials badge uses the first letter of `firstName`.
 
 ## Drafts
 

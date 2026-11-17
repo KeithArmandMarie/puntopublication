@@ -55,11 +55,44 @@ const pairs = [
   ["accent", "brand", UI, "Yellow focus ring on brand (footer)"],
 ];
 
+// Text on a photo that has the scrim over it (the home banner). The photo can be anything, so
+// the check uses the worst case: a pure white photo under the scrim.
+const scrimOpacity = Number(css.match(/--scrim-opacity:\s*([0-9.]+)\s*;/)?.[1]);
+if (!(scrimOpacity > 0 && scrimOpacity <= 1)) throw new Error("--scrim-opacity not found in globals.css");
+
+function blend(foreground, alpha, background) {
+  const channels = [1, 3, 5].map((i) => {
+    const f = parseInt(foreground.slice(i, i + 2), 16);
+    const b = parseInt(background.slice(i, i + 2), 16);
+    return Math.round(alpha * f + (1 - alpha) * b)
+      .toString(16)
+      .padStart(2, "0");
+  });
+  return `#${channels.join("")}`;
+}
+
+// [foreground, minimum ratio, what it is], all on the scrim over a white photo
+const photoPairs = [
+  ["on-brand", TEXT, "Text on the photo scrim"],
+  ["on-brand-muted", UI, "Outline button border on the photo scrim"],
+  ["accent", UI, "Yellow focus ring on the photo scrim"],
+];
+
 let failed = 0;
 const rows = [];
 
 for (const theme of ["light", "dark"]) {
   const tokens = readTheme(theme);
+  if (!tokens.scrim) throw new Error(`Missing token scrim in ${theme} theme`);
+  const worstCase = blend(tokens.scrim, scrimOpacity, "#ffffff");
+  for (const [fg, min, label] of photoPairs) {
+    const value = ratio(tokens[fg], worstCase);
+    const pass = value >= min;
+    if (!pass) failed += 1;
+    rows.push(
+      `| ${theme} | ${label} | ${fg} ${tokens[fg]} | scrim ${Math.round(scrimOpacity * 100)}% over white ${worstCase} | ${value.toFixed(2)}:1 | ${min}:1 | ${pass ? "Pass" : "FAIL"} |`,
+    );
+  }
   for (const [fg, bg, min, label] of pairs) {
     if (!tokens[fg] || !tokens[bg]) {
       throw new Error(`Missing token for ${fg} or ${bg} in ${theme} theme`);

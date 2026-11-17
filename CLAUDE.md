@@ -20,8 +20,8 @@ No gradients, glow, blur, glassmorphism, emoji in the UI, purple or blue default
 No invented claims, awards, numbers or history about the publication.
 Meet WCAG AA contrast in both themes.
 
-## Child safety rule
-Authors are minors. Show first names only everywhere: bylines, staff page, image credits, metadata, structured data, RSS.
+## Author names rule
+Our journalists are adults. Show full names (first and last) everywhere: bylines, staff page, image credits, metadata, structured data, RSS.
 
 ## Code rules
 Small typed components. Server components by default, client components only when needed. All pages statically generated. Use Next Image with sizes and alt text. Keep dependencies minimal and ask before adding any. Approved animation dependencies: `lenis` (smooth scrolling, whole site) and `motion` (through `LazyMotion` and `m`). Their rules are under "Interaction and motion" in DESIGN.md. Reduced motion turns both off. Page transitions, scroll reveals, parallax and stagger stay out.
@@ -31,4 +31,5 @@ Build only the page or task I ask for. Do not touch unrelated files.
 Before building a page, ask me any questions you need about layout, content, behavior or anything the docs do not decide. Ask first, then build. Do not guess what I would want.
 Run lint, type check and build before saying you are done, then fix errors.
 If you create a new reusable component or token, add it to DESIGN.md.
+Every page that is not the home page or a story starts with `PageHeader`: a title, one paragraph and a full width photo band. Photos are placeholders until real ones are set in `src/config/page-images.ts`. Use the whole 1200px grid, not a narrow column.
 If a request conflicts with these rules, tell me before building.

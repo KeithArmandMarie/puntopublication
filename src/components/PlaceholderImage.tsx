@@ -1,4 +1,9 @@
-export type ImageRatio = "16/9" | "4/3" | "3/2" | "1/1";
+/**
+ * Four ratios, and `band`: a full width strip with a fixed height (14rem on phones, 18rem
+ * from 640px, 24rem from 1024px), for the photo under a page title. It is a height and not
+ * a ratio, so a very wide screen never makes it taller than 24rem.
+ */
+export type ImageRatio = "16/9" | "4/3" | "3/2" | "1/1" | "band";
 
 /** Written out in full so Tailwind can see every class. */
 export const imageRatioClass: Record<ImageRatio, string> = {
@@ -6,6 +11,7 @@ export const imageRatioClass: Record<ImageRatio, string> = {
   "4/3": "aspect-4/3",
   "3/2": "aspect-3/2",
   "1/1": "aspect-1/1",
+  band: "h-56 sm:h-72 lg:h-96",
 };
 
 type PlaceholderImageProps = {

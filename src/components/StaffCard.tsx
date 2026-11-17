@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fullName } from "@/lib/content";
 import type { StaffMember } from "@/lib/content";
 
 type StaffCardProps = {
@@ -11,9 +12,9 @@ type StaffCardProps = {
 };
 
 /**
- * A team member as a card: square picture, first name and position, in a 1px border.
- * The authors are minors, so only the first name shows and the card is not a link.
- * With no photo the picture is the first letter of the first name on the brand color.
+ * A team member as a card: square picture, full name and position, in a 1px border.
+ * The card is not a link. With no photo the picture is the first letter of the
+ * first name on the brand color.
  */
 export function StaffCard({
   member,
@@ -29,7 +30,7 @@ export function StaffCard({
         <div className="relative aspect-1/1 w-full bg-surface">
           <Image
             src={member.photo}
-            alt={`Photo of ${member.firstName}`}
+            alt={`Photo of ${fullName(member)}`}
             fill
             sizes={sizes}
             loading="lazy"
@@ -45,7 +46,7 @@ export function StaffCard({
         </div>
       )}
       <div className="border-t border-border p-3">
-        <Heading className="text-lg font-bold tracking-tight">{member.firstName}</Heading>
+        <Heading className="text-lg font-bold tracking-tight">{fullName(member)}</Heading>
         <p className="mt-1 text-sm text-muted">{member.position}</p>
       </div>
     </article>

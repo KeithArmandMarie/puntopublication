@@ -83,19 +83,12 @@ function oneOf(values: readonly string[], noun: string) {
 
 // ------------------------------------------------------------------ staff
 
-/** Child safety: a first name only. No space, comma or period, so no last name or initial. */
-const firstName = z
-  .string({ error: textError })
-  .refine((v) => v.trim().length > 0, { error: "must not be empty." })
-  .refine((v) => !/[\s,.]/.test(v), {
-    error: (issue) =>
-      `"${String(issue.input)}" must be a single first name. It has a space, comma or period, which could let a last name or initial through. Authors are minors, so use the first name only.`,
-  });
-
+/** Our journalists are adults, so the site shows full names: `firstName` and `lastName`, both required. */
 export const staffMemberSchema = z
   .object({
     id: slugText,
-    firstName,
+    firstName: requiredText,
+    lastName: requiredText,
     position: requiredText,
     municipality: oneOf(municipalitySlugs, "municipality").optional(),
     bio: requiredText.optional(),

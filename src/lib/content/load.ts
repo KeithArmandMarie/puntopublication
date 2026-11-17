@@ -96,7 +96,7 @@ function loadStaff(problems: string[]): StaffLoad {
       const hasUnknownKey = result.error.issues.some((issue) => issue.code === "unrecognized_keys");
       problems.push(
         hasUnknownKey
-          ? `${lines}\n  Staff entries have no last name field. Allowed fields: id, firstName, position, municipality, bio, photo.`
+          ? `${lines}\n  Allowed fields: id, firstName, lastName, position, municipality, bio, photo.`
           : lines,
       );
       return;

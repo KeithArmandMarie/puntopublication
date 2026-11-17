@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { ArchiveBrowser, type ArchiveItem } from "@/components/ArchiveBrowser";
 import { Container } from "@/components/Container";
+import { PageHeader } from "@/components/PageHeader";
 import { PostCard } from "@/components/PostCard";
+import { pageImages } from "@/config/page-images";
 import { municipalities, sections } from "@/config/site";
 import { getPostsGroupedByMonth } from "@/lib/content";
 
@@ -34,23 +36,21 @@ export default function ArchivePage() {
   );
 
   return (
-    <Container className="py-section">
-      <div className="max-w-4xl">
-        <h1>Archive</h1>
-        <p className="mt-3 max-w-article text-muted">{description}</p>
-
-        <div className="mt-8">
-          {items.length === 0 ? (
-            <p className="text-muted">There are no stories yet. Please check back soon.</p>
-          ) : (
-            <ArchiveBrowser
-              items={items}
-              sections={sections.map(({ slug, name }) => ({ slug, name }))}
-              municipalities={municipalities.map(({ slug, name }) => ({ slug, name }))}
-            />
-          )}
-        </div>
-      </div>
-    </Container>
+    <>
+      <PageHeader title="Archive" image={pageImages.archive.header}>
+        {description}
+      </PageHeader>
+      <Container className="py-section">
+        {items.length === 0 ? (
+          <p className="text-muted">There are no stories yet. Please check back soon.</p>
+        ) : (
+          <ArchiveBrowser
+            items={items}
+            sections={sections.map(({ slug, name }) => ({ slug, name }))}
+            municipalities={municipalities.map(({ slug, name }) => ({ slug, name }))}
+          />
+        )}
+      </Container>
+    </>
   );
 }

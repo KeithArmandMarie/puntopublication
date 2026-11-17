@@ -22,6 +22,7 @@ import {
 } from "@/components/icons";
 import { LanguageBadge } from "@/components/PostLabels";
 import { PostCard } from "@/components/PostCard";
+import { PagePhoto } from "@/components/PagePhoto";
 import { PlaceholderImage } from "@/components/PlaceholderImage";
 import type { ImageRatio } from "@/components/PlaceholderImage";
 import { PostImage } from "@/components/PostImage";
@@ -371,6 +372,14 @@ export default function StyleguidePage() {
               <p className="mt-1 text-sm text-muted">No src (placeholder)</p>
             </li>
           </ul>
+
+          <h3 className="mb-3 mt-10">PagePhoto, band</h3>
+          <p className="mb-4 max-w-prose text-muted">
+            The photo slot for a page, with ratio band: a full width strip with a fixed height.
+            Shown here at the width of the column. PageHeader puts it across the whole screen,
+            under the page title, on every inner page. See /about and /archive.
+          </p>
+          <PagePhoto image={{ src: "", alt: "" }} ratio="band" sizes="100vw" />
         </Section>
 
         <Section id="stories" title="Story components">

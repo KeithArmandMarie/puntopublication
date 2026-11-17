@@ -1,4 +1,5 @@
 import { InitialsBadge } from "@/components/InitialsBadge";
+import { fullName } from "@/lib/content";
 import type { StaffMember } from "@/lib/content";
 
 type AuthorBlockProps = {
@@ -7,8 +8,8 @@ type AuthorBlockProps = {
 };
 
 /**
- * Who wrote the story: first name and position, with the initials badge.
- * The authors are minors, so there are no photos, last names or links.
+ * Who wrote the story: full name and position, with the initials badge.
+ * No photos or links here.
  */
 export function AuthorBlock({ authors, className = "" }: AuthorBlockProps) {
   if (authors.length === 0) return null;
@@ -22,7 +23,7 @@ export function AuthorBlock({ authors, className = "" }: AuthorBlockProps) {
           <li key={author.id} className="flex items-center gap-3">
             <InitialsBadge name={author.firstName} />
             <p className="min-w-0">
-              <span className="block font-bold">{author.firstName}</span>
+              <span className="block font-bold">{fullName(author)}</span>
               <span className="block text-sm text-muted">{author.position}</span>
             </p>
           </li>

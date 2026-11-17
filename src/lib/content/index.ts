@@ -1,5 +1,5 @@
 import "server-only";
-import { formatNames } from "@/lib/content/byline";
+import { formatNames, fullName } from "@/lib/content/byline";
 import { loadContent } from "@/lib/content/load";
 import type { Content } from "@/lib/content/load";
 import type { Gallery, Post, StaffMember } from "@/lib/content/schema";
@@ -14,6 +14,7 @@ import { tagSlug } from "@/lib/content/slugs";
  */
 
 export type { Gallery, GalleryImage, Post, StaffMember } from "@/lib/content/schema";
+export { fullName } from "@/lib/content/byline";
 
 export type TagCount = {
   /** The tag as first written, for display. */
@@ -177,10 +178,10 @@ export function getAuthors(post: Post): StaffMember[] {
   });
 }
 
-/** First names only: "Ana", "Ana and Ben", "Ana, Ben and Carlo". Tagalog posts use "at". */
+/** Full names: "Ana Reyes", "Ana Reyes and Ben Cruz". Tagalog posts use "at". */
 export function getByline(post: Post): string {
   return formatNames(
-    getAuthors(post).map((author) => author.firstName),
+    getAuthors(post).map(fullName),
     post.language,
   );
 }

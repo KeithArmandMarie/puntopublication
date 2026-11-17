@@ -33,6 +33,9 @@
   --accent: #ffd939;
   --on-accent: #5f2805;
 
+  /* Flat tint over a photo that has text on it (the home banner). Used by Banner at --scrim-opacity. */
+  --scrim: #1b0e06;
+
   --link: #5f2805;
   --link-hover: #3b1803;
   --focus: #5f2805;
@@ -56,6 +59,8 @@
   --accent: #ffd939;
   --on-accent: #5f2805;
 
+  --scrim: #1b0e06;
+
   --link: #f0cfae;
   --link-hover: #fafafa;
   --focus: #ffd939;
@@ -67,6 +72,8 @@
   --gutter: 1rem; /* 16px on phones */
   --utility-height: 2.75rem; /* 44px top utility bar */
   --header-height: 4rem; /* 64px sticky main bar */
+  /* How much of the photo the scrim covers. scripts/contrast.mjs checks the text against the worst case, a white photo. */
+  --scrim-opacity: 0.66;
 }
 
 /*
