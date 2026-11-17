@@ -74,8 +74,8 @@ export default function Home() {
   const heroPosts = featured.length > 0 ? featured : [all[0]];
   const heroSlugs = new Set(heroPosts.map((post) => post.slug));
 
-  // The four newest stories that are not in the slider.
-  const headlines = all.filter((post) => !heroSlugs.has(post.slug)).slice(0, 4);
+  // The newest stories that are not in the slider.
+  const headlines = all.filter((post) => !heroSlugs.has(post.slug)).slice(0, 5);
 
   const hasFeed = getFacebookPageUrl() !== undefined;
 
@@ -108,9 +108,9 @@ export default function Home() {
       <Container className="pb-section pt-8 md:pt-section">
         <div
           id="top-stories"
-          className="scroll-mt-header lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8"
+          className="scroll-mt-header lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-8"
         >
-          <section aria-labelledby="top-stories-heading">
+          <section aria-labelledby="top-stories-heading" className="lg:col-start-1 lg:row-start-1">
             <h2 id="top-stories-heading" className="sr-only">
               Top stories
             </h2>
@@ -136,26 +136,31 @@ export default function Home() {
             )}
           </section>
 
-          {/* Beside the lead story: the latest headlines, then ways in (search and topics). */}
-          <div className="mt-section space-y-10 lg:mt-0">
-            {headlines.length > 0 ? (
-              <section aria-labelledby="latest-headlines-heading">
-                <SectionHeading title="Latest headlines" id="latest-headlines-heading" />
-                <ul className="divide-y divide-border">
-                  {headlines.map((post) => (
-                    <li key={post.slug} className="py-4">
-                      <PostCard post={post} variant="compact" thumbnail={false} />
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/archive"
-                  className="link inline-flex min-h-11 items-center border-t border-border text-sm font-semibold"
-                >
-                  See all published stories
-                </Link>
-              </section>
-            ) : null}
+          {/* Beside the lead story, the full height of the row: the latest headlines. */}
+          {headlines.length > 0 ? (
+            <section
+              aria-labelledby="latest-headlines-heading"
+              className="mt-section lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0"
+            >
+              <SectionHeading title="Latest headlines" id="latest-headlines-heading" />
+              <ul className="divide-y divide-border">
+                {headlines.map((post) => (
+                  <li key={post.slug} className="py-4">
+                    <PostCard post={post} variant="compact" thumbnail={false} />
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/archive"
+                className="link inline-flex min-h-11 items-center border-t border-border text-sm font-semibold"
+              >
+                See all published stories
+              </Link>
+            </section>
+          ) : null}
+
+          {/* Under the lead story: ways in (search and topics), side by side from 768px. */}
+          <div className="mt-section grid gap-10 md:grid-cols-2 md:gap-8 lg:col-start-1 lg:row-start-2 lg:mt-10 lg:content-start">
             <SearchBlock />
             <TopicStrip limit={10} />
           </div>
