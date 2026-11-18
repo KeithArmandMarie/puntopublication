@@ -1,7 +1,7 @@
 /**
- * Four ratios, and `band`: a full width strip with a fixed height (14rem on phones, 18rem
- * from 640px, 24rem from 1024px), for the photo under a page title. It is a height and not
- * a ratio, so a very wide screen never makes it taller than 24rem.
+ * Four ratios, and `band`: a wide strip with a fixed height (16rem on phones, 24rem
+ * from 640px, 32rem from 1024px), for the photo under a page title. It is a height and not
+ * a ratio, so a very wide screen never makes it taller than 32rem.
  */
 export type ImageRatio = "16/9" | "4/3" | "3/2" | "1/1" | "band";
 
@@ -11,7 +11,7 @@ export const imageRatioClass: Record<ImageRatio, string> = {
   "4/3": "aspect-4/3",
   "3/2": "aspect-3/2",
   "1/1": "aspect-1/1",
-  band: "h-56 sm:h-72 lg:h-96",
+  band: "h-64 sm:h-96 lg:h-128",
 };
 
 type PlaceholderImageProps = {
@@ -28,7 +28,7 @@ export function PlaceholderImage({ ratio = "16/9", className = "" }: Placeholder
   return (
     <div
       aria-hidden="true"
-      className={`flex w-full items-end bg-brand ${ratio === "band" ? "" : "rounded-md"} ${imageRatioClass[ratio]} ${className}`.trim()}
+      className={`flex w-full items-end bg-brand rounded-md ${imageRatioClass[ratio]} ${className}`.trim()}
     >
       <span className="p-2 text-xs text-on-brand-muted">Placeholder</span>
     </div>

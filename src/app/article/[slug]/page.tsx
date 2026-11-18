@@ -67,9 +67,9 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd(post) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd(post) }} />
 
-      <Container className="py-8 md:py-section">
+      <Container className="pb-section pt-10 md:pt-16">
         <article>
-          <header className="mx-auto max-w-4xl border-b border-border pb-6">
+          <header className="mx-auto max-w-4xl border-b border-border pb-8">
             <p className="flex flex-wrap items-center gap-x-4 text-sm">
               {section ? (
                 <Link
@@ -90,7 +90,7 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
             <h1 lang={post.language} className="mt-1">
               {post.title}
             </h1>
-            <p lang={post.language} className="mt-4 text-lg">
+            <p lang={post.language} className="mt-6 text-xl text-pretty">
               {post.excerpt}
             </p>
 
@@ -109,12 +109,12 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
           </header>
 
           {post.correction ? (
-            <CorrectionNote language={post.language} className="mx-auto mt-6 max-w-4xl">
+            <CorrectionNote language={post.language} className="mx-auto mt-8 max-w-4xl">
               {post.correction}
             </CorrectionNote>
           ) : null}
 
-          <figure className="mx-auto mt-6 max-w-4xl">
+          <figure className="mx-auto mt-10 max-w-4xl">
             <PostImage post={post} ratio="16/9" sizes={coverSizes} priority />
             {post.coverImage ? (
               <figcaption className="mt-2 flex flex-wrap gap-x-3 text-sm text-muted">
@@ -126,7 +126,7 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
 
           <div
             lang={post.language}
-            className="text-article mx-auto mt-8 max-w-article wrap-anywhere"
+            className="text-article mx-auto mt-12 max-w-article wrap-anywhere"
           >
             <Markdown>{post.body}</Markdown>
           </div>
@@ -160,7 +160,7 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
             className="mx-auto mt-section max-w-4xl"
           >
             <SectionHeading title="Related stories" id="related-heading" />
-            <div className="mt-6 grid gap-x-6 gap-y-8 md:grid-cols-3">
+            <div className="mt-8 grid gap-x-6 gap-y-10 md:grid-cols-3">
               {related.map((story) => (
                 <PostCard key={story.slug} post={story} variant="standard" sizes={relatedSizes} />
               ))}

@@ -7,12 +7,12 @@ type CorrectionNoteProps = {
   className?: string;
 };
 
-/** A flat note with a 1px brand border and the label "Correction". No icon, no alarm colors. */
+/** A note with a 1px brand border, 12px corners and the label "Correction". No icon, no alarm colors. */
 export function CorrectionNote({ children, language = "en", className = "" }: CorrectionNoteProps) {
   return (
     <div
       role="note"
-      className={`border border-brand-border bg-surface p-4 ${className}`.trim()}
+      className={`rounded-md border border-brand-border bg-surface p-5 ${className}`.trim()}
     >
       <p className="text-sm font-semibold">Correction</p>
       <p lang={language} className="mt-1">

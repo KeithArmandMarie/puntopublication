@@ -16,9 +16,10 @@ type CallToActionProps = {
 };
 
 /**
- * A full width call to action band: surface fill, thin rules above and below,
- * a heading, one paragraph and one or two buttons. Use it at most once per page,
- * below the content, for an action that is not reading (send a tip, follow, join).
+ * A call to action panel: a `surface` panel with 12px corners across the 1200px grid, a large
+ * heading, one paragraph and one or two buttons. Use it at most once per page, below the
+ * content, for an action that is not reading (send a tip, follow, join). It only adds space
+ * below itself, because the content above already ends with its own space.
  */
 export function CallToAction({
   title,
@@ -29,18 +30,17 @@ export function CallToAction({
   className = "",
 }: CallToActionProps) {
   return (
-    <section
-      aria-labelledby={id}
-      className={`border-y border-border bg-surface ${className}`.trim()}
-    >
-      <Container className="py-section md:flex md:items-end md:justify-between md:gap-8">
-        <div>
-          <Heading id={id} className="text-2xl font-semibold">
-            {title}
-          </Heading>
-          <p className="mt-3 max-w-article text-pretty text-muted">{children}</p>
+    <section aria-labelledby={id} className={`pb-section ${className}`.trim()}>
+      <Container>
+        <div className="rounded-md bg-surface px-6 py-10 md:flex md:items-end md:justify-between md:gap-10 md:px-14 md:py-16">
+          <div>
+            <Heading id={id} className="text-3xl font-semibold tracking-tight md:text-4xl">
+              {title}
+            </Heading>
+            <p className="mt-4 max-w-article text-lg text-pretty text-muted">{children}</p>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3 md:mt-0 md:shrink-0">{actions}</div>
         </div>
-        <div className="mt-6 flex flex-wrap gap-3 md:mt-0 md:shrink-0">{actions}</div>
       </Container>
     </section>
   );

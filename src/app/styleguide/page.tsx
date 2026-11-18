@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArticleNav } from "@/components/ArticleNav";
 import { AuthorBlock } from "@/components/AuthorBlock";
-import { Button, buttonClasses } from "@/components/Button";
+import { Button, ButtonArrow, buttonClasses } from "@/components/Button";
 import { CallToAction } from "@/components/CallToAction";
 import { Chip } from "@/components/Chip";
 import { Container } from "@/components/Container";
@@ -20,6 +20,7 @@ import {
   SearchIcon,
   SunIcon,
 } from "@/components/icons";
+import { Marquee } from "@/components/Marquee";
 import { LanguageBadge } from "@/components/PostLabels";
 import { PostCard } from "@/components/PostCard";
 import { PagePhoto } from "@/components/PagePhoto";
@@ -477,6 +478,36 @@ export default function StyleguidePage() {
             >
               One short paragraph that says what the action is for.
             </CallToAction>
+          </div>
+        </Section>
+
+        <Section id="motion-components" title="Button arrow and marquee">
+          <p className="mb-4 max-w-article text-muted">
+            ButtonArrow slides 4px right while a mouse is on the button. Marquee is a slow row of
+            links that stops on hover and focus and does not move under reduced motion. Parallax
+            (the home banner photo) and HeaderScroll (the header hiding on scroll) are shown on
+            the home page.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/styleguide" className={buttonClasses("accent")}>
+              Main action
+              <ButtonArrow />
+            </Link>
+            <Link href="/styleguide" className={buttonClasses("secondary")}>
+              Second action
+              <ButtonArrow />
+            </Link>
+          </div>
+          <div className="mt-8 border-y border-border bg-surface">
+            <Marquee
+              label="Sample moving list"
+              items={[
+                { label: "First item", href: "/styleguide" },
+                { label: "Second item", href: "/styleguide" },
+                { label: "Third item", href: "/styleguide" },
+                { label: "Fourth item", href: "/styleguide" },
+              ]}
+            />
           </div>
         </Section>
 

@@ -173,6 +173,9 @@
   --text-3xl--line-height: 1.1;
   --text-4xl: 3.5rem;
   --text-4xl--line-height: 1.05;
+  /* Page title on wide screens (the top of every inner page from 1024px). */
+  --text-5xl: 4.5rem;
+  --text-5xl--line-height: 1;
   /* Display: the home banner title. Fluid, 40px on a phone up to 96px on a wide screen. */
   --text-display: clamp(2.5rem, 1.25rem + 5.5vw, 6rem);
   --text-display--line-height: 1.02;

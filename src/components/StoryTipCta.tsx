@@ -1,4 +1,4 @@
-import { buttonClasses } from "@/components/Button";
+import { ButtonArrow, buttonClasses } from "@/components/Button";
 import { CallToAction } from "@/components/CallToAction";
 import { getFacebookPageUrl } from "@/components/FacebookFeed";
 import { contactEmail } from "@/config/site";
@@ -50,6 +50,7 @@ export function StoryTipCta() {
           {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         >
           {link.label}
+          <ButtonArrow />
           {link.external ? <span className="sr-only"> (opens in a new tab)</span> : null}
         </a>
       ))}

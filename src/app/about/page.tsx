@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { ButtonArrow, buttonClasses } from "@/components/Button";
 import { Chip } from "@/components/Chip";
 import { Container } from "@/components/Container";
 import { getFacebookPageUrl } from "@/components/FacebookFeed";
@@ -50,7 +51,7 @@ function Block({ id, title, children }: { id: string; title: string; children: R
   return (
     <section aria-labelledby={id} data-reveal>
       <SectionHeading title={title} id={id} />
-      <div className="mt-4">{children}</div>
+      <div className="mt-6">{children}</div>
     </section>
   );
 }
@@ -61,14 +62,12 @@ function ReachUs() {
   const email = contactEmail.trim();
   if (!facebook && !email) return null;
 
-  const linkClass = "link inline-flex min-h-11 items-center font-semibold";
-
   return (
     <Block id="about-reach" title="How to reach us">
       <p className="max-w-article">
         News tips, story ideas and photos from your town are welcome. Stay connected. Stay informed.
       </p>
-      <ul className="mt-2">
+      <ul className="mt-6 flex flex-wrap gap-3">
         {facebook ? (
           <>
             <li>
@@ -76,14 +75,20 @@ function ReachUs() {
                 href={facebookMessageUrl(facebook)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={linkClass}
+                className={buttonClasses("primary")}
               >
                 Send a message on Facebook
+                <ButtonArrow />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             </li>
             <li>
-              <a href={facebook} target="_blank" rel="noopener noreferrer" className={linkClass}>
+              <a
+                href={facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonClasses("secondary")}
+              >
                 Follow our Facebook page
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
@@ -92,7 +97,7 @@ function ReachUs() {
         ) : null}
         {email ? (
           <li>
-            <a href={`mailto:${email}`} className={linkClass}>
+            <a href={`mailto:${email}`} className={buttonClasses("secondary")}>
               {email}
             </a>
           </li>
@@ -126,7 +131,7 @@ export default function AboutPage() {
           <div className="lg:col-span-7">
             <SectionHeading title="Who we are" id="about-who" />
             <div className="mt-4 max-w-article space-y-4">
-              <p className="text-xl font-medium">
+              <p className="text-2xl font-medium leading-snug tracking-tight">
                 Welcome to the official digital home of Punto Publication, the Provincial Youth
                 Journalist Publication of Davao del Sur.
               </p>
@@ -152,11 +157,11 @@ export default function AboutPage() {
         <section aria-labelledby="about-vision-mission" data-reveal>
           <SectionHeading title="Our vision and mission" id="about-vision-mission" />
           <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
-            <div className="border-t border-brand-border pt-4">
+            <div className="rounded-md bg-surface p-8 md:p-10">
               <h3>Vision</h3>
               <p className="mt-3 text-xl font-medium leading-snug">{vision}</p>
             </div>
-            <div className="border-t border-brand-border pt-4">
+            <div className="rounded-md bg-surface p-8 md:p-10">
               <h3>Mission</h3>
               <p className="mt-3 text-xl font-medium leading-snug">{mission}</p>
             </div>
@@ -165,7 +170,7 @@ export default function AboutPage() {
 
         <section aria-labelledby="about-do" data-reveal>
           <SectionHeading title="What we do" id="about-do" />
-          <ul className="mt-6 grid gap-8 md:grid-cols-3">
+          <ul className="mt-6 grid gap-10 md:grid-cols-3">
             {platforms.map((platform) => (
               <li key={platform.name}>
                 <PagePhoto
@@ -198,7 +203,7 @@ export default function AboutPage() {
             Our promise
           </h2>
           <div className="mt-4 lg:col-span-8 lg:mt-0">
-            <p className="text-3xl font-semibold tracking-tight md:text-4xl">
+            <p className="text-4xl font-semibold tracking-tighter md:text-5xl">
               Truth in every post. Storytelling in every frame.
             </p>
             <p lang="ceb" className="mt-6 max-w-article text-lg text-on-brand-muted">

@@ -182,7 +182,7 @@ export function ArchiveBrowser({
             Show all stories
           </Button>
         ) : (
-          <div className="mt-6 space-y-10">
+          <div className="mt-6 space-y-14">
             {groups.map((group) => (
               <section key={group.key} aria-labelledby={`archive-${group.key}`}>
                 <SectionHeading title={group.label} id={`archive-${group.key}`} />

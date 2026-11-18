@@ -40,7 +40,7 @@ export function Footer() {
 
   return (
     <footer className="mt-auto bg-brand text-on-brand [--focus:var(--accent)]">
-      <Container className="py-12">
+      <Container className="py-16 md:py-20">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Logo variant="footer" />
@@ -101,7 +101,7 @@ export function Footer() {
           )}
         </div>
 
-        <div className="mt-10 border-t border-brand-border pt-6 text-sm text-on-brand-muted">
+        <div className="mt-14 border-t border-brand-border pt-6 text-sm text-on-brand-muted">
           <p>
             &copy; <CurrentYear /> {siteName}
           </p>
