@@ -14,7 +14,7 @@ Provincial Youth Journalist Publication, Davao del Sur. News site for the genera
 ## Design rules that never change
 Colors: background #fafafa, brand brown #5F2805, accent yellow #FFD939, all as CSS variables with a light and a dark theme.
 Font: Plus Jakarta Sans only. No all caps text and no letter spaced labels.
-Style: flat, clean, newspaper like. 1px borders and thin rules, radius 4px at most, almost no shadows.
+Style: clean, modern, Framer like (relaxed 2026-11-18). Large type, generous space, few boxes. Radius 12px on photos, cards and fields, buttons and chips fully round (pill), 4px on tiny labels only. One soft shadow token, `shadow-float`, only on floating items (the stuck header, popovers), never on cards. Thin 1px rules where they help reading.
 Yellow is a fill with brown text on top. Never yellow text on a light background.
 No gradients, glow, blur, glassmorphism, emoji in the UI, purple or blue default palettes, icon card rows, fake stats, testimonials or filler marketing copy.
 No invented claims, awards, numbers or history about the publication.
@@ -24,7 +24,7 @@ Meet WCAG AA contrast in both themes.
 Our journalists are adults. Show full names (first and last) everywhere: bylines, staff page, image credits, metadata, structured data, RSS.
 
 ## Code rules
-Small typed components. Server components by default, client components only when needed. All pages statically generated. Use Next Image with sizes and alt text. Keep dependencies minimal and ask before adding any. Approved animation dependencies: `lenis` (smooth scrolling, whole site) and `motion` (through `LazyMotion` and `m`). Their rules are under "Interaction and motion" in DESIGN.md. Reduced motion turns both off. Scroll reveals (a slow fade and 48px rise over about a second, like a Framer site, once, on major blocks, through `data-reveal`, approved 2026-11-18) are allowed. Page transitions, parallax and stagger stay out.
+Small typed components. Server components by default, client components only when needed. All pages statically generated. Use Next Image with sizes and alt text. Keep dependencies minimal and ask before adding any. Approved animation dependencies: `lenis` (smooth scrolling, whole site) and `motion` (through `LazyMotion` and `m`). Their rules are under "Interaction and motion" in DESIGN.md. Reduced motion turns both off. Scroll reveals (a slow fade and 48px rise over about a second, like a Framer site, once, on major blocks, through `data-reveal`, approved 2026-11-18) are allowed. Also approved 2026-11-18: light parallax on the home banner photo (`Parallax`), the hide-on-scroll header (`HeaderScroll`) and the municipality marquee (`Marquee`, with a pause button). Page transitions and stagger stay out.
 
 ## Working rules
 Build only the page or task I ask for. Do not touch unrelated files.

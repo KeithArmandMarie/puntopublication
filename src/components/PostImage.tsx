@@ -42,7 +42,7 @@ export function PostImage({
 
   return (
     <div
-      className={`relative w-full overflow-hidden bg-surface ${imageRatioClass[ratio]} ${className}`.trim()}
+      className={`relative w-full overflow-hidden bg-surface ${ratio === "band" ? "" : "rounded-md"} ${imageRatioClass[ratio]} ${className}`.trim()}
     >
       <Image
         src={src}

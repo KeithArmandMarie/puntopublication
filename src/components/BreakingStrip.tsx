@@ -14,7 +14,7 @@ export function BreakingStrip() {
   return (
     <div className="border-b border-brand bg-accent text-on-accent [--focus:var(--on-accent)]">
       <Container className="flex min-h-11 flex-wrap items-center gap-x-3 py-1 text-sm">
-        <strong className="font-extrabold">Breaking</strong>
+        <strong className="font-semibold">Breaking</strong>
         <Link
           href={`/article/${post.slug}`}
           lang={post.language}

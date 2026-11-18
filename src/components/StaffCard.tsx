@@ -12,7 +12,7 @@ type StaffCardProps = {
 };
 
 /**
- * A team member as a card: square picture, full name and position, in a 1px border.
+ * A team member as a card: square picture, full name and position, on a surface fill with 12px corners.
  * The card is not a link. With no photo the picture is the first letter of the
  * first name on the brand color.
  */
@@ -25,7 +25,7 @@ export function StaffCard({
   const initial = Array.from(member.firstName.trim())[0]?.toUpperCase() ?? "";
 
   return (
-    <article className={`overflow-hidden rounded-md border border-border ${className}`.trim()}>
+    <article className={`overflow-hidden rounded-md bg-surface ${className}`.trim()}>
       {member.photo ? (
         <div className="relative aspect-1/1 w-full bg-surface">
           <Image
@@ -40,13 +40,13 @@ export function StaffCard({
       ) : (
         <div
           aria-hidden="true"
-          className="flex aspect-1/1 w-full items-center justify-center bg-brand text-4xl font-extrabold text-on-brand"
+          className="flex aspect-1/1 w-full items-center justify-center bg-brand text-4xl font-semibold text-on-brand"
         >
           {initial}
         </div>
       )}
-      <div className="border-t border-border p-3">
-        <Heading className="text-lg font-bold tracking-tight">{fullName(member)}</Heading>
+      <div className="p-4">
+        <Heading className="text-lg font-semibold tracking-tight">{fullName(member)}</Heading>
         <p className="mt-1 text-sm text-muted">{member.position}</p>
       </div>
     </article>

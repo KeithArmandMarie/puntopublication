@@ -51,7 +51,7 @@ export function ThemeToggle() {
           saveTheme(isDark ? "light" : "dark");
           setAnnouncement(isDark ? "Dark mode off" : "Dark mode on");
         }}
-        className="press inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-border aria-pressed:bg-accent aria-pressed:text-on-accent"
+        className="press inline-flex size-11 items-center justify-center rounded-full text-foreground hover:bg-border aria-pressed:bg-accent aria-pressed:text-on-accent"
       >
         {/* Shown by CSS from the theme on the html element, so the first paint is already right. */}
         <span className="inline-flex [[data-theme=dark]_&]:hidden">

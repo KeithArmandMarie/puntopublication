@@ -39,4 +39,7 @@ export const pageImages = {
   archive: {
     header: { src: "", alt: "" },
   },
+  team: {
+    header: { src: "", alt: "" },
+  },
 } satisfies Record<string, Record<string, PageImage>>;

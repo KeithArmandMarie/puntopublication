@@ -55,11 +55,11 @@ const colorTokens = [
 ] as const;
 
 const typeScale = [
-  { name: "text-4xl", className: "text-4xl font-extrabold tracking-tight", note: "Page title, 48px from md" },
-  { name: "text-3xl", className: "text-3xl font-extrabold tracking-tight", note: "Page title on phones, 36px" },
-  { name: "text-2xl", className: "text-2xl font-bold tracking-tight", note: "Section heading, 30px" },
-  { name: "text-xl", className: "text-xl font-bold tracking-tight", note: "Sub heading, 24px" },
-  { name: "text-lg", className: "text-lg font-bold", note: "Card title, 20px" },
+  { name: "text-4xl", className: "text-4xl font-semibold tracking-tight", note: "Page title, 56px from md" },
+  { name: "text-3xl", className: "text-3xl font-semibold tracking-tight", note: "Page title on phones, 40px" },
+  { name: "text-2xl", className: "text-2xl font-semibold tracking-tight", note: "Section heading, 32px" },
+  { name: "text-xl", className: "text-xl font-semibold tracking-tight", note: "Sub heading, 24px" },
+  { name: "text-lg", className: "text-lg font-semibold", note: "Card title, 20px" },
   { name: "text-article", className: "text-article", note: "Story body, 18px, line height 1.65" },
   { name: "text-base", className: "text-base", note: "Body, 17px, line height 1.6" },
   { name: "text-sm", className: "text-sm", note: "Meta and navigation, 15px" },
@@ -196,7 +196,7 @@ export default function StyleguidePage() {
 
         <Section id="type" title="Type scale">
           <p className="mb-6 max-w-prose text-muted">
-            Plus Jakarta Sans only. Headings are weight 700 or 800 with tight tracking.
+            Plus Jakarta Sans only. Headings are weight 600 with tight tracking. Nothing on the site is heavier than 600.
             No all caps and no letter spaced labels.
           </p>
           <ul className="divide-y divide-border border-y border-border">
@@ -234,7 +234,7 @@ export default function StyleguidePage() {
           </ul>
           <p className="mt-6 max-w-prose text-sm text-muted">
             Content width is 1200px. Page gutters are 16px on phones and 24px from 640px
-            up. Section spacing is the py-section token (48px).
+            up. Section spacing is the py-section token (64px on phones, 112px from 768px).
           </p>
         </Section>
 

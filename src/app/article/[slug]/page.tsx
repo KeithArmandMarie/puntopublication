@@ -74,7 +74,7 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
               {section ? (
                 <Link
                   href={section.href}
-                  className="link inline-flex min-h-11 items-center font-bold"
+                  className="link inline-flex min-h-11 items-center font-semibold"
                 >
                   {section.name}
                 </Link>
@@ -136,7 +136,7 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
 
             {post.tags.length > 0 ? (
               <section aria-labelledby="tags-heading" className="border-t border-border pt-6">
-                <p id="tags-heading" className="text-sm font-bold">
+                <p id="tags-heading" className="text-sm font-semibold">
                   Tags
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-3">

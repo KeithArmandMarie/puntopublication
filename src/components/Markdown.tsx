@@ -28,7 +28,7 @@ function InlineToken({ token }: { token: Token }): ReactNode {
       return text.tokens ? <Inline tokens={text.tokens} /> : text.text;
     }
     case "strong":
-      return <strong className="font-bold"><Inline tokens={(token as Tokens.Strong).tokens} /></strong>;
+      return <strong className="font-semibold"><Inline tokens={(token as Tokens.Strong).tokens} /></strong>;
     case "em":
       return <em><Inline tokens={(token as Tokens.Em).tokens} /></em>;
     case "del":

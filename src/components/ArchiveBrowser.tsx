@@ -47,7 +47,7 @@ const getServerSearch = () => "";
 const subscribeNothing = () => () => {};
 
 const chipBase =
-  "press inline-flex min-h-11 items-center rounded-md border px-4 text-sm font-semibold underline-offset-4 hover:underline";
+  "press inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-semibold underline-offset-4 hover:underline";
 const chipOff = "border-border-strong bg-transparent text-foreground hover:bg-surface";
 const chipOn = "border-foreground bg-foreground text-background";
 

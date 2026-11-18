@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Banner } from "@/components/Banner";
 import { BreakingStrip } from "@/components/BreakingStrip";
-import { buttonClasses } from "@/components/Button";
+import { ButtonArrow, buttonClasses } from "@/components/Button";
 import { Container } from "@/components/Container";
 import { FacebookFeed, getFacebookPageUrl } from "@/components/FacebookFeed";
 import { FeaturedSlider } from "@/components/FeaturedSlider";
 import { GalleryHighlight } from "@/components/GalleryHighlight";
+import { Marquee } from "@/components/Marquee";
 import { MunicipalityGrid } from "@/components/MunicipalityGrid";
 import { PostCard } from "@/components/PostCard";
 import { SearchBlock } from "@/components/SearchBlock";
@@ -14,7 +15,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { StaffGrid } from "@/components/StaffGrid";
 import { TopicStrip } from "@/components/TopicStrip";
 import { pageImages } from "@/config/page-images";
-import { logo, motto, siteDescription, siteName, tagline } from "@/config/site";
+import { logo, motto, municipalities, siteDescription, siteName, tagline } from "@/config/site";
 import { getAllPosts, getFeaturedPosts } from "@/lib/content";
 import { absoluteUrl } from "@/lib/site-url";
 
@@ -95,9 +96,11 @@ export default function Home() {
           <>
             <Link href="#top-stories" className={buttonClasses("accent")}>
               Read the top stories
+              <ButtonArrow />
             </Link>
             <Link href="/archive" className={buttonClasses("onBrand")}>
               Browse the archive
+              <ButtonArrow />
             </Link>
           </>
         }
@@ -105,7 +108,18 @@ export default function Home() {
         {tagline}
       </Banner>
 
-      <Container className="pb-section pt-8 md:pt-section">
+      {/* A slow row of the ten municipalities, each a link to the archive filtered by it. */}
+      <div className="border-b border-border bg-surface">
+        <Marquee
+          label="Stories by municipality"
+          items={municipalities.map((municipality) => ({
+            label: municipality.name,
+            href: municipality.href,
+          }))}
+        />
+      </div>
+
+      <Container className="py-section">
         <div
           id="top-stories"
           className="scroll-mt-header lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-8"
@@ -191,7 +205,7 @@ export default function Home() {
         </div>
 
         <div className="mt-section">
-          <StaffGrid />
+          <StaffGrid limit={4} />
         </div>
       </Container>
     </>

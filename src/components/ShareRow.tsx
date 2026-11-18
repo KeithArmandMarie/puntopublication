@@ -35,7 +35,7 @@ export function ShareRow({ title, path, className = "" }: ShareRowProps) {
 
   return (
     <div role="group" aria-labelledby="share-heading" className={className}>
-      <p id="share-heading" className="text-sm font-bold">
+      <p id="share-heading" className="text-sm font-semibold">
         Share this story
       </p>
       <div className="mt-3 flex flex-wrap items-center gap-3">

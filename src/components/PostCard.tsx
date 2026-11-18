@@ -32,9 +32,9 @@ const defaultSizes: Record<PostCardVariant, string> = {
 };
 
 const titleClass: Record<PostCardVariant, string> = {
-  large: "text-xl font-extrabold md:text-2xl",
-  standard: "text-lg font-bold",
-  compact: "text-base font-bold",
+  large: "text-xl font-semibold md:text-2xl",
+  standard: "text-lg font-semibold",
+  compact: "text-base font-semibold",
 };
 
 /**
@@ -61,7 +61,7 @@ export function PostCard({
   const headline = (
     <Heading
       lang={post.language}
-      className={`${hero && variant === "large" ? "text-2xl font-extrabold md:text-3xl" : titleClass[variant]} tracking-tight ${clamp ? "line-clamp-3" : ""}`.trim()}
+      className={`${hero && variant === "large" ? "text-2xl font-semibold md:text-3xl" : titleClass[variant]} tracking-tight ${clamp ? "line-clamp-3" : ""}`.trim()}
     >
       <Link
         href={`/article/${post.slug}`}

@@ -7,7 +7,7 @@ import { NavLink } from "@/components/NavLink";
 import { mainNav, searchHref } from "@/config/site";
 
 const rowClass =
-  "flex min-h-14 w-full items-center justify-between gap-3 text-lg font-bold text-foreground hover:underline aria-[current=page]:underline";
+  "flex min-h-14 w-full items-center justify-between gap-3 text-lg font-semibold text-foreground hover:underline aria-[current=page]:underline";
 
 /**
  * Phone and tablet menu. A native modal dialog gives the focus trap, Escape
@@ -55,7 +55,7 @@ export function MobileMenu({ children }: { children?: ReactNode }) {
         aria-haspopup="dialog"
         aria-expanded={open}
         onClick={() => setOpen(true)}
-        className="press inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold text-foreground hover:bg-surface lg:hidden"
+        className="press inline-flex min-h-11 items-center gap-2 rounded-full border border-border-strong px-3 font-semibold text-foreground hover:bg-surface lg:hidden"
       >
         <MenuIcon />
         Menu
@@ -79,7 +79,7 @@ export function MobileMenu({ children }: { children?: ReactNode }) {
               type="button"
               autoFocus
               onClick={close}
-              className="press inline-flex min-h-11 items-center gap-2 rounded-md border border-border-strong px-3 font-semibold hover:bg-surface"
+              className="press inline-flex min-h-11 items-center gap-2 rounded-full border border-border-strong px-3 font-semibold hover:bg-surface"
             >
               <CloseIcon />
               Close

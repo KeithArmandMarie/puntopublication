@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Container } from "@/components/Container";
+import { Parallax } from "@/components/Parallax";
 
 type BannerProps = {
   /** The page's h1. May hold `<span className="block">` lines. */
@@ -60,13 +61,19 @@ export function Banner({
 
   const text = (
     <>
-      <h1 className={fullScreen ? "max-w-prose text-4xl" : "max-w-prose"}>{title}</h1>
+      <h1
+        className={
+          fullScreen ? "max-w-5xl text-display tracking-tighter" : "max-w-prose"
+        }
+      >
+        {title}
+      </h1>
       <p
-        className={`mt-4 max-w-article text-lg text-pretty ${photo ? "text-on-brand" : "text-on-brand-muted"}`}
+        className={`max-w-article text-pretty ${fullScreen ? "mt-6 text-xl" : "mt-4 text-lg"} ${photo ? "text-on-brand" : "text-on-brand-muted"}`}
       >
         {children}
       </p>
-      {actions ? <div className="mt-8 flex flex-wrap gap-3">{actions}</div> : null}
+      {actions ? <div className="mt-10 flex flex-wrap gap-3">{actions}</div> : null}
     </>
   );
 
@@ -75,14 +82,17 @@ export function Banner({
       {above}
       {photo ? (
         <div className={`relative isolate overflow-hidden ${band}`}>
-          <Image
-            src={photo.src}
-            alt={photo.alt}
-            fill
-            priority
-            sizes="100vw"
-            className="-z-20 object-cover"
-          />
+          {/* Light parallax: the photo moves a little slower than the page. The box carries the z index, because it is its own stacking context. */}
+          <Parallax className="-z-20">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+            />
+          </Parallax>
           {/* The scrim: --scrim at --scrim-opacity, one flat layer. Utilities, not a custom class, so it never depends on a stale CSS rebuild. */}
           <div aria-hidden="true" className="absolute inset-0 -z-10 bg-(--scrim) opacity-(--scrim-opacity)" />
           <Container className={padding}>{text}</Container>

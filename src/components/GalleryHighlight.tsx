@@ -16,8 +16,8 @@ export function GalleryHighlight() {
   return (
     <section aria-labelledby="gallery-highlight-heading">
       <SectionHeading title="Latest gallery" id="gallery-highlight-heading" />
-      <div className="group relative mt-4 outline-offset-4 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-focus">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="group relative mt-6 outline-offset-4 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-focus">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {gallery.images.slice(0, 4).map((image, position) => (
             <PostImage
               key={position}
@@ -27,7 +27,7 @@ export function GalleryHighlight() {
             />
           ))}
         </div>
-        <h3 className="mt-3 text-lg font-bold tracking-tight">
+        <h3 className="mt-3 text-lg font-semibold tracking-tight">
           <Link
             href={`/gallery/${gallery.slug}`}
             className="text-foreground underline-offset-4 after:absolute after:inset-0 group-hover:underline focus-visible:outline-none"

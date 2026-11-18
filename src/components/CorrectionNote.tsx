@@ -14,7 +14,7 @@ export function CorrectionNote({ children, language = "en", className = "" }: Co
       role="note"
       className={`border border-brand-border bg-surface p-4 ${className}`.trim()}
     >
-      <p className="text-sm font-bold">Correction</p>
+      <p className="text-sm font-semibold">Correction</p>
       <p lang={language} className="mt-1">
         {children}
       </p>

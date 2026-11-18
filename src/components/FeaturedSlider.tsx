@@ -5,7 +5,7 @@ import type { KeyboardEvent, MouseEvent, PointerEvent, ReactNode } from "react";
 import { animate, domAnimation, LazyMotion, MotionConfig, useMotionValue } from "motion/react";
 import type { AnimationPlaybackControls } from "motion/react";
 import * as m from "motion/react-m";
-import { ChevronLeftIcon, ChevronRightIcon, PauseIcon, PlayIcon } from "@/components/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/icons";
 
 type FeaturedSliderProps = {
   /** One element per slide, rendered on the server. The slider only moves between them. */
@@ -37,7 +37,7 @@ function subscribeReducedMotion(onChange: () => void) {
 }
 
 const controlClass =
-  "press inline-flex size-11 items-center justify-center rounded-md border border-border-strong text-foreground hover:bg-surface";
+  "press inline-flex size-11 items-center justify-center rounded-full border border-border-strong text-foreground hover:bg-surface";
 
 type Drag = {
   pointerId: number;
@@ -55,8 +55,8 @@ type Drag = {
  * The featured stories carousel. All slides sit in one grid cell, so the
  * tallest slide sets the height before any JavaScript runs and nothing jumps.
  * Slides fade with CSS. Autoplay (7 seconds) runs only when the device does
- * not ask for reduced motion, and stops on hover, on focus, while dragging and
- * on the pause button. A touch swipe moves the slide 1:1 with the finger; the
+ * not ask for reduced motion, and stops on hover, on focus and while dragging
+ * (there is no pause button, removed on request). A touch swipe moves the slide 1:1 with the finger; the
  * previous and next buttons and the arrow keys do the same without a gesture.
  */
 export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
@@ -65,7 +65,6 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
   const id = useId();
 
   const [index, setIndex] = useState(0);
-  const [playing, setPlaying] = useState(true);
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -91,7 +90,7 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
     [count],
   );
 
-  const autoplay = !reducedMotion && playing && !hovered && !focused && !dragging && count > 1;
+  const autoplay = !reducedMotion && !hovered && !focused && !dragging && count > 1;
 
   useEffect(() => {
     if (!autoplay) return;
@@ -249,23 +248,6 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3">
-        <button
-          type="button"
-          onClick={() => {
-            setPlaying((value) => !value);
-            if (!playing) {
-              // Pressing Play is a clear choice: it wins over hover and focus until they happen again.
-              setHovered(false);
-              setFocused(false);
-            }
-          }}
-          aria-label={playing ? "Pause slideshow" : "Play slideshow"}
-          className="press inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md border border-border-strong text-foreground hover:bg-surface motion-reduce:hidden sm:px-3"
-        >
-          {playing ? <PauseIcon /> : <PlayIcon />}
-          <span className="hidden text-sm font-semibold sm:inline">{playing ? "Pause" : "Play"}</span>
-        </button>
-
         {/* Phones: a plain count, because five 44px dots and the other controls do not fit. */}
         <p aria-hidden="true" className="text-sm text-muted sm:hidden">
           {index + 1} of {count}
@@ -279,11 +261,11 @@ export function FeaturedSlider({ children, label }: FeaturedSliderProps) {
               onClick={() => go(position)}
               aria-label={`Story ${position + 1} of ${count}`}
               aria-current={position === index ? "true" : undefined}
-              className="press group/dot inline-flex size-11 items-center justify-center rounded-md"
+              className="press group/dot inline-flex size-11 items-center justify-center rounded-full"
             >
               <span
                 aria-hidden="true"
-                className={`size-3 rounded-sm border transition-colors duration-(--duration-fast) ease-out ${
+                className={`size-3 rounded-full border transition-colors duration-(--duration-fast) ease-out ${
                   position === index
                     ? "border-foreground bg-foreground"
                     : "border-border-strong bg-transparent group-hover/dot:bg-border"

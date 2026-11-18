@@ -13,7 +13,7 @@ export function InitialsBadge({ name, className = "" }: InitialsBadgeProps) {
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex size-11 shrink-0 items-center justify-center rounded-md border border-brand-border bg-brand text-lg font-bold text-on-brand ${className}`.trim()}
+      className={`inline-flex size-11 shrink-0 items-center justify-center rounded-md border border-brand-border bg-brand text-lg font-semibold text-on-brand ${className}`.trim()}
     >
       {initial}
     </span>

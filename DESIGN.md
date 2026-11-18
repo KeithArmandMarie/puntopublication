@@ -14,7 +14,7 @@ Logo: `public/brand/logo.webp` (transparent seal). Shown with the site name as t
 1. Yellow is a fill with brown text on top. Never yellow text on a light background.
 2. Never hardcode a color, font size or spacing value. Use the variables and Tailwind tokens below.
 3. Plus Jakarta Sans only. No all caps text, no letter spaced labels.
-4. 1px borders and thin rules. Radius 4px at most. No shadows. No gradients, glow, blur or glassmorphism.
+4. Radius: 12px (`rounded-md`) on photos, cards and fields, fully round (`rounded-full`) on buttons and chips, 4px (`rounded-sm`) on tiny labels. Thin 1px rules where they help reading. One soft shadow, `shadow-float`, only on floating items (the stuck header, popovers), never on cards. No gradients, glow, blur or glassmorphism. (Radius, shadow and the motion below were relaxed on 2026-11-18 for a Framer like look. Gradients, glow and blur stay out.)
 5. No emoji in the UI. Icons are few, inline SVG, one 1.75 stroke.
 6. No fake stats, testimonials, filler copy, or invented claims, awards, numbers or history.
 7. WCAG AA in both themes (checked by `npm run contrast`).
@@ -37,7 +37,7 @@ Advice from the skills that is not used, and what is done instead:
 | Translucent materials, `backdrop-filter`, blurred sticky bars, scroll edge blur | 4 | Solid fills. A 1px `border-border` rule where the header meets the content. |
 | Blur (`filter: blur`) to hide a rough crossfade | 4 | A plain opacity crossfade, shorter or with a better curve. |
 | Gradient masks at scroll edges | 4 | The 1px rule. |
-| Shadows for depth, bigger shadows on bigger surfaces | 4 | Hierarchy from size, weight, spacing, `surface` fill and 1px borders. |
+| Shadows for depth, bigger shadows on bigger surfaces | 4 | Only `shadow-float`, on floating items. Cards get hierarchy from size, weight, spacing and `surface` fill. |
 | System font first, positive tracking on small text | 3 | Plus Jakarta Sans only. Tracking `-0.02em` on headings and `0` elsewhere. |
 | Spring libraries (Motion) for drag and flick | `CLAUDE.md`: ask before adding a dependency | Asked and approved (2026-11-16): `motion` and `lenis` are dependencies. Springs only settle a drag back to rest, stiff and well damped, no bounce. Everything else stays CSS. |
 | Bounce, confetti, delight effects, stagger, parallax | 6 and plain reading | Not used. Content is readable at once. |
@@ -69,16 +69,17 @@ Defined in `src/app/globals.css`. Light is the default. Dark applies when `data-
 Use as `bg-surface`, `text-muted`, `border-border`, `bg-accent text-on-accent` and so on.
 
 ## Typography
-Font: Plus Jakarta Sans through `next/font/google`, variable font, `display: swap`. Only weights 400 to 800 are used. Variable `--font-plus-jakarta-sans`, Tailwind `font-sans`.
-Headings: weight 800 (h1) or 700, tracking `-0.02em`, tight line height. Plain `h1` to `h4` are styled in `globals.css`.
+Font: Plus Jakarta Sans through `next/font/google`, variable font, `display: swap`. Only weights 400 to 600 are used: never above 600 (`font-semibold` is the heaviest class, and `b`, `strong` and `th` are set to 600 in `globals.css`). Do not use `font-bold`, `font-extrabold` or `font-black`. Variable `--font-plus-jakarta-sans`, Tailwind `font-sans`.
+Headings: weight 600, tracking `-0.02em`, tight line height. Plain `h1` to `h4` are styled in `globals.css`.
 Body: 17px, line height 1.6. Story text on the article page is 18px with line height 1.65 (`text-article`) in a column of `max-w-article` (42rem, about 65 to 67 letters per line). `max-w-prose` is 68ch, and `ch` is the width of a zero, which is wide in Plus Jakarta Sans, so `max-w-prose` gives about 85 letters per line. Use `max-w-article` where the line must really be at most 68 characters.
 Tracking and leading follow size: `-0.02em` and tight leading on large text, `0` and looser leading on body text. Never one fixed `letter-spacing` for every size, and no positive tracking on small text (rule 3). Hierarchy is weight, size and leading together, not size alone. Sizes and spacing are in `rem`, so they follow the reader's text size setting. New text containers use `min-h-` and never a fixed height, so larger text can wrap without being cut.
 
 | Class | Size | Line height | Use |
 | --- | --- | --- | --- |
-| `text-4xl` | 48px | 1.1 | Page title from 768px (h1) |
-| `text-3xl` | 36px | 1.15 | Page title on phones (h1) |
-| `text-2xl` | 30px | 1.2 | Section heading (h2) |
+| `text-display` | 40px to 96px (fluid) | 1.02 | The home banner title only, with `tracking-tighter` |
+| `text-4xl` | 56px | 1.05 | Page title from 768px (h1) |
+| `text-3xl` | 40px | 1.1 | Page title on phones (h1), large section heading from 768px |
+| `text-2xl` | 32px | 1.15 | Section heading (h2) |
 | `text-xl` | 24px | 1.25 | Sub heading (h3) |
 | `text-lg` | 20px | 1.4 | Card title (h4), mobile menu |
 | `text-article` | 18px | 1.65 | Story body on the article page only |
@@ -88,10 +89,10 @@ Tracking and leading follow size: `-0.02em` and tight leading on large text, `0`
 
 ## Spacing and layout
 Spacing is Tailwind's scale on a 4px base: 1 (4px), 2, 3, 4 (16px), 6, 8, 12, 16 (64px). Tap targets are `min-h-11` (44px) or larger.
-Named tokens: `gutter` (16px, 24px from 640px), `section` (48px, use `py-section`), `utility` (44px utility bar), `header` (64px main bar).
+Named tokens: `gutter` (16px, 24px from 640px), `section` (64px on phones, 112px from 768px, use `py-section`), `utility` (44px utility bar), `header` (64px main bar).
 Content width is 1200px, set by `--content-width`. Use `Container` or `.container-page`.
 The home page uses two columns from 1024px: `lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]`, for the featured slider beside "Latest headlines" (the five newest stories not in the slider, the full height of the row), with "Find a story" and the topics side by side under the slider from 768px so the two columns end at the same line (on phones the order is slider, headlines, search, topics), and again for the municipality and gallery blocks beside the Facebook feed. "Meet the young journalists" follows, full width.
-Radius: `rounded-sm` (2px) and `rounded-md` (4px) only. No shadow tokens exist.
+Radius: `rounded-sm` (4px), `rounded-md` (12px) and `rounded-full` only. One shadow token exists: `shadow-float` (uses `--shadow-color`), for the stuck header and popovers. Full width bands (`PageHeader` photo, the banner) are not rounded.
 Inner pages: every page that is not the home page or a story starts with `PageHeader` (title, one paragraph, a full width photo band) and then uses the whole 1200px grid. Split rows (text beside a photo) and a full width brand band are the layout tools. Not a narrow column with an empty right side. Photos are placeholders until real ones are set in `src/config/page-images.ts`. Text goes on a photo only over the scrim (the home `Banner`). The `PageHeader` band has no text on it.
 Header breakpoint: full navigation and the two call to action buttons from 1024px, menu button below. The header links are About, Gallery and Archive (`mainNav` in `src/config/site.ts`). The six sections are not header links: they are the filter on `/archive` (`/archive?section=news`), and the footer lists them.
 
@@ -109,7 +110,10 @@ This is a reading site. Most things do not move. Decide in this order: does it n
 | Scrolling | Lenis smooth scroll on the whole site. Off under reduced motion |
 | Slider | Incoming slide fades in over 300ms, outgoing fades out over 200ms (Motion). A touch swipe moves the slide 1:1 and a spring settles it |
 | Scroll reveal | A major block below the screen fades in and rises `--reveal-distance` (48px) over `--duration-reveal` (1200ms) while fading over `--duration-reveal-fade` (900ms), after `--delay-reveal` (100ms), on `--ease-reveal`, once, when it scrolls into view. Put `data-reveal` on the block. Not on the header, footer, banner, story text, archive rows or single cards. No stagger: a block moves as one. See "Scroll reveal" below |
-| Page transitions, parallax, stagger, looping decoration | Never |
+| Hide-on-scroll header (approved 2026-11-18) | `HeaderScroll` hides the header (translateY, `--duration-slow`) while scrolling down past 160px, shows it on scroll up, on focus inside it and with the menu open. Never hides under reduced motion. The main bar gets `shadow-float` once the page has scrolled |
+| Parallax (approved 2026-11-18) | Only the home banner photo, through `Parallax` (0.15 of the scroll, capped at 15% of the height, transform only). Off under reduced motion |
+| Marquee (approved 2026-11-18) | `Marquee`: a slow CSS row of links (60s per loop). Pauses on hover and on focus (no pause button, removed on request). Does not move under reduced motion |
+| Page transitions, stagger, other looping decoration | Never |
 
 Tokens (in `globals.css`): `--ease-out: cubic-bezier(0.23, 1, 0.32, 1)` and `--ease-in-out: cubic-bezier(0.77, 0, 0.175, 1)` in `@theme` (classes `ease-out` and `ease-in-out`; Tailwind's `ease-in` and `ease-linear` are removed), and on `:root` `--duration-press` 120ms, `--duration-fast` 150ms, `--duration-base` 200ms, `--duration-exit` 130ms (about two thirds of base, for exits) and `--duration-slow` 300ms, plus the scroll reveal tokens on `:root`: `--reveal-distance` 3rem, `--duration-reveal` 1200ms, `--duration-reveal-fade` 900ms, `--delay-reveal` 100ms and `--ease-reveal` `cubic-bezier(0.35, 0, 0.15, 1)`, a gentle curve with a soft start and a long settle, close to how a Framer site reveals. `--ease-out` is too front loaded for this: nearly all the movement happens in the first moments, so it read as instant, even at 800ms. The scroll reveal is the only motion longer than `--duration-slow`, and the only one with a delay, on purpose. Everything else stays at 300ms or less. Use durations as `duration-(--duration-fast)`. Nothing is longer than `--duration-slow`.
 
@@ -136,7 +140,7 @@ Rules:
 5. Exits are shorter than entrances, about two thirds.
 6. Use CSS transitions, not keyframes, for anything that can be toggled quickly, so it can be interrupted and reverse from where it is. Never lock input during a transition. Slider buttons and Escape work at any moment.
 7. Enter and leave along the same path. A sheet that slides in from the right leaves to the right. A popover scales from its trigger (`transform-origin` at the trigger). A modal stays centered.
-8. Autoplay exists only in the featured slider. It needs a pause button, stops on hover and focus, and is off under reduced motion (all built).
+8. Autoplay exists only in the featured slider. It stops on hover, focus and drag, and is off under reduced motion (all built). The pause button was removed on request (2026-11-18), so there is no pause control: WCAG 2.2.2 asks for one on anything that moves for more than 5 seconds, and this is a known gap.
 9. Reduced motion: the global rule in `globals.css` makes every transition and animation instant. That is the fallback for all new motion. Do not fight it with `!important`.
 10. Taps: `touch-action: manipulation` on controls. Targets are at least 44px with at least 8px between them. Grow the hit area with padding, not the visible shape. Nothing depends on hover alone.
 11. A gesture is never the only way. If a swipe or drag is added: Pointer Events with capture, 1:1 tracking from where it was grabbed, about 10px before the direction is chosen, resistance at the edges instead of a hard stop, and a visible button for the same action. The featured slider does this for touch and pen; it wraps around, so it has no edges to resist at.
@@ -194,7 +198,7 @@ Ratios from `npm run contrast`, which reads the two theme blocks in `globals.css
 ## Site config
 `src/config/site.ts` holds the site name, `motto` ("In Truth, We Serve. In Words, We Lead.", the home banner heading), `tagline` ("Empowering the Voice of the Youth through Responsible Journalism.", the banner paragraph and the footer line, hidden if emptied), `siteDescription` (tagline plus the brand line, used for metadata), sections, municipalities, main nav (About, Gallery, Archive), policy links, `socialLinks` and `contactEmail` (both hidden while empty). Header and footer read only from here. `sections[].href` is `/archive?section=<slug>`. Slugs come from `slugify` in `src/lib/slug.ts`.
 Sections: News, Features, Editorial, Opinion, Sports, Literary. Municipalities (used as categories): Digos City, Bansalan, Hagonoy, Kiblawan, Magsaysay, Malalag, Matanao, Padada, Santa Cruz, Sulop.
-Routes built: `/`, `/article/[slug]`, `/archive` and `/about` (and the unindexed `/styleguide`).
+Routes built: `/`, `/article/[slug]`, `/archive`, `/about` and `/team` (every staff member, `PageHeader` then `StaffGrid`) (and the unindexed `/styleguide`).
 There are no `/section/[slug]` pages: the sections are the filter on `/archive` (`?section=<slug>`).
 Routes linked, not built yet: `/tag/[slug]`, `/gallery`, `/gallery/[slug]`, `/search`, and the policy pages `/editorial-policy`, `/corrections`, `/ethics`, `/privacy`, `/terms`.
 
@@ -222,6 +226,7 @@ All in `src/components`. Server components unless marked client.
 | `SkipLink` | none | First focusable element. Targets `#main-content`. |
 | `Button` | `variant` primary, accent, secondary or onBrand, button props | Buttons. `onBrand` is an outline button with light text, for brand colored bands next to an accent button. Has `press` feedback. |
 | `Banner` | `title` (the h1), `children` (one paragraph), `actions` (one or two buttons or links), `above`, `fullScreen`, `image`, `className` | The standard banner: a flat brand colored band with the page h1, a paragraph (`max-w-article`, at most 68 characters wide) and calls to action. Use once, at the top of a page, with `buttonClasses("accent")` first and `buttonClasses("onBrand")` second. Sets the focus ring to yellow inside. `above` is a slot for the breaking strip. `fullScreen` makes `above` and the band together as tall as the viewport below the header (`100svh` minus `--utility-height` and `--header-height`), centers the text and uses `text-4xl` for the h1. On the home page it is full screen, shows the motto as the h1 (one sentence per line) and the tagline as the paragraph, with the breaking strip in `above`. With `image` (the home page passes `pageImages.home.banner`, the Capitol photo) the photo is the background of the whole banner, with a flat scrim (the `scrim` color at 66%, no gradient, no blur) between it and the text, so the text has the same contrast on every part of the photo. The paragraph is full `on-brand` color on the photo, not muted. `npm run contrast` checks the text against the worst case, a white photo under the scrim. The photo has alt text and loads at once (`priority`). An empty `src` gives the plain band. The featured slider follows it as the second section (`#top-stories`), with "Latest headlines" (the five newest stories not in the slider, as compact cards without thumbnails, then a "See all published stories" text link to `/archive`), `SearchBlock` and `TopicStrip` beside it. |
+| `ButtonArrow` | none | An arrow icon for the end of a button label (inside anything using `buttonClasses` or `Button`). Slides 4px right on hover, fine pointer only. Used on the home banner buttons and "Meet the whole team". |
 | `buttonClasses` | `variant`, `className` | Button look for links: `<Link className={buttonClasses("secondary")}>`. |
 | `Field` | `id`, `label`, `hint`, input props | Labelled text input. `controlClasses` styles other controls. |
 | `NavLink` (client) | `href`, `exact`, Link props | Link that sets `aria-current="page"`. |
@@ -229,7 +234,7 @@ All in `src/components`. Server components unless marked client.
 | `ThemeToggle` (client) | none | Single button, light or dark. Shows a moon in light theme (press for dark) and a sun in dark theme (press for light). The icon is switched by CSS from `data-theme`, so the first paint is right. Uses `aria-pressed` (pressed means dark) and a status region announces changes. |
 | `TodayDate` (client) | none | Today in Asia/Manila, filled in on the device so the static page never shows a stale date. |
 | `CurrentYear` (client) | none | Year for the copyright line. |
-| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`, `SunIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `PauseIcon`, `PlayIcon`. |
+| `icons` | `className` | `SearchIcon`, `MenuIcon`, `CloseIcon`, `MoonIcon`, `SunIcon`, `ChevronLeftIcon`, `ChevronRightIcon`, `ArrowRightIcon`, `PauseIcon`, `PlayIcon`. |
 | `PlaceholderImage` | `ratio` 16/9, 4/3, 3/2, 1/1 or band, `className` | Flat brand colored block with a small "Placeholder" label. Hidden from screen readers. Takes the same space as a real image. `band` is a full width strip with a fixed height (14rem, 18rem from 640px, 24rem from 1024px), for the photo under a page title. |
 | `PostImage` | `post` or `image`, `sizes` (required), `ratio`, `priority`, `className` | Cover or gallery image. Real `src` goes through `next/image` with `fill`, so there is no layout shift. No `src` shows `PlaceholderImage`. `priority` is for the first image on a page (eager, high fetch priority). |
 | `PagePhoto` | `image` (a slot from `pageImages`), `sizes` (required), `ratio` (default 3/2, or `band`), `priority`, `className`, `captionClassName` | A photo for a page slot, as a `figure`. No `src` shows the placeholder, which takes the same space. With a `src` the alt text is required, which fails the build if missing. Shows "Photo: Ana Reyes" under the photo when there is a credit. Slots live in `src/config/page-images.ts`, with the steps for adding a real photo. |
@@ -241,6 +246,9 @@ All in `src/components`. Server components unless marked client.
 | `PostDate` | `iso`, `className` | A `time` element with the date in Asia/Manila, for example "November 13, 2026". |
 | `SectionHeading` | `title`, `href`, `linkLabel`, `as` h2 or h3, `id` | Heading with a 1px brown rule under it and an optional "See all" link (44px tap target). |
 | `Chip` | Link props | Flat text link with a 1px border and a 44px tap target. Tags and municipalities. Has `press` feedback. |
+| `HeaderScroll` (client) | none | Hide-on-scroll for the header. In `Header`, renders nothing. Sets `data-hidden` and `data-stuck` on `[data-site-header]`. See "Interaction and motion". |
+| `Parallax` (client) | `children`, `speed` (default 0.15), `className` | Light parallax box for a photo inside a `relative overflow-hidden` parent: taller than the parent by 15% each side, slides while the parent crosses the screen. Needs a z index class on itself (it is its own stacking context). Used by `Banner`. |
+| `Marquee` (client) | `items` (`{label, href}[]`), `label`, `className` | Slow endless row of links in `text-3xl`. No pause button (removed on request), it pauses on hover and focus. The list is twice in the track and the second copy is `inert`. Home page: the ten municipalities under the banner. Does not move under reduced motion. |
 | `SmoothScroll` (client) | none | Lenis smooth scrolling for the whole site, in the layout. Renders nothing. See "Libraries" under "Interaction and motion". |
 | `RevealObserver` (client) | none | Scroll reveal for the whole site, in the layout. Renders nothing. Fades in and raises any `[data-reveal]` block that starts below the screen, once. See "Scroll reveal" under "Interaction and motion". |
 | `FeaturedSlider` (client) | `children` (one element per slide, rendered on the server), `label` | Carousel for 2 to 5 stories. Slides share one grid cell, so the tallest sets the height before JavaScript runs. Motion fade (in 300ms, out 200ms, `ease-out`); hidden slides are `inert` with opacity 0. A swipe that is not far enough settles back with a Motion spring. Previous, next, Left and Right arrow keys, pause and play. Dots from 640px; below that a plain "2 of 5" count, because five 44px dots and the other controls do not fit a phone. Touch and pen swipe with Pointer Events: the direction is chosen after 10px, the slide follows the finger 1:1, and a drag past 20% of the width or a quick flick changes the slide, otherwise it settles back. A swipe never opens the link under it. The mouse does not drag. Autoplay is 7 seconds, only when reduced motion is not requested, and stops on hover, on focus, while dragging and on pause. The pause button is hidden by CSS under reduced motion. The live region is polite when the reader moves the slide and off while it rotates itself. Never used for a single story. |
@@ -248,8 +256,8 @@ All in `src/components`. Server components unless marked client.
 | `TopicStrip` | `limit` (default 12) | "Topics": chips for the most used tags, each linking to `/tag/[slug]`. Renders nothing without tags. On the home page beside the slider, with `limit` 10. |
 | `MunicipalityGrid` | none | "Stories by municipality": one tile per municipality (name and its real story count, "No stories yet" for none). Each tile is one link with a 1px border. 2 columns on phones, 3 from 640px, 5 from 768px. No "See all" link. Each tile links to the archive filtered by that municipality (`/archive?municipality=<slug>`, `href` in `src/config/site.ts`); there are no municipality pages. |
 | `SearchBlock` | `id` (prefix, default `find-story`) | "Find a story": a visible label, a `type="search"` input named `q` and a Search button, as a GET form to `/search` with `role="search"`. |
-| `StaffCard` | `member` (staff member), `sizes` (required), `headingLevel` h3 or h4, `className` | "Meet the team" card: 1px border, 4px radius, a square picture, then full name (`text-lg`, bold) and position (`text-sm`, muted) under a thin rule. The picture is the staff `photo` through `next/image` (alt "Photo of" and the full name), or with no photo the first letter of the first name large on the brand fill. The card is not a link. |
-| `StaffGrid` | `title` (default "Meet the young journalists") | Every staff member as a `StaffCard`: 2 columns on phones, 3 from 640px, 4 from 1024px. Full width on the home page, below the Facebook feed row. Renders nothing without staff. |
+| `StaffCard` | `member` (staff member), `sizes` (required), `headingLevel` h3 or h4, `className` | "Meet the team" card: 1px border, 4px radius, a square picture, then full name (`text-lg`, semibold) and position (`text-sm`, muted) under a thin rule. The picture is the staff `photo` through `next/image` (alt "Photo of" and the full name), or with no photo the first letter of the first name large on the brand fill. The card is not a link. |
+| `StaffGrid` | `title` (default "Meet the young journalists"), `limit` | Staff members as `StaffCard`s: 2 columns on phones, 3 from 640px, 4 from 1024px. With `limit` (the home page uses 4) it shows that many in 2 columns, 4 from 1024px, and a "Meet the whole team" `Button` link to `/team` when there are more. `/team` shows everyone. Full width on the home page, below the Facebook feed row. Renders nothing without staff. |
 | `CallToAction` | `title`, `children` (one paragraph), `actions` (one or two links), `id` (heading id), `as` h2 or h3, `className` | The reusable call to action band for any page: full width, `surface` fill, 1px rules above and below, heading, a `max-w-article` paragraph and buttons (`buttonClasses("accent")` first, `buttonClasses("secondary")` second). Text and buttons side by side from 768px. At most once per page, below the content. |
 | `StoryTipCta` | none | "Have news or a story to share?": a `CallToAction` in the layout directly above the footer, so it is the last block before the footer on every page. It invites readers to send a news tip, story idea or photo by message to the Facebook page. The accent button "Send it on Facebook" opens a message to the page (`m.me/<page name>` for a plain page address, the page itself otherwise) in a new tab. "Send it by email" is added as the secondary button when `contactEmail` is set. Renders nothing when neither the Facebook address nor `contactEmail` is set, because it must not invite readers to send something nowhere. |
 | `GalleryHighlight` | none | Most recent gallery: four square images, title and date as one link to `/gallery/[slug]` (the title link is stretched over the block, like `PostCard`, with one focus ring). Renders nothing without galleries. |

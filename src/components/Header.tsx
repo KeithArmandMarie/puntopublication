@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { HeaderActions } from "@/components/HeaderActions";
+import { HeaderScroll } from "@/components/HeaderScroll";
 import { SearchIcon } from "@/components/icons";
 import { Logo } from "@/components/Logo";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -13,10 +14,13 @@ import { mainNav, searchHref } from "@/config/site";
  * Site header. The utility bar (date, theme, search) scrolls away.
  * The main bar (logo, links and the two call to action buttons) stays at the top:
  * the header is sticky and shifted up by the height of the utility bar.
+ * It hides while the reader scrolls down and returns on scroll up (`HeaderScroll`), and
+ * the main bar gets the soft `shadow-float` once the page has scrolled.
  */
 export function Header() {
   return (
-    <header className="sticky top-[calc(-1*var(--utility-height))] z-40">
+    <header data-site-header className="sticky top-[calc(-1*var(--utility-height))] z-40">
+      <HeaderScroll />
       <div className="h-utility border-b border-border bg-surface">
         <Container className="flex h-full items-center justify-between gap-3">
           <TodayDate />
@@ -25,7 +29,7 @@ export function Header() {
             <Link
               href={searchHref}
               aria-label="Search"
-              className="press inline-flex size-11 items-center justify-center rounded-md text-foreground hover:bg-border"
+              className="press inline-flex size-11 items-center justify-center rounded-full text-foreground hover:bg-border"
             >
               <SearchIcon />
             </Link>
@@ -33,7 +37,7 @@ export function Header() {
         </Container>
       </div>
 
-      <div className="border-b border-border bg-background">
+      <div className="header-bar border-b border-border bg-background">
         <Container className="flex h-header items-center justify-between gap-6">
           <Logo />
           <nav aria-label="Main" className="hidden lg:block">

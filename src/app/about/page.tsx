@@ -194,11 +194,11 @@ export default function AboutPage() {
         className="mt-section bg-brand text-on-brand [--focus:var(--accent)]"
       >
         <Container data-reveal className="py-section lg:grid lg:grid-cols-12 lg:gap-8">
-          <h2 id="about-promise" className="text-xl font-bold lg:col-span-4">
+          <h2 id="about-promise" className="text-xl font-semibold lg:col-span-4">
             Our promise
           </h2>
           <div className="mt-4 lg:col-span-8 lg:mt-0">
-            <p className="text-3xl font-extrabold tracking-tight md:text-4xl">
+            <p className="text-3xl font-semibold tracking-tight md:text-4xl">
               Truth in every post. Storytelling in every frame.
             </p>
             <p lang="ceb" className="mt-6 max-w-article text-lg text-on-brand-muted">

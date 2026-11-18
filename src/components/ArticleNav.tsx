@@ -12,7 +12,7 @@ function StoryLink({ post, label, align }: { post: Post; label: string; align: "
       <Link
         href={`/article/${post.slug}`}
         lang={post.language}
-        className="link block py-2 text-lg font-bold"
+        className="link block py-2 text-lg font-semibold"
       >
         {post.title}
       </Link>

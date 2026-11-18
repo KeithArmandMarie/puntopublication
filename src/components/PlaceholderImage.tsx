@@ -28,7 +28,7 @@ export function PlaceholderImage({ ratio = "16/9", className = "" }: Placeholder
   return (
     <div
       aria-hidden="true"
-      className={`flex w-full items-end border border-brand-border bg-brand ${imageRatioClass[ratio]} ${className}`.trim()}
+      className={`flex w-full items-end bg-brand ${ratio === "band" ? "" : "rounded-md"} ${imageRatioClass[ratio]} ${className}`.trim()}
     >
       <span className="p-2 text-xs text-on-brand-muted">Placeholder</span>
     </div>

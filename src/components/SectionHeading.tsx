@@ -12,7 +12,7 @@ type SectionHeadingProps = {
   className?: string;
 };
 
-/** A heading with a thin brown rule under it and an optional "See all" link. */
+/** A large heading with a thin rule under it and an optional "See all" link. */
 export function SectionHeading({
   title,
   href,
@@ -23,9 +23,9 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div
-      className={`flex items-center justify-between gap-4 border-b border-brand-border pb-1 ${className}`.trim()}
+      className={`flex items-center justify-between gap-4 border-b border-border pb-3 ${className}`.trim()}
     >
-      <Tag id={id} className="text-xl font-bold">
+      <Tag id={id} className="text-2xl font-semibold tracking-tight md:text-3xl">
         {title}
       </Tag>
       {href ? (

@@ -34,7 +34,7 @@ export function Logo({ variant = "header", onNavigate, className = "" }: LogoPro
       />
       <span
         aria-hidden="true"
-        className={`${size.text} font-extrabold leading-tight tracking-tight`}
+        className={`${size.text} font-semibold leading-tight tracking-tight`}
       >
         {siteName}
       </span>

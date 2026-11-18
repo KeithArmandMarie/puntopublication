@@ -35,7 +35,7 @@ export function CallToAction({
     >
       <Container className="py-section md:flex md:items-end md:justify-between md:gap-8">
         <div>
-          <Heading id={id} className="text-2xl font-bold">
+          <Heading id={id} className="text-2xl font-semibold">
             {title}
           </Heading>
           <p className="mt-3 max-w-article text-pretty text-muted">{children}</p>

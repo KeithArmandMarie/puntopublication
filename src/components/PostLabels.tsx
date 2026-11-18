@@ -26,7 +26,7 @@ export function PostLabels({ post, className = "" }: PostLabelsProps) {
 
   return (
     <p className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-sm ${className}`.trim()}>
-      {section ? <span className="font-bold text-foreground">{section.name}</span> : null}
+      {section ? <span className="font-semibold text-foreground">{section.name}</span> : null}
       {municipality ? <span className="text-muted">{municipality.name}</span> : null}
       <LanguageBadge language={post.language} />
     </p>
