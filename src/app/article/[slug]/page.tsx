@@ -154,7 +154,11 @@ export default async function ArticlePage(props: PageProps<"/article/[slug]">) {
         </article>
 
         {related.length > 0 ? (
-          <section aria-labelledby="related-heading" className="mx-auto mt-section max-w-4xl">
+          <section
+            aria-labelledby="related-heading"
+            data-reveal
+            className="mx-auto mt-section max-w-4xl"
+          >
             <SectionHeading title="Related stories" id="related-heading" />
             <div className="mt-6 grid gap-x-6 gap-y-8 md:grid-cols-3">
               {related.map((story) => (

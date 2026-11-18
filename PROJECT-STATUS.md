@@ -27,6 +27,8 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 
 9. Added `lenis` (`SmoothScroll` in the layout) and `motion` (`FeaturedSlider` fades and a spring settle after a swipe). `data-lenis-prevent` is on the mobile menu dialog. In page links are handled by `SmoothScroll`.
 
+10. Scroll reveal (2026-11-18, approved by the user for the whole site; this reverses the earlier "no scroll reveals" rule): `RevealObserver` in the layout and `data-reveal` on major blocks of home, About and the article page. A subtle fade and 12px rise, once, no stagger, off under reduced motion, and content stays visible without JavaScript. The archive has none. Not yet checked with the window in front on a real screen (the browser pane only draws while the Claude window is visible).
+
 ## What is built
 Routes: `/`, `/article/[slug]`, `/archive`, `/about` and the unindexed `/styleguide`.
 About (`/about`, built 2026-11-17): client's "who we are" text (lengthened without adding facts), the client's vision and mission word for word, the three platforms (Punto Broadcast, Punto Print, Inter-School Collaboration), the promise, the sections, the team and how to reach us. Changes made to the client's text: "premier" was dropped (a claim of being the best), "Our mission is to bridge the gap" became "We work to bridge the gap" (so there is one Mission on the page), the emoji and the fancy bold Unicode letters were replaced by plain text, and the promise lines in Cebuano are marked `lang="ceb"`, not Tagalog. No video page exists, so Punto Broadcast has no link.

@@ -16,7 +16,7 @@ export function StaffGrid({ title = "Meet the young journalists" }: StaffGridPro
   if (staff.length === 0) return null;
 
   return (
-    <section aria-labelledby="staff-grid-heading">
+    <section aria-labelledby="staff-grid-heading" data-reveal>
       <SectionHeading title={title} id="staff-grid-heading" />
       <ul className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
         {staff.map((member) => (

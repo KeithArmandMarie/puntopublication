@@ -26,6 +26,7 @@ export function ArticleNav({ older, newer, className = "" }: ArticleNavProps) {
   return (
     <nav
       aria-label="Older and newer stories"
+      data-reveal
       className={`grid gap-6 border-y border-border py-6 sm:grid-cols-2 ${className}`.trim()}
     >
       {older ? <StoryLink post={older} label="Older story" align="left" /> : null}

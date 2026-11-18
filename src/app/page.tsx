@@ -110,7 +110,11 @@ export default function Home() {
           id="top-stories"
           className="scroll-mt-header lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-8"
         >
-          <section aria-labelledby="top-stories-heading" className="lg:col-start-1 lg:row-start-1">
+          <section
+            aria-labelledby="top-stories-heading"
+            data-reveal
+            className="lg:col-start-1 lg:row-start-1"
+          >
             <h2 id="top-stories-heading" className="sr-only">
               Top stories
             </h2>
@@ -140,6 +144,7 @@ export default function Home() {
           {headlines.length > 0 ? (
             <section
               aria-labelledby="latest-headlines-heading"
+              data-reveal
               className="mt-section lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0"
             >
               <SectionHeading title="Latest headlines" id="latest-headlines-heading" />
@@ -160,7 +165,9 @@ export default function Home() {
           ) : null}
 
           {/* Under the lead story: ways in (search and topics), side by side from 768px. */}
-          <div className="mt-section grid gap-10 md:grid-cols-2 md:gap-8 lg:col-start-1 lg:row-start-2 lg:mt-10 lg:content-start">
+          <div
+            data-reveal
+            className="mt-section grid gap-10 md:grid-cols-2 md:gap-8 lg:col-start-1 lg:row-start-2 lg:mt-10 lg:content-start">
             <SearchBlock />
             <TopicStrip limit={10} />
           </div>
@@ -171,13 +178,13 @@ export default function Home() {
             hasFeed ? "lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-8" : ""
           }`.trim()}
         >
-          <div className="space-y-section">
+          <div data-reveal className="space-y-section">
             <MunicipalityGrid />
             <GalleryHighlight />
           </div>
 
           {hasFeed ? (
-            <div className="mt-section lg:mt-0">
+            <div data-reveal className="mt-section lg:mt-0">
               <FacebookFeed />
             </div>
           ) : null}

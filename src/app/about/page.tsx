@@ -48,7 +48,7 @@ const platforms = [
 
 function Block({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section aria-labelledby={id}>
+    <section aria-labelledby={id} data-reveal>
       <SectionHeading title={title} id={id} />
       <div className="mt-4">{children}</div>
     </section>
@@ -118,7 +118,11 @@ export default function AboutPage() {
       </PageHeader>
 
       <Container className="space-y-section pt-section">
-        <section aria-labelledby="about-who" className="lg:grid lg:grid-cols-12 lg:gap-8">
+        <section
+          aria-labelledby="about-who"
+          data-reveal
+          className="lg:grid lg:grid-cols-12 lg:gap-8"
+        >
           <div className="lg:col-span-7">
             <SectionHeading title="Who we are" id="about-who" />
             <div className="mt-4 max-w-article space-y-4">
@@ -145,7 +149,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section aria-labelledby="about-vision-mission">
+        <section aria-labelledby="about-vision-mission" data-reveal>
           <SectionHeading title="Our vision and mission" id="about-vision-mission" />
           <div className="mt-6 grid gap-8 md:grid-cols-2 md:gap-12">
             <div className="border-t border-brand-border pt-4">
@@ -159,7 +163,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section aria-labelledby="about-do">
+        <section aria-labelledby="about-do" data-reveal>
           <SectionHeading title="What we do" id="about-do" />
           <ul className="mt-6 grid gap-8 md:grid-cols-3">
             {platforms.map((platform) => (
@@ -189,7 +193,7 @@ export default function AboutPage() {
         aria-labelledby="about-promise"
         className="mt-section bg-brand text-on-brand [--focus:var(--accent)]"
       >
-        <Container className="py-section lg:grid lg:grid-cols-12 lg:gap-8">
+        <Container data-reveal className="py-section lg:grid lg:grid-cols-12 lg:gap-8">
           <h2 id="about-promise" className="text-xl font-bold lg:col-span-4">
             Our promise
           </h2>
@@ -206,7 +210,11 @@ export default function AboutPage() {
       </section>
 
       <Container className="space-y-section py-section">
-        <section aria-labelledby="about-publish" className="lg:grid lg:grid-cols-12 lg:gap-8">
+        <section
+          aria-labelledby="about-publish"
+          data-reveal
+          className="lg:grid lg:grid-cols-12 lg:gap-8"
+        >
           <div className="lg:col-span-7">
             <SectionHeading title="What we publish" id="about-publish" />
             <p className="mt-4 max-w-article">

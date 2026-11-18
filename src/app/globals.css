@@ -88,6 +88,8 @@
   --duration-base: 200ms;
   --duration-exit: 130ms;
   --duration-slow: 300ms;
+  /* How far a block sits below its place before it is revealed on scroll. */
+  --reveal-distance: 0.75rem;
 }
 
 /*
@@ -355,6 +357,32 @@
 
   &:active:not(:disabled, [aria-disabled="true"]) {
     transform: scale(0.97);
+  }
+}
+
+/*
+  Scroll reveal. RevealObserver sets data-reveal-state="hidden" on a [data-reveal] block that
+  starts below the screen, and "shown" when it scrolls into view. Only opacity and transform
+  move, so nothing in the layout shifts. Without the attribute (no JavaScript, reduced
+  motion, print) the block is just visible.
+*/
+[data-reveal-state="hidden"] {
+  opacity: 0;
+  transform: translateY(var(--reveal-distance));
+}
+
+[data-reveal-state="shown"] {
+  opacity: 1;
+  transform: none;
+  transition-property: opacity, transform;
+  transition-duration: var(--duration-slow);
+  transition-timing-function: var(--ease-out);
+}
+
+@media print {
+  [data-reveal-state] {
+    opacity: 1;
+    transform: none;
   }
 }
 

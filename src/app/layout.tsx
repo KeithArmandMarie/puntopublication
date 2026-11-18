@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { RevealObserver } from "@/components/RevealObserver";
 import { SkipLink } from "@/components/SkipLink";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { StoryTipCta } from "@/components/StoryTipCta";
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="flex min-h-full flex-col">
         <SmoothScroll />
+        <RevealObserver />
         <SkipLink />
         <Header />
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
