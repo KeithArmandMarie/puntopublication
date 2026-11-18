@@ -88,8 +88,16 @@
   --duration-base: 200ms;
   --duration-exit: 130ms;
   --duration-slow: 300ms;
-  /* How far a block sits below its place before it is revealed on scroll. */
-  --reveal-distance: 0.75rem;
+  /*
+    Scroll reveal: how far a block sits below its place, how long it takes and its curve.
+    Slower and gentler than the UI motion above on purpose, so the fade is seen. The
+    only motion allowed to be longer than --duration-slow.
+  */
+  --reveal-distance: 3rem;
+  --duration-reveal: 1200ms; /* the rise */
+  --duration-reveal-fade: 900ms; /* the fade is a little quicker than the rise */
+  --delay-reveal: 100ms; /* a short pause after the block comes into view */
+  --ease-reveal: cubic-bezier(0.35, 0, 0.15, 1);
 }
 
 /*
@@ -375,8 +383,9 @@
   opacity: 1;
   transform: none;
   transition-property: opacity, transform;
-  transition-duration: var(--duration-slow);
-  transition-timing-function: var(--ease-out);
+  transition-duration: var(--duration-reveal-fade), var(--duration-reveal);
+  transition-delay: var(--delay-reveal);
+  transition-timing-function: var(--ease-reveal);
 }
 
 @media print {

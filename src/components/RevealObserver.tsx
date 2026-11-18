@@ -8,8 +8,8 @@ import { useEffect } from "react";
  *
  * Any element with a `data-reveal` attribute that starts below the visible screen is set
  * to `data-reveal-state="hidden"` (see globals.css: transparent and a small way down), and
- * to `"shown"` once it scrolls into view, which fades it in and moves it up over
- * `--duration-slow`. It happens once per element. Everything already on screen, or above it,
+ * to `"shown"` once it is well inside the screen, which fades it in and moves it up (see
+ * the `--duration-reveal*` tokens). It happens once per element. Everything already on screen, or above it,
  * is left alone, so nothing flashes on load. The server HTML is fully visible: the hidden
  * state is only ever applied here, after hydration, so with no JavaScript, or when the
  * observer is missing, the page simply shows all its content.
@@ -39,8 +39,9 @@ export function RevealObserver() {
           waiting.delete(entry.target);
         }
       },
-      // Reveal a little after the block's top edge crosses the bottom of the screen.
-      { rootMargin: "0px 0px -8% 0px" },
+      // Reveal once the block is well inside the screen, so the fade is seen and not
+      // spent at the very edge where almost none of it shows.
+      { rootMargin: "0px 0px -22% 0px" },
     );
 
     for (const element of document.querySelectorAll("[data-reveal]")) {

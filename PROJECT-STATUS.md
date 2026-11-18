@@ -27,7 +27,7 @@ Punto Publication, the Provincial Youth Journalist Publication of Davao del Sur.
 
 9. Added `lenis` (`SmoothScroll` in the layout) and `motion` (`FeaturedSlider` fades and a spring settle after a swipe). `data-lenis-prevent` is on the mobile menu dialog. In page links are handled by `SmoothScroll`.
 
-10. Scroll reveal (2026-11-18, approved by the user for the whole site; this reverses the earlier "no scroll reveals" rule): `RevealObserver` in the layout and `data-reveal` on major blocks of home, About and the article page. A subtle fade and 12px rise, once, no stagger, off under reduced motion, and content stays visible without JavaScript. The archive has none. Not yet checked with the window in front on a real screen (the browser pane only draws while the Claude window is visible).
+10. Scroll reveal (2026-11-18, approved by the user for the whole site; this reverses the earlier "no scroll reveals" rule): `RevealObserver` in the layout and `data-reveal` on major blocks of home, About and the article page. A slow fade and 48px rise over about a second, with a 100ms delay, a gentle curve and a trigger well inside the screen, once, no stagger (first built at 300ms and 12px, then 800ms and 20px; the user said both felt instant and asked for a Framer-like reveal), off under reduced motion, and content stays visible without JavaScript. The archive has none. Not yet checked with the window in front on a real screen (the browser pane only draws while the Claude window is visible).
 
 ## What is built
 Routes: `/`, `/article/[slug]`, `/archive`, `/about` and the unindexed `/styleguide`.
